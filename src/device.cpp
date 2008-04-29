@@ -203,7 +203,7 @@ GW_Device::GW_Device(GW_Platform *platform, GW_Game *game) :
     if ( SDL_Init( platform_->sdlinit(SDL_INIT_VIDEO|SDL_INIT_AUDIO) ) < 0 )
         throw GW_Exception(string("Unable to init SDL: "+string(SDL_GetError())));
 
-    if ( Mix_OpenAudio(22050, AUDIO_S16SYS, 1, 1024) < 0)
+    if ( Mix_OpenAudio(22050, AUDIO_S16SYS, 1, platform_->audiobufsize_get()) < 0)
         throw GW_Exception(string("Unable to init SDL_mixer: "+string(Mix_GetError())));
 
     Mix_AllocateChannels(6);
@@ -271,16 +271,17 @@ void GW_Device::Run()
         //SDL_BlitSurface(game_->sprites().sprites_get(1)->sprites_get(1)->image_get(1)->surface_get(), NULL, screen_,
             //&spos);
 
-        if (game_->IsOn())
+        if (game_->IsOn() && game_->TickTime()>0)
         {
             if (SDL_GetTicks()-curtime_>=game_->TickTime())
             {
                 game_->Tick();
                 curtime_=SDL_GetTicks();
             }
-            game_->Update();
         }
 
+        if (game_->IsOn())
+            game_->Update();
 
         draw_game();
 

@@ -14,6 +14,7 @@ public:
     virtual void initialize();
     virtual void finalize();
     virtual unsigned int timems_get() { return SDL_GetTicks(); }
+    virtual int audiobufsize_get() { return 128; }
 protected:
     virtual void _process_event(SDL_Event *event);
 };

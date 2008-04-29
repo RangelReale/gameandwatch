@@ -1,10 +1,11 @@
 #include "devices/dev_monkey.h"
 
 GW_Game_Monkey::GW_Game_Monkey() :
-    GW_Game(), mode_(MODE_OFF)
+    GW_Game(), START_DELAY_VALUE(1900), items_(), mode_(MODE_OFF)
 {
     gamepath_set("monkey");
     size_set(561, 347);
+    // game screen position
     SDL_Rect gr;
     gr.x=152; gr.y=53; gr.w=257; gr.h=192;
     gamerect_set(gr);
@@ -26,7 +27,6 @@ GW_Game_Monkey::GW_Game_Monkey() :
         position_add(PS_CHAR_3, 3, 319, 121, IM_CHAR_3, 3, "im_char_3_3.bmp");
 
     // item (monkey)
-    //spr_l1=sprites().sprites_add(SP_ITEM);
     data().
         position_add(PS_ITEM_1, 1, 210, 221, PS_ITEM_1, 1, "im_item_1_1.bmp")->
         position_add(PS_ITEM_1, 2, 171, 216, PS_ITEM_1, 2, "im_item_1_2.bmp")->
@@ -140,12 +140,14 @@ void GW_Game_Monkey::DefaultKey(defkeys_t key)
     case DK_LEFT:
         char_position_-=1;
         if (char_position_<0) char_position_=0;
-        game_update();
+        char_update(char_position_, false);
+        //game_update();
         break;
     case DK_RIGHT:
         char_position_+=1;
         if (char_position_>2) char_position_=2;
-        game_update();
+        char_update(char_position_, false);
+        //game_update();
         break;
     default:
         break;
@@ -154,12 +156,14 @@ void GW_Game_Monkey::DefaultKey(defkeys_t key)
 
 unsigned int GW_Game_Monkey::TickTime()
 {
-    return 250;
+    if (IsGame())
+        return 250;
+    return 0;
 }
 
 void GW_Game_Monkey::Tick()
 {
-    if (GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB)
+    if (IsGame() && SDL_GetTicks()-startdelay_>START_DELAY_VALUE)
     {
         game_tick();
     }
@@ -197,18 +201,48 @@ void GW_Game_Monkey::game_start(bool gamea)
     game_update();
     score_update();
 
+    startdelay_=SDL_GetTicks();
+    tick_=0;
+    ticksum_=0;
+    items_.clear();
+
+    //item_add(1);
+
+    char_update(char_position_, false);
+    item_update();
+
     data_playsound(SND_START);
 }
 
 void GW_Game_Monkey::game_update()
 {
-    char_update(char_position_, false);
+    //char_update(char_position_, false);
 }
 
 void GW_Game_Monkey::game_tick()
 {
     data().position_get(PS_SEMICOLON)->visible_set(!data().position_get(PS_SEMICOLON)->visible_get());
+
+    tick_++;
+    if (tick_>3) tick_=1;
+
+    ticksum_++;
+    if ((ticksum_-tick_) % 12 == 0 && (rand() % 4 == 3))
+        item_add(tick_);
+
+    item_tick();
+
     game_update();
+}
+
+void GW_Game_Monkey::item_add(int id)
+{
+    GW_Game_Monkey_Item ni;
+    ni.id=id;
+    ni.position=0;
+    items_.push_back(ni);
+
+    //data_playsound(SND_MOVE);
 }
 
 void GW_Game_Monkey::char_update(int pos, bool hit)
@@ -218,6 +252,40 @@ void GW_Game_Monkey::char_update(int pos, bool hit)
         data().position_get(i, 1)->visible_set(i-PS_CHAR_1==pos);
         data().position_get(i, 2)->visible_set(i-PS_CHAR_1==pos && !hit);
         data().position_get(i, 3)->visible_set(i-PS_CHAR_1==pos && hit);
+    }
+}
+
+void GW_Game_Monkey::item_tick()
+{
+    for (list<GW_Game_Monkey_Item>::iterator i=items_.begin(); i!=items_.end();)
+    {
+        if (i->id == tick_)
+        {
+            i->position++;
+            if (i->position>=IDX_MISS)
+            {
+                i=items_.erase(i);
+            } else {
+                i++;
+                data_playsound(SND_MOVE);
+            }
+        } else
+            i++;
+    }
+    item_update();
+}
+
+void GW_Game_Monkey::item_update()
+{
+    for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)
+    {
+        for (int j=1; j<=IDX_MISS; j++)
+            data().position_get(i, j)->hide();
+    }
+
+    for (list<GW_Game_Monkey_Item>::const_iterator i=items_.begin(); i!=items_.end(); i++)
+    {
+        data().position_get(IM_ITEM_1+(i->id-1), i->position)->show();
     }
 }
 

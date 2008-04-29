@@ -1,7 +1,16 @@
 #ifndef H__DEV_MONKEY__H
 #define H__DEV_MONKEY__H
 
+#include <list>
 #include "device.h"
+
+using namespace std;
+
+typedef struct GW_Game_Monkey_Item
+{
+    unsigned short id;
+    unsigned short position;
+};
 
 class GW_Game_Monkey : public GW_Game
 {
@@ -90,6 +99,7 @@ public:
     virtual unsigned int TickTime();
     virtual void Tick();
     virtual void Update();
+    bool IsGame() { return (GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB); }
 protected:
     virtual void do_turnon();
     virtual void do_turnoff();
@@ -103,13 +113,22 @@ private:
     void game_update();
     void game_tick();
 
+    void item_add(int id);
+
     void score_update();
 
     void char_update(int pos, bool hit);
+    void item_tick();
+    void item_update();
+
+    const unsigned int START_DELAY_VALUE;
+    list<GW_Game_Monkey_Item> items_;
 
     mode_t mode_;
     int score_;
     int char_position_;
+    unsigned short tick_, ticksum_;
+    unsigned int startdelay_;
 };
 
 #endif //H__DEV_MONKEY__H

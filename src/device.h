@@ -190,6 +190,7 @@ public:
     virtual int width_get() = 0;
     virtual int height_get() = 0;
     virtual unsigned int timems_get() { return SDL_GetTicks(); }
+    virtual int audiobufsize_get() { return 2048; }
 protected:
     GW_Device *device_get() { return device_; }
 
