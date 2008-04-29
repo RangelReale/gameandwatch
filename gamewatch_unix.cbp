@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="gamewatch" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/gamewatch" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/gamewatch" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="$(#sdl.include)" />
+			<Add directory="$(#sdl_image.include)" />
+			<Add directory="src" />
+			<Add directory="$(#boost.include)" />
+			<Add directory="$(#sdl_mixer.include)" />
+		</Compiler>
+		<Linker>
+			<Add library="SDL" />
+			<Add library="SDLmain" />
+			<Add library="SDL_image" />
+			<Add library="SDL_mixer" />
+			<Add library="boost_filesystem-$(#boost.suffix)" />
+			<Add directory="$(#sdl.lib)" />
+			<Add directory="$(#sdl_image.lib)" />
+			<Add directory="$(#boost.lib)" />
+			<Add directory="$(#sdl_mixer.lib)" />
+		</Linker>
+		<Unit filename="src/device.cpp" />
+		<Unit filename="src/device.h" />
+		<Unit filename="src/devices/dev_monkey.cpp" />
+		<Unit filename="src/devices/dev_monkey.h" />
+		<Unit filename="src/gamewatch.cpp" />
+		<Unit filename="src/gwdefs.h" />
+		<Unit filename="src/plat/plat_desktop.cpp" />
+		<Unit filename="src/plat/plat_desktop.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
