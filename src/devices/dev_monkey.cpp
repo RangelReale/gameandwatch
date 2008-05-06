@@ -35,7 +35,8 @@ GW_Game_Monkey::GW_Game_Monkey() :
         position_add(PS_ITEM_1, 5, 174, 134, PS_ITEM_1, 5, "im_item_1_5.bmp")->
         position_add(PS_ITEM_1, IDX_GOT, 207, 184, PS_ITEM_1, IDX_GOT, "im_item_1_got.bmp")->
         position_add(PS_ITEM_1, IDX_MISS, 210, 150, PS_ITEM_1, IDX_MISS, "im_item_1_miss.bmp")->
-        position_add(PS_ITEM_1, IDX_TARGET, 189, 126, PS_ITEM_1, IDX_TARGET, "im_item_1_target.bmp");
+        position_add(PS_ITEM_1, IDX_TARGET, 189, 126, PS_ITEM_1, IDX_TARGET, "im_item_1_target.bmp")->
+        position_add(PS_ITEM_1, IDX_HIT, 174, 134, PS_ITEM_1, 5); // same image as 5
     data().
         position_add(PS_ITEM_2, 1, 239, 221, PS_ITEM_2, 1, "im_item_2_1.bmp")->
         position_add(PS_ITEM_2, 2, 269, 221, PS_ITEM_2, 2, "im_item_2_2.bmp")->
@@ -44,7 +45,8 @@ GW_Game_Monkey::GW_Game_Monkey() :
         position_add(PS_ITEM_2, 5, 270, 142, PS_ITEM_2, 5, "im_item_2_5.bmp")->
         position_add(PS_ITEM_2, IDX_GOT, 241, 187, PS_ITEM_2, IDX_GOT, "im_item_2_got.bmp")->
         position_add(PS_ITEM_2, IDX_MISS, 238, 158, PS_ITEM_2, IDX_MISS, "im_item_2_miss.bmp")->
-        position_add(PS_ITEM_2, IDX_TARGET, 277, 134, PS_ITEM_2, IDX_TARGET, "im_item_2_target.bmp");
+        position_add(PS_ITEM_2, IDX_TARGET, 277, 134, PS_ITEM_2, IDX_TARGET, "im_item_2_target.bmp")->
+        position_add(PS_ITEM_2, IDX_HIT, 270, 142, PS_ITEM_2, 5); // same image as 5
     data().
         position_add(PS_ITEM_3, 1, 328, 222, PS_ITEM_3, 1, "im_item_3_1.bmp")->
         position_add(PS_ITEM_3, 2, 352, 221, PS_ITEM_3, 2, "im_item_3_2.bmp")->
@@ -53,7 +55,8 @@ GW_Game_Monkey::GW_Game_Monkey() :
         position_add(PS_ITEM_3, 5, 342, 138, PS_ITEM_3, 5, "im_item_3_5.bmp")->
         position_add(PS_ITEM_3, IDX_GOT, 310, 183, PS_ITEM_3, IDX_GOT, "im_item_3_got.bmp")->
         position_add(PS_ITEM_3, IDX_MISS, 316, 145, PS_ITEM_3, IDX_MISS, "im_item_3_miss.bmp")->
-        position_add(PS_ITEM_3, IDX_TARGET, 351, 130, PS_ITEM_3, IDX_TARGET, "im_item_3_target.bmp");
+        position_add(PS_ITEM_3, IDX_TARGET, 351, 130, PS_ITEM_3, IDX_TARGET, "im_item_3_target.bmp")->
+        position_add(PS_ITEM_3, IDX_HIT, 342, 138, PS_ITEM_3, 5);
 
     // numbers
     data().
@@ -203,6 +206,8 @@ void GW_Game_Monkey::game_start(bool gamea)
 
     startdelay_=SDL_GetTicks();
     tick_=0;
+    maxonscreen_=1;
+    misses_=0;
     ticksum_=0;
     items_.clear();
 
@@ -210,6 +215,7 @@ void GW_Game_Monkey::game_start(bool gamea)
 
     char_update(char_position_, false);
     item_update();
+    miss_update();
 
     data_playsound(SND_START);
 }
@@ -223,14 +229,119 @@ void GW_Game_Monkey::game_tick()
 {
     data().position_get(PS_SEMICOLON)->visible_set(!data().position_get(PS_SEMICOLON)->visible_get());
 
-    tick_++;
-    if (tick_>3) tick_=1;
+    int iMistake=0, iGot=0, iMoved=0;
 
+    // current tick
+    int prevtick=tick_-1;
+    if (prevtick<0) prevtick=2;
+
+    // keeps and then removes "got" items
+    for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)
+    {
+        if (data().position_get(i, IDX_GOT)->visible_get())
+            data().position_get(i, IDX_GOT)->hide();
+        if (data().position_get(i, IDX_HIT)->visible_get())
+        {
+            data().position_get(i, IDX_HIT)->hide();
+            data().position_get(i, IDX_GOT)->show();
+        }
+    }
+
+    // checks for mistakes
+    for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)
+    {
+        if (data().position_get(i, IDX_MAX)->visible_get() && char_position_ != PS_ITEM_1-i)
+        {
+            data().position_get(i, IDX_MAX)->hide();
+            data().position_get(i, IDX_MISS)->hide();
+            iMistake=PS_ITEM_1-i;
+        }
+    }
+
+    // checks for collisions character-items on certain positions and manages 'hit' animation of main character
+    if (iMistake==0 && data().position_get(PS_ITEM_1+char_position_, IDX_MAX)->visible_get())
+    {
+        char_update(char_position_, true);
+        data().position_get(PS_ITEM_1+char_position_, IDX_GOT)->hide();
+        data().position_get(PS_ITEM_1+char_position_, IDX_HIT)->show();
+        score_++;
+        if (score_>9999) score_-=10000;
+        score_update();
+        //level_update();
+        iGot=char_position_;
+    }
+
+    // moves and generates items
+    if (iMistake==0)
+    {
+        // moves items
+        for (int i=5; i>1; i--)
+            data().position_get(PS_ITEM_1+tick_, i)->visible_set(data().position_get(PS_ITEM_1+tick_, i-1)->visible_get());
+        data().position_get(PS_ITEM_1+tick_, 1)->hide();
+
+        // generates new items
+        int iOnScreen=0;
+        for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)                                   // counts items on screen
+            for (int j=1; j<=IDX_MAX; j++)
+                if (data().position_get(i, j)->visible_get())
+                    iOnScreen++;
+        if (rand() % 4 == 0) data().position_get(PS_ITEM_1+tick_, 1)->show();      // generates randomly
+        else data().position_get(PS_ITEM_1+tick_, 1)->hide();
+        if (iOnScreen == 0) data().position_get(PS_ITEM_1+tick_, 1)->show();       // generates if none on screen
+        if (data().position_get(PS_ITEM_1+tick_, 2)->visible_get())                // prevents from generating if one just appeared on the same column
+            data().position_get(PS_ITEM_1+tick_, 1)->hide();
+
+        if (data().position_get(PS_ITEM_1+prevtick, 1)->visible_get())             // prevents from generating if one just appeared on previous column
+            data().position_get(PS_ITEM_1+tick_, 1)->hide();
+        if (iOnScreen>=maxonscreen_)                                               // prevents from generating if more onscreen items than allowed
+            data().position_get(PS_ITEM_1+tick_, 1)->hide();
+
+        // gets ready to play "pfMove" sound
+        for (int i=1; i<IDX_MAX; i++)
+            if (data().position_get(PS_ITEM_1+tick_, 1)->visible_get())
+                iMoved++;
+    }
+
+    // executes miss routine, counts misses and reprises or goes to "game over"
+    if (iMistake!=0)    // checks if any miss just occured
+    {
+        data().position_get(PS_ITEM_1+iMistake, IDX_MISS)->show();
+        data().position_get(PS_ITEM_1+iMistake, IDX_TARGET)->hide();
+        misses_++;
+        miss_update();
+        if (misses_<5)          // checks how many misses were done
+        {
+            // game continues if misses<5
+        }
+        else
+        {
+            // game is over if misses=5
+        }
+    }
+    else
+    {
+        tick_++;
+        if (tick_>2) tick_=0;
+    }
+
+    // renders moveable items on screen
+
+    // renders 'got' items on screen
+
+    // plays correct sound (miss, got, move)
+    if (iMistake>0)
+        data_playsound(SND_MISS);
+    else if (iGot>0)
+        data_playsound(SND_GOT);
+    else if (iMoved>0)
+        data_playsound(SND_MOVE);
+
+/*
     ticksum_++;
     if ((ticksum_-tick_) % 12 == 0 && (rand() % 4 == 3))
         item_add(tick_);
-
     item_tick();
+*/
 
     game_update();
 }
@@ -285,7 +396,7 @@ void GW_Game_Monkey::item_update()
 
     for (list<GW_Game_Monkey_Item>::const_iterator i=items_.begin(); i!=items_.end(); i++)
     {
-        data().position_get(IM_ITEM_1+(i->id-1), i->position)->show();
+        data().position_get(IM_ITEM_1+(i->id), i->position)->show();
     }
 }
 
@@ -307,6 +418,14 @@ void GW_Game_Monkey::score_update()
     {
         data().position_get(PS_NUMBER, 3)->hide();
         data().position_get(PS_NUMBER, 4)->hide();
+    }
+}
+
+void GW_Game_Monkey::miss_update()
+{
+    for (int i=1; i<=10; i++)
+    {
+        data().position_get(PS_MISS, i)->visible_set(misses_>=i);
     }
 }
 

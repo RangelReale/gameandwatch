@@ -63,9 +63,11 @@ public:
 
     enum
     {
-        IDX_GOT = 6,
+        IDX_MAX = 5,
+        IDX_GOT,
         IDX_MISS,
         IDX_TARGET,
+        IDX_HIT,
     };
 
     enum
@@ -120,6 +122,7 @@ private:
     void char_update(int pos, bool hit);
     void item_tick();
     void item_update();
+    void miss_update();
 
     const unsigned int START_DELAY_VALUE;
     list<GW_Game_Monkey_Item> items_;
@@ -128,6 +131,8 @@ private:
     int score_;
     int char_position_;
     unsigned short tick_, ticksum_;
+    unsigned short maxonscreen_;
+    int misses_;
     unsigned int startdelay_;
 };
 

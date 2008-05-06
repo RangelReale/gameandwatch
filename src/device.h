@@ -92,7 +92,7 @@ public:
     GW_GameData_Position *position_get(int id, int index = GW_INDEX_DEFAULT);
     GW_GameData_Sound *sound_get(int id);
 
-    const images_t &images_list() { return images_; }
+    //const images_t &images_list() { return images_; }
     const positions_t &positions_list() { return positions_; }
     const sounds_t &sounds_list() { return sounds_; }
 
