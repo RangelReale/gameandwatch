@@ -223,7 +223,7 @@ void GW_Game_Monkey::game_start(bool gamea)
 {
     data_hideall();
 
-    score_=95;
+    score_=0;
     char_position_=1; // middle
 
     data().position_get((gamea?PS_GAMEA:PS_GAMEB))->show();
