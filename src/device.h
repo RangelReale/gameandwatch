@@ -57,7 +57,8 @@ public:
 
     int imageid_get() { return imageid_; }
     int imageindex_get() { return imageindex_; }
-    void image_set(int imageid, int imageindex) { imageid_=imageid; imageindex_=imageindex; }
+    void image_set(int imageid, int imageindex, bool doshow = false)
+        { imageid_=imageid; imageindex_=imageindex; if (doshow) show(); }
 
     bool visible_get() { return visible_; }
     void visible_set(bool v) { visible_=v; }
@@ -69,6 +70,29 @@ private:
     bool visible_;
 };
 
+class GW_GameData_Timer
+{
+public:
+    GW_GameData_Timer(int timerid, unsigned int time, bool autoloop) :
+        timerid_(timerid), time_(time), autoloop_(autoloop), curtime_(0) {}
+    ~GW_GameData_Timer() {}
+
+    void start(unsigned int time = 0);
+    void stop();
+    bool started();
+    bool finished();
+
+    int timerid() { return timerid_; }
+    unsigned int time() { return time_; }
+    bool autoloop() { return autoloop_; }
+
+    void time_set(unsigned int time) { time_=time; }
+private:
+    int timerid_;
+    unsigned int time_;
+    bool autoloop_;
+    unsigned int curtime_;
+};
 
 class GW_GameData
 {
@@ -79,28 +103,33 @@ public:
     typedef map< int, imagesindex_t > images_t;
     typedef map< int, positionsindex_t > positions_t;
     typedef map< int, shared_ptr<GW_GameData_Sound> > sounds_t;
+    typedef map< int, shared_ptr<GW_GameData_Timer> > timers_t;
 
-    GW_GameData() : images_(), positions_(), sounds_() {}
+    GW_GameData() : images_(), positions_(), sounds_(), timers_() {}
 
     GW_GameData *image_add(int id, int index, const string &image);
     GW_GameData *position_add(int id, int index = GW_INDEX_DEFAULT, int x = 0, int y = 0,
         int imageid = -1, int imageindex = GW_INDEX_DEFAULT,
         const string &image = "");
     GW_GameData *sound_add(int id, const string &sound);
+    GW_GameData *timer_add(int timerid, unsigned int time, bool autoloop);
 
     GW_GameData_Image *image_get(int id, int index = GW_INDEX_DEFAULT);
     GW_GameData_Position *position_get(int id, int index = GW_INDEX_DEFAULT);
     GW_GameData_Sound *sound_get(int id);
+    GW_GameData_Timer *timer_get(int timerid);
 
     //const images_t &images_list() { return images_; }
     const positions_t &positions_list() { return positions_; }
     const sounds_t &sounds_list() { return sounds_; }
+    timers_t &timers_list() { return timers_; }
 
     void Load(const string &gamepath);
 private:
     images_t images_;
     positions_t positions_;
     sounds_t sounds_;
+    timers_t timers_;
 };
 
 
@@ -130,14 +159,12 @@ public:
     bool IsOn() { return on_; }
 
     virtual int ModeCount() { return do_modecount(); }
-    void SetMode(int mode) { if (IsOn() && do_setmode(mode)) mode_=mode; }
+    void SetMode(int mode) { if (IsOn()) { mode_=mode; do_setmode(mode); } }
     int GetMode() { return mode_; }
 
     virtual void DefaultKey(defkeys_t key) {}
 
-    virtual unsigned int TickTime() { return 1000; }
-    virtual void Tick() {}
-    virtual void Update() {}
+    void Update();
 
     GW_Device *device_get() { return device_; }
     GW_GameData &data() { return data_; }
@@ -151,11 +178,15 @@ protected:
     virtual void do_turnon() {}
     virtual void do_turnoff() {}
     virtual int do_modecount() { return 0; }
-    virtual bool do_setmode(int mode) { return false; }
+    virtual void do_setmode(int mode) {}
+    virtual void do_timer(int timerid) {}
+    virtual void do_update() {}
 
     void data_showall();
     void data_hideall();
     void data_playsound(int soundid);
+    void data_starttimer(int timerid, unsigned int time = 0);
+    void data_stopalltimers();
 
     void gamepath_set(const string &gamepath) { gamepath_=gamepath; }
     void bgimage_set(const string &bgimage) { bgimage_=bgimage; }

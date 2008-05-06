@@ -30,6 +30,43 @@ void GW_GameData_Sound::Load(const string &soundpath)
 
 //////////////////////////////////////////
 ////
+//// GW_GameData_Timer
+////
+//////////////////////////////////////////
+void GW_GameData_Timer::start(unsigned int time)
+{
+    if (time>0)
+        time_=time;
+    curtime_=SDL_GetTicks();
+}
+
+void GW_GameData_Timer::stop()
+{
+    curtime_=0;
+}
+
+bool GW_GameData_Timer::started()
+{
+    return time_>0 && curtime_>0;
+}
+
+bool GW_GameData_Timer::finished()
+{
+    bool ret=
+        started() &&
+        SDL_GetTicks()-curtime_ > time_;
+    if (ret)
+    {
+        if (!autoloop_)
+            curtime_=0;
+        else
+            curtime_=SDL_GetTicks();
+    }
+    return ret;
+}
+
+//////////////////////////////////////////
+////
 //// GW_GameData_Image
 ////
 //////////////////////////////////////////
@@ -91,6 +128,12 @@ GW_GameData *GW_GameData::sound_add(int id, const string &sound)
     return this;
 }
 
+GW_GameData *GW_GameData::timer_add(int timerid, unsigned int time, bool autoloop)
+{
+    timers_[timerid]=shared_ptr<GW_GameData_Timer>(new GW_GameData_Timer(timerid, time, autoloop));
+    return this;
+}
+
 GW_GameData_Image *GW_GameData::image_get(int id, int index)
 {
     images_t::iterator i=images_.find(id);
@@ -119,6 +162,16 @@ GW_GameData_Sound *GW_GameData::sound_get(int id)
 {
     sounds_t::iterator i=sounds_.find(id);
     if (i!=sounds_.end())
+    {
+        return &*i->second;
+    }
+    return NULL;
+}
+
+GW_GameData_Timer *GW_GameData::timer_get(int timerid)
+{
+    timers_t::iterator i=timers_.find(timerid);
+    if (i!=timers_.end())
     {
         return &*i->second;
     }
@@ -180,6 +233,19 @@ void GW_Game::data_playsound(int soundid)
     Mix_PlayChannel(-1, data_.sound_get(soundid)->sample_get(), 0);
 }
 
+void GW_Game::data_starttimer(int timerid, unsigned int time)
+{
+    data().timer_get(timerid)->start(time);
+}
+
+void GW_Game::data_stopalltimers()
+{
+    for (GW_GameData::timers_t::iterator ti=data().timers_list().begin();
+        ti!=data().timers_list().end(); ti++)
+    {
+        ti->second->stop();
+    }
+}
 void GW_Game::Load(GW_Device *device, const string &datapath)
 {
     device_=device;
@@ -188,6 +254,20 @@ void GW_Game::Load(GW_Device *device, const string &datapath)
 
     data_.Load( gamepath.string() );
 }
+
+void GW_Game::Update()
+{
+    // check timers
+    for (GW_GameData::timers_t::iterator ti=data().timers_list().begin();
+        ti!=data().timers_list().end(); ti++)
+    {
+        if (ti->second->finished())
+            do_timer(ti->second->timerid());
+    }
+
+    do_update();
+}
+
 
 //////////////////////////////////////////
 ////
@@ -270,15 +350,6 @@ void GW_Device::Run()
         //SDL_Rect spos=image_position(game_->sprites().sprites_get(1)->sprites_get(1)->image_get(1));
         //SDL_BlitSurface(game_->sprites().sprites_get(1)->sprites_get(1)->image_get(1)->surface_get(), NULL, screen_,
             //&spos);
-
-        if (game_->IsOn() && game_->TickTime()>0)
-        {
-            if (SDL_GetTicks()-curtime_>=game_->TickTime())
-            {
-                game_->Tick();
-                curtime_=SDL_GetTicks();
-            }
-        }
 
         if (game_->IsOn())
             game_->Update();

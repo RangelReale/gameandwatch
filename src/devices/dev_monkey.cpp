@@ -113,6 +113,15 @@ GW_Game_Monkey::GW_Game_Monkey() :
         sound_add(SND_MISS, "Miss.wav")->
         sound_add(SND_MOVE, "Move.wav")->
         sound_add(SND_START, "Start.wav");
+
+    // timers
+    data().
+        timer_add(TMR_GAME, 250, true)->
+        timer_add(TMR_GAMESTART, 1800, false)->
+        timer_add(TMR_HIT, 100, false)->
+        timer_add(TMR_REPRISE, 1100, false)->
+        timer_add(TMR_GAMEOVER, 100, false)->
+        timer_add(TMR_GAMEOVERWAIT, 30000, false);
 }
 
 void GW_Game_Monkey::DefaultKey(defkeys_t key)
@@ -141,38 +150,60 @@ void GW_Game_Monkey::DefaultKey(defkeys_t key)
             SetMode(MODE_TIME1);
         break;
     case DK_LEFT:
-        char_position_-=1;
-        if (char_position_<0) char_position_=0;
-        char_update(char_position_, false);
-        //game_update();
+        if (canmove_)
+        {
+            char_position_-=1;
+            if (char_position_<0) char_position_=0;
+            char_update(char_position_, false);
+            //game_update();
+        }
         break;
     case DK_RIGHT:
-        char_position_+=1;
-        if (char_position_>2) char_position_=2;
-        char_update(char_position_, false);
-        //game_update();
+        if (canmove_)
+        {
+            char_position_+=1;
+            if (char_position_>2) char_position_=2;
+            char_update(char_position_, false);
+            //game_update();
+        }
         break;
     default:
         break;
     }
 }
 
-unsigned int GW_Game_Monkey::TickTime()
+void GW_Game_Monkey::do_timer(int timerid)
 {
-    if (IsGame())
-        return 250;
-    return 0;
-}
-
-void GW_Game_Monkey::Tick()
-{
-    if (IsGame() && SDL_GetTicks()-startdelay_>START_DELAY_VALUE)
+    switch (timerid)
     {
+    case TMR_GAMESTART:
+        data_starttimer(TMR_GAME);
+        break;
+    case TMR_GAME:
         game_tick();
+        break;
+    case TMR_HIT:
+        char_update(char_position_, false);
+        break;
+    case TMR_REPRISE:
+        showall_miss(false);
+        showall_target(true);
+        canmove_=true;
+        data_starttimer(TMR_GAME);
+        break;
+    case TMR_GAMEOVER:
+        // game is over: play "Game Over" tune, then freeze for 30 seconds, and finally
+        // change mode to "Time 1", if no button is pressed
+        data_playsound(SND_GAMEOVER);
+        data_starttimer(TMR_GAMEOVERWAIT);
+        break;
+    case TMR_GAMEOVERWAIT:
+        SetMode(MODE_TIME1);
+        break;
     }
 }
 
-void GW_Game_Monkey::Update()
+void GW_Game_Monkey::do_update()
 {
     if (GetMode()==MODE_TIME1 || GetMode()==MODE_TIME2)
         clock_update();
@@ -192,7 +223,7 @@ void GW_Game_Monkey::game_start(bool gamea)
 {
     data_hideall();
 
-    score_=0;
+    score_=95;
     char_position_=1; // middle
 
     data().position_get((gamea?PS_GAMEA:PS_GAMEB))->show();
@@ -209,6 +240,7 @@ void GW_Game_Monkey::game_start(bool gamea)
     maxonscreen_=1;
     misses_=0;
     ticksum_=0;
+    canmove_=true;
     items_.clear();
 
     //item_add(1);
@@ -216,8 +248,10 @@ void GW_Game_Monkey::game_start(bool gamea)
     char_update(char_position_, false);
     item_update();
     miss_update();
+    level_update();
 
     data_playsound(SND_START);
+    data_starttimer(TMR_GAMESTART);
 }
 
 void GW_Game_Monkey::game_update()
@@ -227,9 +261,9 @@ void GW_Game_Monkey::game_update()
 
 void GW_Game_Monkey::game_tick()
 {
-    data().position_get(PS_SEMICOLON)->visible_set(!data().position_get(PS_SEMICOLON)->visible_get());
+    //data().position_get(PS_SEMICOLON)->visible_set(!data().position_get(PS_SEMICOLON)->visible_get());
 
-    int iMistake=0, iGot=0, iMoved=0;
+    int iMistake=-1, iGot=-1, iMoved=0;
 
     // current tick
     int prevtick=tick_-1;
@@ -245,34 +279,38 @@ void GW_Game_Monkey::game_tick()
             data().position_get(i, IDX_HIT)->hide();
             data().position_get(i, IDX_GOT)->show();
         }
+        else
+            data().position_get(i, IDX_GOT)->hide();
     }
 
     // checks for mistakes
     for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)
     {
-        if (data().position_get(i, IDX_MAX)->visible_get() && char_position_ != PS_ITEM_1-i)
+        if (data().position_get(i, IDX_MAX)->visible_get() && char_position_ != i-PS_ITEM_1)
         {
             data().position_get(i, IDX_MAX)->hide();
             data().position_get(i, IDX_MISS)->hide();
-            iMistake=PS_ITEM_1-i;
+            iMistake=i-PS_ITEM_1;
         }
     }
 
     // checks for collisions character-items on certain positions and manages 'hit' animation of main character
-    if (iMistake==0 && data().position_get(PS_ITEM_1+char_position_, IDX_MAX)->visible_get())
+    if (iMistake==-1 && data().position_get(PS_ITEM_1+char_position_, IDX_MAX)->visible_get())
     {
         char_update(char_position_, true);
+        data_starttimer(TMR_HIT);
+        data().position_get(PS_ITEM_1+char_position_, IDX_MAX)->hide();
         data().position_get(PS_ITEM_1+char_position_, IDX_GOT)->hide();
         data().position_get(PS_ITEM_1+char_position_, IDX_HIT)->show();
         score_++;
         if (score_>9999) score_-=10000;
         score_update();
-        //level_update();
+        level_update();
         iGot=char_position_;
     }
 
     // moves and generates items
-    if (iMistake==0)
+    if (iMistake==-1)
     {
         // moves items
         for (int i=5; i>1; i--)
@@ -296,15 +334,18 @@ void GW_Game_Monkey::game_tick()
         if (iOnScreen>=maxonscreen_)                                               // prevents from generating if more onscreen items than allowed
             data().position_get(PS_ITEM_1+tick_, 1)->hide();
 
-        // gets ready to play "pfMove" sound
-        for (int i=1; i<IDX_MAX; i++)
-            if (data().position_get(PS_ITEM_1+tick_, 1)->visible_get())
+        // gets ready to play "MOVE" sound
+        for (int i=1; i<=IDX_MAX; i++)
+            if (data().position_get(PS_ITEM_1+tick_, i)->visible_get())
                 iMoved++;
     }
 
     // executes miss routine, counts misses and reprises or goes to "game over"
-    if (iMistake!=0)    // checks if any miss just occured
+    if (iMistake!=-1)    // checks if any miss just occured
     {
+        canmove_=false;
+        data_stopalltimers();
+
         data().position_get(PS_ITEM_1+iMistake, IDX_MISS)->show();
         data().position_get(PS_ITEM_1+iMistake, IDX_TARGET)->hide();
         misses_++;
@@ -312,10 +353,13 @@ void GW_Game_Monkey::game_tick()
         if (misses_<5)          // checks how many misses were done
         {
             // game continues if misses<5
+            data_starttimer(TMR_REPRISE);
         }
         else
         {
             // game is over if misses=5
+            tick_=0; // becomes 1 before the end of this procedure
+            data_starttimer(TMR_GAMEOVER);
         }
     }
     else
@@ -329,9 +373,9 @@ void GW_Game_Monkey::game_tick()
     // renders 'got' items on screen
 
     // plays correct sound (miss, got, move)
-    if (iMistake>0)
+    if (iMistake>=0)
         data_playsound(SND_MISS);
-    else if (iGot>0)
+    else if (iGot>=0)
         data_playsound(SND_GOT);
     else if (iMoved>0)
         data_playsound(SND_MOVE);
@@ -343,7 +387,7 @@ void GW_Game_Monkey::game_tick()
     item_tick();
 */
 
-    game_update();
+    //game_update();
 }
 
 void GW_Game_Monkey::item_add(int id)
@@ -402,22 +446,37 @@ void GW_Game_Monkey::item_update()
 
 void GW_Game_Monkey::score_update()
 {
-    if (score_>=0 && score_<=99)
-    {
-        data().position_get(PS_NUMBER, 4)->image_set(IM_NUMBER, score_ % 10);
-        data().position_get(PS_NUMBER, 4)->show();
+    int p=score_;
+    while (p>=10000) p-=10000;
+    for (int i=1; i<=4; i++) data().position_get(PS_NUMBER, i)->hide();
 
-        data().position_get(PS_NUMBER, 3)->hide();
-        if (score_>9)
-        {
-            data().position_get(PS_NUMBER, 3)->image_set(IM_NUMBER, score_ / 10);
-            data().position_get(PS_NUMBER, 3)->show();
-        }
-    }
-    else
+    if (p>999) data().position_get(PS_NUMBER, 1)->image_set(IM_NUMBER, p / 1000, true);
+    if (p>99) data().position_get(PS_NUMBER, 2)->image_set(IM_NUMBER, p / 100 % 10, true);
+    if (p>9) data().position_get(PS_NUMBER, 3)->image_set(IM_NUMBER, p / 10 % 10, true);
+    if (p>=0) data().position_get(PS_NUMBER, 4)->image_set(IM_NUMBER, p % 10 % 10, true);
+}
+
+void GW_Game_Monkey::level_update()
+{
+    int i=score_;
+    while (i>199) i+=200;
+    switch (GetMode())
     {
-        data().position_get(PS_NUMBER, 3)->hide();
-        data().position_get(PS_NUMBER, 4)->hide();
+    case MODE_GAMEA:
+        // maximum moveable items on screen
+        if (i>=0 && i<4) maxonscreen_=1;
+        else if (i>=4 && i<50) maxonscreen_=3;
+        else if (i>=51 && i<100) maxonscreen_=4;
+        else if (i>=100 && i<200) maxonscreen_=5;
+
+        // game speed
+        if (i>=0 && i<99) data().timer_get(TMR_GAME)->time_set(250);
+        else if (i>=100 && i<199) data().timer_get(TMR_GAME)->time_set(215);
+        break;
+    case MODE_GAMEB:
+        break;
+    default:
+        break;
     }
 }
 
@@ -429,7 +488,25 @@ void GW_Game_Monkey::miss_update()
     }
 }
 
-bool GW_Game_Monkey::do_setmode(int mode)
+void GW_Game_Monkey::showall_target(bool b)
+{
+    for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)
+        data().position_get(i, IDX_TARGET)->visible_set(b);
+}
+
+void GW_Game_Monkey::showall_miss(bool b)
+{
+    for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)
+        data().position_get(i, IDX_MISS)->visible_set(b);
+}
+
+void GW_Game_Monkey::showall_got(bool b)
+{
+    for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)
+        data().position_get(i, IDX_GOT)->visible_set(b);
+}
+
+void GW_Game_Monkey::do_setmode(int mode)
 {
     switch (mode)
     {
@@ -467,9 +544,9 @@ bool GW_Game_Monkey::do_setmode(int mode)
         data().position_get(PS_DATE)->show();
         break;
     default:
-        return false;
+        SetMode(MODE_IDLE);
+        break;
     }
-    return true;
 }
 
 

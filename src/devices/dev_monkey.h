@@ -79,6 +79,16 @@ public:
         SND_START
     };
 
+    enum
+    {
+        TMR_GAME,
+        TMR_GAMESTART,
+        TMR_HIT,
+        TMR_REPRISE,
+        TMR_GAMEOVER,
+        TMR_GAMEOVERWAIT,
+    };
+
     enum mode_t
     {
         MODE_OFF,
@@ -98,15 +108,14 @@ public:
 
     virtual void DefaultKey(defkeys_t key);
 
-    virtual unsigned int TickTime();
-    virtual void Tick();
-    virtual void Update();
     bool IsGame() { return (GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB); }
 protected:
     virtual void do_turnon();
     virtual void do_turnoff();
     virtual int do_modecount() { return MODE_MAX; }
-    virtual bool do_setmode(int mode);
+    virtual void do_setmode(int mode);
+    virtual void do_timer(int timerid);
+    virtual void do_update();
 private:
     void clock_update();
     void setnumber(int n, int ps1, int ps2);
@@ -118,11 +127,16 @@ private:
     void item_add(int id);
 
     void score_update();
+    void level_update();
 
     void char_update(int pos, bool hit);
     void item_tick();
     void item_update();
     void miss_update();
+
+    void showall_target(bool b);
+    void showall_miss(bool b);
+    void showall_got(bool b);
 
     const unsigned int START_DELAY_VALUE;
     list<GW_Game_Monkey_Item> items_;
@@ -134,6 +148,7 @@ private:
     unsigned short maxonscreen_;
     int misses_;
     unsigned int startdelay_;
+    bool canmove_;
 };
 
 #endif //H__DEV_MONKEY__H
