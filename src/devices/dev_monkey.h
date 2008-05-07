@@ -113,21 +113,21 @@ protected:
     virtual void do_turnon();
     virtual void do_turnoff();
     virtual int do_modecount() { return MODE_MAX; }
-    virtual void do_setmode(int mode);
+    virtual bool do_setmode(int mode);
     virtual void do_timer(int timerid);
     virtual void do_update();
 private:
     void clock_update();
     void setnumber(int n, int ps1, int ps2);
 
-    void game_start(bool gamea);
+    void game_start(int mode);
     void game_update();
     void game_tick();
 
     void item_add(int id);
 
     void score_update();
-    void level_update();
+    void level_update(int mode = -1);
 
     void char_update(int pos, bool hit);
     void item_tick();
@@ -148,7 +148,7 @@ private:
     unsigned short maxonscreen_;
     int misses_;
     unsigned int startdelay_;
-    bool canmove_;
+    bool canmove_, gameover_;
 };
 
 #endif //H__DEV_MONKEY__H

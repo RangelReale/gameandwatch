@@ -1,7 +1,8 @@
 #include "devices/dev_monkey.h"
 
 GW_Game_Monkey::GW_Game_Monkey() :
-    GW_Game(), START_DELAY_VALUE(1900), items_(), mode_(MODE_OFF)
+    GW_Game(), START_DELAY_VALUE(1900), items_(), mode_(MODE_OFF),
+    gameover_(true)
 {
     gamepath_set("monkey");
     size_set(561, 347);
@@ -198,6 +199,7 @@ void GW_Game_Monkey::do_timer(int timerid)
         data_starttimer(TMR_GAMEOVERWAIT);
         break;
     case TMR_GAMEOVERWAIT:
+        gameover_=true;
         SetMode(MODE_TIME1);
         break;
     }
@@ -219,14 +221,14 @@ void GW_Game_Monkey::do_turnoff()
     SetMode(MODE_OFF);
 }
 
-void GW_Game_Monkey::game_start(bool gamea)
+void GW_Game_Monkey::game_start(int mode)
 {
     data_hideall();
 
     score_=0;
     char_position_=1; // middle
 
-    data().position_get((gamea?PS_GAMEA:PS_GAMEB))->show();
+    data().position_get((mode==MODE_GAMEA?PS_GAMEA:PS_GAMEB))->show();
 
     data().position_get(PS_ITEM_1, IDX_TARGET)->show();
     data().position_get(PS_ITEM_2, IDX_TARGET)->show();
@@ -241,14 +243,13 @@ void GW_Game_Monkey::game_start(bool gamea)
     misses_=0;
     ticksum_=0;
     canmove_=true;
+    gameover_=false;
     items_.clear();
-
-    //item_add(1);
 
     char_update(char_position_, false);
     item_update();
     miss_update();
-    level_update();
+    level_update(mode);
 
     data_playsound(SND_START);
     data_starttimer(TMR_GAMESTART);
@@ -261,6 +262,7 @@ void GW_Game_Monkey::game_update()
 
 void GW_Game_Monkey::game_tick()
 {
+    // blink the semicolon on tick
     //data().position_get(PS_SEMICOLON)->visible_set(!data().position_get(PS_SEMICOLON)->visible_get());
 
     int iMistake=-1, iGot=-1, iMoved=0;
@@ -307,6 +309,7 @@ void GW_Game_Monkey::game_tick()
         score_update();
         level_update();
         iGot=char_position_;
+        data_delaytimer(TMR_GAME, 60); // when hit, delay the game a little to allow for moving
     }
 
     // moves and generates items
@@ -456,11 +459,12 @@ void GW_Game_Monkey::score_update()
     if (p>=0) data().position_get(PS_NUMBER, 4)->image_set(IM_NUMBER, p % 10 % 10, true);
 }
 
-void GW_Game_Monkey::level_update()
+void GW_Game_Monkey::level_update(int mode)
 {
+    if (mode==-1) mode=GetMode();
     int i=score_;
     while (i>199) i+=200;
-    switch (GetMode())
+    switch (mode)
     {
     case MODE_GAMEA:
         // maximum moveable items on screen
@@ -474,6 +478,15 @@ void GW_Game_Monkey::level_update()
         else if (i>=100 && i<199) data().timer_get(TMR_GAME)->time_set(215);
         break;
     case MODE_GAMEB:
+        // maximum moveable items on screen
+        if (i>=0 && i<4) maxonscreen_=1;
+        else if (i>=4 && i<50) maxonscreen_=4;
+        else if (i>=51 && i<100) maxonscreen_=5;
+        else if (i>=100 && i<200) maxonscreen_=6;
+
+        // game speed
+        if (i>=0 && i<99) data().timer_get(TMR_GAME)->time_set(215);
+        else if (i>=100 && i<199) data().timer_get(TMR_GAME)->time_set(185);
         break;
     default:
         break;
@@ -506,47 +519,54 @@ void GW_Game_Monkey::showall_got(bool b)
         data().position_get(i, IDX_GOT)->visible_set(b);
 }
 
-void GW_Game_Monkey::do_setmode(int mode)
+bool GW_Game_Monkey::do_setmode(int mode)
 {
     switch (mode)
     {
     case MODE_OFF:
+        data_stopalltimers();
         data_hideall();
         break;
     case MODE_IDLE:
+        data_stopalltimers();
         data_showall();
         break;
     case MODE_GAMEA:
-        game_start(true);
-        break;
     case MODE_GAMEB:
-        game_start(false);
+        if ((GetMode()!=MODE_GAMEA&&GetMode()!=MODE_GAMEB)||gameover_)
+            game_start(mode);
         break;
     case MODE_TIME1:
+        data_stopalltimers();
         data_hideall();
         data().position_get(PS_TIME1)->show();
         clock_update();
         break;
     case MODE_TIME2:
+        data_stopalltimers();
         data_hideall();
         data().position_get(PS_TIME2)->show();
         break;
     case MODE_ALARM:
+        data_stopalltimers();
         data_hideall();
         data().position_get(PS_ALARM)->show();
         break;
     case MODE_CHRONO:
+        data_stopalltimers();
         data_hideall();
         data().position_get(PS_CHRONO)->show();
         break;
     case MODE_DATE:
+        data_stopalltimers();
         data_hideall();
         data().position_get(PS_DATE)->show();
         break;
     default:
-        SetMode(MODE_IDLE);
+        return false;
         break;
     }
+    return true;
 }
 
 

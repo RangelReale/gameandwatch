@@ -54,7 +54,8 @@ bool GW_GameData_Timer::finished()
 {
     bool ret=
         started() &&
-        SDL_GetTicks()-curtime_ > time_;
+        (curtime_ <= SDL_GetTicks()) &&
+        (SDL_GetTicks()-curtime_ > time_);
     if (ret)
     {
         if (!autoloop_)
@@ -63,6 +64,12 @@ bool GW_GameData_Timer::finished()
             curtime_=SDL_GetTicks();
     }
     return ret;
+}
+
+void GW_GameData_Timer::delay(unsigned int time)
+{
+    if (started())
+        curtime_+=time;
 }
 
 //////////////////////////////////////////
@@ -202,6 +209,15 @@ GW_Game::GW_Game() : data_(),
     gamerect_.x=gamerect_.y=gamerect_.w=gamerect_.h=-1;
 }
 
+void GW_Game::SetMode(int mode)
+{
+    if (IsOn())
+    {
+        if (do_setmode(mode))
+            mode_=mode;
+    }
+}
+
 void GW_Game::data_showall()
 {
     for (GW_GameData::positions_t::const_iterator i=data_.positions_list().begin();
@@ -246,6 +262,12 @@ void GW_Game::data_stopalltimers()
         ti->second->stop();
     }
 }
+
+void GW_Game::data_delaytimer(int timerid, unsigned int time)
+{
+    data().timer_get(timerid)->delay(time);
+}
+
 void GW_Game::Load(GW_Device *device, const string &datapath)
 {
     device_=device;
@@ -277,7 +299,7 @@ void GW_Game::Update()
 GW_Device::GW_Device(GW_Platform *platform, GW_Game *game) :
     platform_(platform), game_(game),
     datapath_("data"), quit_(false),
-    screen_(NULL), bg_(NULL)
+    screen_(NULL), bg_(NULL), volume_(75)
 {
     // initialize SDL video
     if ( SDL_Init( platform_->sdlinit(SDL_INIT_VIDEO|SDL_INIT_AUDIO) ) < 0 )
@@ -287,6 +309,7 @@ GW_Device::GW_Device(GW_Platform *platform, GW_Game *game) :
         throw GW_Exception(string("Unable to init SDL_mixer: "+string(Mix_GetError())));
 
     Mix_AllocateChannels(6);
+    Volume(volume_);
 
     platform_->initialize();
 
@@ -365,6 +388,34 @@ void GW_Device::Run()
 
     Unload();
 }
+
+void GW_Device::DefaultKey(GW_Game::defkeys_t key)
+{
+    switch (key)
+    {
+    case GW_Game::DK_VOLUP:
+        Volume(volume_+5);
+        break;
+    case GW_Game::DK_VOLDOWN:
+        Volume(volume_-5);
+        break;
+    default:
+        game_->DefaultKey(key);
+        break;
+    }
+}
+
+void GW_Device::Volume(int volume)
+{
+    if (volume<0) volume=0;
+    if (volume>100) volume=100;
+
+    Mix_Volume(-1, (MIX_MAX_VOLUME/100)*volume);
+    volume_=volume;
+}
+
+
+
 
 SDL_Rect GW_Device::position(GW_GameData_Position *pos)
 {

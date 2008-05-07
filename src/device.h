@@ -81,6 +81,7 @@ public:
     void stop();
     bool started();
     bool finished();
+    void delay(unsigned int time);
 
     int timerid() { return timerid_; }
     unsigned int time() { return time_; }
@@ -159,7 +160,7 @@ public:
     bool IsOn() { return on_; }
 
     virtual int ModeCount() { return do_modecount(); }
-    void SetMode(int mode) { if (IsOn()) { mode_=mode; do_setmode(mode); } }
+    void SetMode(int mode);
     int GetMode() { return mode_; }
 
     virtual void DefaultKey(defkeys_t key) {}
@@ -178,7 +179,7 @@ protected:
     virtual void do_turnon() {}
     virtual void do_turnoff() {}
     virtual int do_modecount() { return 0; }
-    virtual void do_setmode(int mode) {}
+    virtual bool do_setmode(int mode) { return false; }
     virtual void do_timer(int timerid) {}
     virtual void do_update() {}
 
@@ -187,6 +188,7 @@ protected:
     void data_playsound(int soundid);
     void data_starttimer(int timerid, unsigned int time = 0);
     void data_stopalltimers();
+    void data_delaytimer(int timerid, unsigned int time);
 
     void gamepath_set(const string &gamepath) { gamepath_=gamepath; }
     void bgimage_set(const string &bgimage) { bgimage_=bgimage; }
@@ -248,7 +250,9 @@ public:
     void TurnOn() { game_->TurnOn(); curtime_=SDL_GetTicks(); }
     void TurnOff() { game_->TurnOff(); }
     void SetMode(int mode) { game_->SetMode(mode); }
-    void DefaultKey(GW_Game::defkeys_t key) { game_->DefaultKey(key); }
+    void DefaultKey(GW_Game::defkeys_t key);
+    void Volume(int volume);
+    int Volume() { return volume_; }
 
     void Run();
     void Quit() { quit_=true; }
@@ -274,6 +278,7 @@ private:
     SDL_Surface *screen_, *bg_;
     int offsetx_, offsety_;
     SDL_Rect bgsrc_, bgdst_;
+    int volume_;
 
     unsigned int curtime_;
 };

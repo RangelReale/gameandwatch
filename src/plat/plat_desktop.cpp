@@ -95,6 +95,12 @@ void GW_Platform_Desktop::_process_event(SDL_Event *event)
             case SDLK_3:
                 device_get()->DefaultKey(GW_Game::DK_TIME);
                 break;
+            case SDLK_PLUS:
+                device_get()->DefaultKey(GW_Game::DK_VOLUP);
+                break;
+            case SDLK_MINUS:
+                device_get()->DefaultKey(GW_Game::DK_VOLDOWN);
+                break;
             default:
                 break;
             }
