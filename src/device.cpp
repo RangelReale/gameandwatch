@@ -1,11 +1,22 @@
 #include "boost/filesystem.hpp"
 
+#include <iostream>
 #include "gwdefs.h"
 #include "device.h"
 
 //using boost::filesystem;
 namespace bf = boost::filesystem;
 
+
+//////////////////////////////////////////
+////
+//// GW_GameData_Item
+////
+//////////////////////////////////////////
+void GW_GameData_Item::Changed()
+{
+    gdata_->Changed();
+}
 
 //////////////////////////////////////////
 ////
@@ -93,7 +104,7 @@ void GW_GameData_Image::Load(const string &imagepath)
         throw GW_Exception(string("Unable to load image: "+string(SDL_GetError())));
     SDL_SetColorKey(surface_, SDL_SRCCOLORKEY, SDL_MapRGB(surface_->format, 255, 255, 255));
     SDL_DisplayFormat(surface_);
-
+    Changed();
 }
 
 
@@ -107,14 +118,15 @@ GW_GameData *GW_GameData::image_add(int id, int index, const string &image)
     if (image.empty())
         throw GW_Exception("Image cannot be blank");
 
-    images_[id][index]=shared_ptr<GW_GameData_Image>(new GW_GameData_Image(image));
+    images_[id][index]=shared_ptr<GW_GameData_Image>(new GW_GameData_Image(this, image));
+    Changed();
     return this;
 }
 
 GW_GameData *GW_GameData::position_add(int id, int index, int x, int y,
     int imageid, int imageindex, const string &image)
 {
-    positions_[id][index]=shared_ptr<GW_GameData_Position>(new GW_GameData_Position(x, y));
+    positions_[id][index]=shared_ptr<GW_GameData_Position>(new GW_GameData_Position(this, x, y));
 
     if (imageid>-1)
     {
@@ -122,7 +134,7 @@ GW_GameData *GW_GameData::position_add(int id, int index, int x, int y,
             image_add(imageid, imageindex, image);
         position_get(id, index)->image_set(imageid, imageindex);
     }
-
+    Changed();
     return this;
 }
 
@@ -131,13 +143,15 @@ GW_GameData *GW_GameData::sound_add(int id, const string &sound)
     if (sound.empty())
         throw GW_Exception("Sound cannot be blank");
 
-    sounds_[id]=shared_ptr<GW_GameData_Sound>(new GW_GameData_Sound(sound));
+    sounds_[id]=shared_ptr<GW_GameData_Sound>(new GW_GameData_Sound(this, sound));
+    Changed();
     return this;
 }
 
 GW_GameData *GW_GameData::timer_add(int timerid, unsigned int time, bool autoloop)
 {
-    timers_[timerid]=shared_ptr<GW_GameData_Timer>(new GW_GameData_Timer(timerid, time, autoloop));
+    timers_[timerid]=shared_ptr<GW_GameData_Timer>(new GW_GameData_Timer(this, timerid, time, autoloop));
+    Changed();
     return this;
 }
 
@@ -195,6 +209,12 @@ void GW_GameData::Load(const string &gamepath)
             j->second->Load(imagepath.string());
     for (sounds_t::iterator i=sounds_.begin(); i!=sounds_.end(); i++)
         i->second->Load(soundpath.string());
+    Changed();
+}
+
+void GW_GameData::Changed()
+{
+    game_->Changed();
 }
 
 //////////////////////////////////////////
@@ -202,9 +222,9 @@ void GW_GameData::Load(const string &gamepath)
 //// GW_Game
 ////
 //////////////////////////////////////////
-GW_Game::GW_Game() : data_(),
+GW_Game::GW_Game() : data_(this),
     gamepath_(""), bgimage_("bg.bmp"), width_(0), height_(0),
-    on_(false), mode_(-1), device_(NULL)
+    on_(false), mode_(-1), device_(NULL), changed_(true)
 {
     gamerect_.x=gamerect_.y=gamerect_.w=gamerect_.h=-1;
 }
@@ -290,6 +310,17 @@ void GW_Game::Update()
     do_update();
 }
 
+void GW_Game::Changed()
+{
+    changed_=true;
+}
+
+bool GW_Game::CheckChanged()
+{
+    bool ret=changed_;
+    changed_=false;
+    return ret;
+}
 
 //////////////////////////////////////////
 ////
@@ -321,6 +352,8 @@ GW_Device::GW_Device(GW_Platform *platform, GW_Game *game) :
                                            SDL_HWSURFACE|SDL_DOUBLEBUF);
     if ( !screen_ )
         throw GW_Exception(string("Unable to set resolution: "+string(SDL_GetError())));
+
+    SDL_ShowCursor(SDL_DISABLE);
 
     platform_->device_set(this);
 }
@@ -364,26 +397,21 @@ void GW_Device::Run()
             platform_->process_event(&event);
         }
 
-        // clear screen
-        SDL_FillRect(screen_, 0, SDL_MapRGB(screen_->format, 0, 0, 0));
-
-        // draw bg
-        SDL_BlitSurface(bg_, &bgsrc_, screen_, &bgdst_);
-
-        //SDL_Rect spos=image_position(game_->sprites().sprites_get(1)->sprites_get(1)->image_get(1));
-        //SDL_BlitSurface(game_->sprites().sprites_get(1)->sprites_get(1)->image_get(1)->surface_get(), NULL, screen_,
-            //&spos);
-
         if (game_->IsOn())
             game_->Update();
 
-        draw_game();
+        if (game_->CheckChanged())
+        {
+            // clear screen
+            SDL_FillRect(screen_, 0, SDL_MapRGB(screen_->format, 0, 0, 0));
 
+            // draw bg
+            SDL_BlitSurface(bg_, &bgsrc_, screen_, &bgdst_);
 
-        // DRAWING ENDS HERE
+            draw_game();
 
-        // finally, update the screen :)
-        SDL_Flip(screen_);
+            SDL_Flip(screen_);
+        }
     } // end main loop
 
     Unload();

@@ -15,12 +15,25 @@ using namespace boost;
 
 // forward declaration
 class GW_Device;
+class GW_GameData;
+class GW_Game;
 
-class GW_GameData_Sound
+class GW_GameData_Item
 {
 public:
-    GW_GameData_Sound(const string &sound) :
-        sound_(sound), sample_(NULL) {}
+    GW_GameData_Item(GW_GameData *gdata) : gdata_(gdata) {}
+    virtual ~GW_GameData_Item() {}
+
+    void Changed();
+private:
+    GW_GameData *gdata_;
+};
+
+class GW_GameData_Sound : public GW_GameData_Item
+{
+public:
+    GW_GameData_Sound(GW_GameData *gdata, const string &sound) :
+        GW_GameData_Item(gdata), sound_(sound), sample_(NULL) {}
     ~GW_GameData_Sound();
 
     void Load(const string &soundpath);
@@ -31,11 +44,11 @@ private:
     Mix_Chunk *sample_;
 };
 
-class GW_GameData_Image
+class GW_GameData_Image : public GW_GameData_Item
 {
 public:
-    GW_GameData_Image(const string &image) :
-        image_(image), surface_(NULL) {}
+    GW_GameData_Image(GW_GameData *gdata, const string &image) :
+        GW_GameData_Item(gdata), image_(image), surface_(NULL) {}
     ~GW_GameData_Image();
 
     void Load(const string &imagepath);
@@ -46,10 +59,11 @@ private:
     SDL_Surface *surface_;
 };
 
-class GW_GameData_Position
+class GW_GameData_Position : public GW_GameData_Item
 {
 public:
-    GW_GameData_Position(int x, int y) :
+    GW_GameData_Position(GW_GameData *gdata, int x, int y) :
+        GW_GameData_Item(gdata),
         x_(x), y_(y), imageid_(-1), imageindex_(-1), visible_(false) {}
 
     int x_get() { return x_; }
@@ -58,10 +72,10 @@ public:
     int imageid_get() { return imageid_; }
     int imageindex_get() { return imageindex_; }
     void image_set(int imageid, int imageindex, bool doshow = false)
-        { imageid_=imageid; imageindex_=imageindex; if (doshow) show(); }
+        { imageid_=imageid; imageindex_=imageindex; if (doshow) show(); Changed(); }
 
     bool visible_get() { return visible_; }
-    void visible_set(bool v) { visible_=v; }
+    void visible_set(bool v) { visible_=v; Changed(); }
     void show() { visible_set(true); }
     void hide() { visible_set(false); }
 private:
@@ -70,10 +84,11 @@ private:
     bool visible_;
 };
 
-class GW_GameData_Timer
+class GW_GameData_Timer : public GW_GameData_Item
 {
 public:
-    GW_GameData_Timer(int timerid, unsigned int time, bool autoloop) :
+    GW_GameData_Timer(GW_GameData *gdata, int timerid, unsigned int time, bool autoloop) :
+        GW_GameData_Item(gdata),
         timerid_(timerid), time_(time), autoloop_(autoloop), curtime_(0) {}
     ~GW_GameData_Timer() {}
 
@@ -106,7 +121,7 @@ public:
     typedef map< int, shared_ptr<GW_GameData_Sound> > sounds_t;
     typedef map< int, shared_ptr<GW_GameData_Timer> > timers_t;
 
-    GW_GameData() : images_(), positions_(), sounds_(), timers_() {}
+    GW_GameData(GW_Game *game) : game_(game), images_(), positions_(), sounds_(), timers_() {}
 
     GW_GameData *image_add(int id, int index, const string &image);
     GW_GameData *position_add(int id, int index = GW_INDEX_DEFAULT, int x = 0, int y = 0,
@@ -126,7 +141,10 @@ public:
     timers_t &timers_list() { return timers_; }
 
     void Load(const string &gamepath);
+
+    void Changed();
 private:
+    GW_Game *game_;
     images_t images_;
     positions_t positions_;
     sounds_t sounds_;
@@ -155,8 +173,8 @@ public:
     GW_Game();
     virtual ~GW_Game() {};
 
-    void TurnOn() { if (!on_) { on_=true; do_turnon(); } }
-    void TurnOff() { if (on_) { do_turnoff(); on_=false; } }
+    void TurnOn() { if (!on_) { on_=true; do_turnon(); Changed(); } }
+    void TurnOff() { if (on_) { do_turnoff(); on_=false; Changed(); } }
     bool IsOn() { return on_; }
 
     virtual int ModeCount() { return do_modecount(); }
@@ -166,6 +184,9 @@ public:
     virtual void DefaultKey(defkeys_t key) {}
 
     void Update();
+
+    void Changed();
+    bool CheckChanged();
 
     GW_Device *device_get() { return device_; }
     GW_GameData &data() { return data_; }
@@ -204,6 +225,7 @@ private:
     int mode_;
     SDL_Rect gamerect_;
     GW_Device *device_;
+    bool changed_;
 };
 
 class GW_Platform
@@ -247,6 +269,7 @@ public:
     void MoveBGOffset(int xoff, int yoff);
     void MoveBGCenter();
 
+    bool IsOn() { return game_->IsOn(); }
     void TurnOn() { game_->TurnOn(); curtime_=SDL_GetTicks(); }
     void TurnOff() { game_->TurnOff(); }
     void SetMode(int mode) { game_->SetMode(mode); }

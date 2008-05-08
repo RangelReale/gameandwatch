@@ -151,7 +151,7 @@ void GW_Game_Monkey::DefaultKey(defkeys_t key)
             SetMode(MODE_TIME1);
         break;
     case DK_LEFT:
-        if (canmove_)
+        if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_)
         {
             char_position_-=1;
             if (char_position_<0) char_position_=0;
@@ -160,7 +160,7 @@ void GW_Game_Monkey::DefaultKey(defkeys_t key)
         }
         break;
     case DK_RIGHT:
-        if (canmove_)
+        if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_)
         {
             char_position_+=1;
             if (char_position_>2) char_position_=2;
@@ -309,7 +309,7 @@ void GW_Game_Monkey::game_tick()
         score_update();
         level_update();
         iGot=char_position_;
-        data_delaytimer(TMR_GAME, 60); // when hit, delay the game a little to allow for moving
+        data_delaytimer(TMR_GAME, 40); // when hit, delay the game a little to allow for moving
     }
 
     // moves and generates items
