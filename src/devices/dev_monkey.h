@@ -130,27 +130,21 @@ private:
     void game_update();
     void game_tick();
 
-    void item_add(int id);
-
     void score_update();
     void level_update(int mode = -1);
 
     void char_update(int pos, bool hit);
     void item_tick();
-    void item_update();
     void miss_update();
 
     void showall_target(bool b);
     void showall_miss(bool b);
     void showall_got(bool b);
 
-    const unsigned int START_DELAY_VALUE;
-    list<GW_Game_Monkey_Item> items_;
-
     mode_t mode_;
     int score_;
     int char_position_;
-    unsigned short tick_, ticksum_;
+    unsigned short tick_;
     unsigned short maxonscreen_;
     int misses_;
     bool canmove_, gameover_;

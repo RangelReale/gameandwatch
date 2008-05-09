@@ -1,8 +1,7 @@
 #include "devices/dev_monkey.h"
 
 GW_Game_Monkey::GW_Game_Monkey() :
-    GW_Game(), START_DELAY_VALUE(1900), items_(), mode_(MODE_OFF),
-    gameover_(true)
+    GW_Game(), mode_(MODE_OFF), gameover_(true)
 {
     gamepath_set("monkey");
     size_set(561, 347);
@@ -249,13 +248,10 @@ void GW_Game_Monkey::game_start(int mode)
     tick_=0;
     maxonscreen_=1;
     misses_=0;
-    ticksum_=0;
     canmove_=true;
     gameover_=false;
-    items_.clear();
 
     char_update(char_position_, false);
-    item_update();
     miss_update();
     level_update(mode);
 
@@ -391,24 +387,6 @@ void GW_Game_Monkey::game_tick()
     else if (iMoved>0)
         data_playsound(SND_MOVE);
 
-/*
-    ticksum_++;
-    if ((ticksum_-tick_) % 12 == 0 && (rand() % 4 == 3))
-        item_add(tick_);
-    item_tick();
-*/
-
-    //game_update();
-}
-
-void GW_Game_Monkey::item_add(int id)
-{
-    GW_Game_Monkey_Item ni;
-    ni.id=id;
-    ni.position=0;
-    items_.push_back(ni);
-
-    //data_playsound(SND_MOVE);
 }
 
 void GW_Game_Monkey::char_update(int pos, bool hit)
@@ -418,40 +396,6 @@ void GW_Game_Monkey::char_update(int pos, bool hit)
         data().position_get(i, 1)->visible_set(i-PS_CHAR_1==pos);
         data().position_get(i, 2)->visible_set(i-PS_CHAR_1==pos && !hit);
         data().position_get(i, 3)->visible_set(i-PS_CHAR_1==pos && hit);
-    }
-}
-
-void GW_Game_Monkey::item_tick()
-{
-    for (list<GW_Game_Monkey_Item>::iterator i=items_.begin(); i!=items_.end();)
-    {
-        if (i->id == tick_)
-        {
-            i->position++;
-            if (i->position>=IDX_MISS)
-            {
-                i=items_.erase(i);
-            } else {
-                i++;
-                data_playsound(SND_MOVE);
-            }
-        } else
-            i++;
-    }
-    item_update();
-}
-
-void GW_Game_Monkey::item_update()
-{
-    for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)
-    {
-        for (int j=1; j<=IDX_MISS; j++)
-            data().position_get(i, j)->hide();
-    }
-
-    for (list<GW_Game_Monkey_Item>::const_iterator i=items_.begin(); i!=items_.end(); i++)
-    {
-        data().position_get(IM_ITEM_1+(i->id), i->position)->show();
     }
 }
 
@@ -580,6 +524,7 @@ bool GW_Game_Monkey::do_setmode(int mode)
 
 void GW_Game_Monkey::clock_update()
 {
+    // display clock
     data().position_get(PS_NUMBER, 1)->show();
     data().position_get(PS_NUMBER, 2)->show();
     data().position_get(PS_NUMBER, 3)->show();
@@ -598,6 +543,7 @@ void GW_Game_Monkey::clock_update()
 
 void GW_Game_Monkey::setnumber(int n, int ps1, int ps2)
 {
+    // set a number on the display
     if (n>=0 && n<=99)
     {
         if (n>10)
