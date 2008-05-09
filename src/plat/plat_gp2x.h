@@ -17,7 +17,8 @@ protected:
     virtual int sdlinit(int flags) { return flags|SDL_INIT_JOYSTICK; }
     virtual int audiobufsize_get() { return 128; }
 
-    virtual bool process_event(SDL_Event *sdlevent, GW_Platform_Event *event);
+    virtual bool process_event(GW_Platform_GameType gametype,
+        SDL_Event *sdlevent, GW_Platform_Event *event);
 };
 
 

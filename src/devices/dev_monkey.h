@@ -111,6 +111,7 @@ public:
     virtual void Event(GW_Platform_Event *event);
 
 
+    virtual GW_Platform_GameType gametype_get() { return GPG_LEFTRIGHT; }
     virtual int bgimage_get() { return IM_BG; }
 
     bool IsGame() { return (GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB); }

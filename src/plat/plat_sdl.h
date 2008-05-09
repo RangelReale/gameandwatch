@@ -42,7 +42,8 @@ public:
     virtual unsigned int ticks_get();
     virtual unsigned int time_ms_get();
 
-    virtual bool event(GW_Platform_Event *event);
+    virtual bool event(GW_Platform_GameType gametype,
+        GW_Platform_Event *event);
 
     virtual void draw_clear();
     virtual void draw_image(GW_Platform_Image *image, int x, int y);
@@ -60,7 +61,8 @@ protected:
     virtual int sdlinit(int flags) { return flags|SDL_INIT_JOYSTICK; }
     virtual int audiobufsize_get() { return 2048; }
 
-    virtual bool process_event(SDL_Event *sdlevent, GW_Platform_Event *event);
+    virtual bool process_event(GW_Platform_GameType gametype,
+        SDL_Event *sdlevent, GW_Platform_Event *event);
 private:
     int width_, height_;
     bool initialized_;

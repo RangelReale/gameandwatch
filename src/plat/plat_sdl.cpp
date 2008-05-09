@@ -85,6 +85,8 @@ void GW_PlatformSDL::initialize()
 
         SDL_ShowCursor(SDL_DISABLE);
 
+        SDL_WM_SetCaption("Game & Watch simulator - by Hitnrun & Madrigal", NULL);
+
         initialized_=true;
     }
 }
@@ -118,14 +120,15 @@ unsigned int GW_PlatformSDL::time_ms_get()
     //return SDL_GetTicks();
 }
 
-bool GW_PlatformSDL::event(GW_Platform_Event *event)
+bool GW_PlatformSDL::event(GW_Platform_GameType gametype,
+    GW_Platform_Event *event)
 {
     SDL_Event sdlevent;
     while (true)
     {
         if (SDL_PollEvent(&sdlevent))
         {
-            if (process_event(&sdlevent, event))
+            if (process_event(gametype, &sdlevent, event))
                 return true;
         }
         else
@@ -141,10 +144,34 @@ void GW_PlatformSDL::draw_clear()
 
 void GW_PlatformSDL::draw_image(GW_Platform_Image *image, int x, int y)
 {
-    SDL_Rect spos;
+    SDL_Rect spos, srcpos;
     spos.x=x; spos.y=y;
+    srcpos.w=dynamic_cast<GW_PlatformSDL_Image*>(image)->surface_get()->w;
+    srcpos.h=dynamic_cast<GW_PlatformSDL_Image*>(image)->surface_get()->h;
+
+    // clip
+    if (spos.x<0)
+    {
+        srcpos.x=abs(spos.x);
+        spos.x=0;
+    }
+    else
+    {
+        srcpos.x=0;
+        //bgdst_.x=offsetx_;
+    }
+    if (spos.x<0)
+    {
+        srcpos.y=abs(spos.y);
+        spos.y=0;
+    }
+    else
+    {
+        srcpos.y=0;
+    }
+
     SDL_BlitSurface(dynamic_cast<GW_PlatformSDL_Image*>(image)->surface_get(),
-        NULL, screen_, &spos);
+        &srcpos, screen_, &spos);
 }
 
 void GW_PlatformSDL::draw_flip()
@@ -176,7 +203,8 @@ GW_Platform_Sound *GW_PlatformSDL::sound_load(const string &filename)
     return new GW_PlatformSDL_Sound(filename);
 }
 
-bool GW_PlatformSDL::process_event(SDL_Event *sdlevent, GW_Platform_Event *event)
+bool GW_PlatformSDL::process_event(GW_Platform_GameType gametype,
+    SDL_Event *sdlevent, GW_Platform_Event *event)
 {
     switch (sdlevent->type)
     {

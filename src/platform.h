@@ -57,6 +57,13 @@ typedef struct GW_Platform_Event
     int data;
 };
 
+enum GW_Platform_GameType
+{
+    GPG_MENU,
+    GPG_LEFTRIGHT,
+    GPG_UPDOWN,
+    GPG_4DIAG,
+};
 
 class GW_Platform_Image
 {
@@ -87,7 +94,8 @@ public:
     virtual unsigned int ticks_get() = 0;
     virtual unsigned int time_ms_get() = 0;
 
-    virtual bool event(GW_Platform_Event *event) = 0;
+    virtual bool event(GW_Platform_GameType gametype,
+        GW_Platform_Event *event) = 0;
 
     virtual void draw_clear() = 0;
     virtual void draw_image(GW_Platform_Image *image, int x, int y) = 0;

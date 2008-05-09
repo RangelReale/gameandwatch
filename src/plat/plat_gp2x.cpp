@@ -18,7 +18,8 @@ void GW_PlatformGP2X::custom_finalize()
 
 }
 
-bool GW_PlatformGP2X::process_event(SDL_Event *sdlevent, GW_Platform_Event *event)
+bool GW_PlatformGP2X::process_event(GW_Platform_GameType gametype,
+    SDL_Event *sdlevent, GW_Platform_Event *event)
 {
     bool proc=false;
     switch (sdlevent->type)
@@ -37,16 +38,16 @@ bool GW_PlatformGP2X::process_event(SDL_Event *sdlevent, GW_Platform_Event *even
                 event->data=GPK_LEFT;
                 break;
             case GP2X_VK_RIGHT:
-                //device_get()->MoveBGOffset(5, 0);
-                //device_get()->DefaultKey(GW_Game::DK_RIGHT);
+                if (gametype!=GPG_LEFTRIGHT)
+                    event->data=GPK_RIGHT;
+                else
+                    proc=false;
                 break;
             case GP2X_VK_UP:
-                //device_get()->MoveBGOffset(0, -5);
-                //device_get()->DefaultKey(GW_Game::DK_UP);
+                event->data=GPK_UP;
                 break;
             case GP2X_VK_DOWN:
-                //device_get()->MoveBGOffset(0, 5);
-                //device_get()->DefaultKey(GW_Game::DK_DOWN);
+                event->data=GPK_DOWN;
                 break;
             case GP2X_VK_SELECT:
                 event->data=GPK_TURNONTOGGLE;
@@ -67,7 +68,10 @@ bool GW_PlatformGP2X::process_event(SDL_Event *sdlevent, GW_Platform_Event *even
                 event->data=GPK_TIME;
                 break;
             case GP2X_VK_FB:
-                event->data=GPK_RIGHT;
+                if (gametype==GPG_LEFTRIGHT)
+                    event->data=GPK_RIGHT;
+                else
+                    proc=false;
                 break;
             default:
                 proc=false;
@@ -78,6 +82,6 @@ bool GW_PlatformGP2X::process_event(SDL_Event *sdlevent, GW_Platform_Event *even
     }
 
     if (!proc)
-        return GW_PlatformSDL::process_event(sdlevent, event);
+        return GW_PlatformSDL::process_event(gametype, sdlevent, event);
     return true;
 }

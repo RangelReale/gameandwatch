@@ -199,6 +199,7 @@ public:
 
     GW_GameData &data() { return data_; }
 
+    virtual GW_Platform_GameType gametype_get() { return GPG_MENU; }
     const string &gamepath_get() { return gamepath_; }
     //const string &bgimage_get() { return bgimage_; }
     const GW_Platform_Rect &gamerect_get() { return gamerect_; }

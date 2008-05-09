@@ -390,7 +390,7 @@ void GW_Device::Run(GW_Game *game)
     while (!quit)
     {
         GW_Platform_Event event;
-        while (platform_->event(&event))
+        while (platform_->event(game_->gametype_get(), &event))
         {
             if (!process_event(&event))
             {
