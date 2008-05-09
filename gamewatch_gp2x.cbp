@@ -60,10 +60,10 @@
 		<Unit filename="src/devices/dev_monkey.h" />
 		<Unit filename="src/gamewatch.cpp" />
 		<Unit filename="src/gwdefs.h" />
-		<Unit filename="src/plat/plat_desktop.cpp" />
-		<Unit filename="src/plat/plat_desktop.h" />
 		<Unit filename="src/plat/plat_gp2x.cpp" />
 		<Unit filename="src/plat/plat_gp2x.h" />
+		<Unit filename="src/plat/plat_sdl.cpp" />
+		<Unit filename="src/plat/plat_sdl.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

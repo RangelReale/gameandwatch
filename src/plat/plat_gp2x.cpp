@@ -2,38 +2,39 @@
 #include "plat/plat_gp2x.h"
 #include "SDL_gp2x.h"
 
-GW_Platform_GP2X::~GW_Platform_GP2X()
+GW_PlatformGP2X::~GW_PlatformGP2X()
 {
 
 }
-void GW_Platform_GP2X::initialize()
+void GW_PlatformGP2X::custom_initialize()
 {
     SDL_Joystick *joystick = SDL_JoystickOpen(0); // initialize the joystick and buttons.  Number '0' is the only one.
 	if (!joystick) // should not happen
         throw GW_Exception(string("Unable to open joystick: "+string(SDL_GetError())));
 }
 
-void GW_Platform_GP2X::finalize()
+void GW_PlatformGP2X::custom_finalize()
 {
 
 }
 
-
-void GW_Platform_GP2X::_process_event(SDL_Event *event)
+bool GW_PlatformGP2X::process_event(SDL_Event *sdlevent, GW_Platform_Event *event)
 {
-    switch (event->type)
+    bool proc=false;
+    switch (sdlevent->type)
     {
     // Joystick
     case SDL_JOYBUTTONDOWN:
         {
-            switch(event->jbutton.button)
+            proc=true;
+            event->id=GPE_KEYDOWN;
+            switch(sdlevent->jbutton.button)
             {
             case GP2X_VK_START:
-                device_get()->Quit();
+                event->data=GPK_QUIT;
                 break;
             case GP2X_VK_LEFT:
-                //device_get()->MoveBGOffset(-5, 0);
-                device_get()->DefaultKey(GW_Game::DK_LEFT);
+                event->data=GPK_LEFT;
                 break;
             case GP2X_VK_RIGHT:
                 //device_get()->MoveBGOffset(5, 0);
@@ -48,36 +49,35 @@ void GW_Platform_GP2X::_process_event(SDL_Event *event)
                 //device_get()->DefaultKey(GW_Game::DK_DOWN);
                 break;
             case GP2X_VK_SELECT:
-                //device_get()->MoveBGCenter();
-                if (device_get()->IsOn())
-                    device_get()->TurnOff();
-                else
-                    device_get()->TurnOn();
+                event->data=GPK_TURNONTOGGLE;
                 break;
             case GP2X_VK_FL:
-                //device_get()->MoveBGOffset(0, 5);
-                device_get()->DefaultKey(GW_Game::DK_GAMEA);
+                event->data=GPK_GAMEA;
                 break;
             case GP2X_VK_FR:
-                //device_get()->MoveBGOffset(0, 5);
-                device_get()->DefaultKey(GW_Game::DK_GAMEB);
+                event->data=GPK_GAMEB;
                 break;
             case GP2X_VK_VOL_UP:
-                device_get()->DefaultKey(GW_Game::DK_VOLUP);
+                event->data=GPK_VOLUP;
                 break;
             case GP2X_VK_VOL_DOWN:
-                device_get()->DefaultKey(GW_Game::DK_VOLDOWN);
+                event->data=GPK_VOLDOWN;
                 break;
             case GP2X_VK_FA:
-                device_get()->DefaultKey(GW_Game::DK_TIME);
+                event->data=GPK_TIME;
                 break;
             case GP2X_VK_FB:
-                device_get()->DefaultKey(GW_Game::DK_RIGHT);
+                event->data=GPK_RIGHT;
+                break;
+            default:
+                proc=false;
                 break;
             }
         }
         break;
     }
 
-    GW_Platform_Desktop::_process_event(event);
+    if (!proc)
+        return GW_PlatformSDL::process_event(sdlevent, event);
+    return true;
 }

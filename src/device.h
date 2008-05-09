@@ -4,9 +4,7 @@
 #include <map>
 #include <string>
 #include <boost/shared_ptr.hpp>
-
-#include <SDL.h>
-#include <SDL_mixer.h>
+#include "platform.h"
 
 #define GW_INDEX_DEFAULT 0
 
@@ -25,6 +23,8 @@ public:
     virtual ~GW_GameData_Item() {}
 
     void Changed();
+    GW_GameData *gamedata_get() { return gdata_; }
+    GW_Platform *platform_get();
 private:
     GW_GameData *gdata_;
 };
@@ -33,30 +33,34 @@ class GW_GameData_Sound : public GW_GameData_Item
 {
 public:
     GW_GameData_Sound(GW_GameData *gdata, const string &sound) :
-        GW_GameData_Item(gdata), sound_(sound), sample_(NULL) {}
+        GW_GameData_Item(gdata), sound_(sound), sounddata_(NULL) {}
     ~GW_GameData_Sound();
 
     void Load(const string &soundpath);
 
-    Mix_Chunk *sample_get() { return sample_; }
+    GW_Platform_Sound *data_get() { return sounddata_; }
 private:
     string sound_;
-    Mix_Chunk *sample_;
+    GW_Platform_Sound *sounddata_;
 };
 
 class GW_GameData_Image : public GW_GameData_Item
 {
 public:
-    GW_GameData_Image(GW_GameData *gdata, const string &image) :
-        GW_GameData_Item(gdata), image_(image), surface_(NULL) {}
+    GW_GameData_Image(GW_GameData *gdata, const string &image,
+        GW_Platform_RGB *tcolor = NULL) :
+        GW_GameData_Item(gdata), image_(image), imagedata_(NULL),
+        istcolor_(tcolor) { if (tcolor) tcolor_=*tcolor; }
     ~GW_GameData_Image();
 
     void Load(const string &imagepath);
 
-    SDL_Surface *surface_get() { return surface_; }
+    GW_Platform_Image *data_get() { return imagedata_; }
 private:
     string image_;
-    SDL_Surface *surface_;
+    GW_Platform_Image *imagedata_;
+    bool istcolor_;
+    GW_Platform_RGB tcolor_;
 };
 
 class GW_GameData_Position : public GW_GameData_Item
@@ -123,10 +127,10 @@ public:
 
     GW_GameData(GW_Game *game) : game_(game), images_(), positions_(), sounds_(), timers_() {}
 
-    GW_GameData *image_add(int id, int index, const string &image);
+    GW_GameData *image_add(int id, int index, const string &image, GW_Platform_RGB *tcolor = NULL);
     GW_GameData *position_add(int id, int index = GW_INDEX_DEFAULT, int x = 0, int y = 0,
         int imageid = -1, int imageindex = GW_INDEX_DEFAULT,
-        const string &image = "");
+        const string &image = "", GW_Platform_RGB *tcolor = NULL);
     GW_GameData *sound_add(int id, const string &sound);
     GW_GameData *timer_add(int timerid, unsigned int time, bool autoloop);
 
@@ -141,8 +145,10 @@ public:
     timers_t &timers_list() { return timers_; }
 
     void Load(const string &gamepath);
+    void Unload();
 
     void Changed();
+    GW_Game *game_get() { return game_; }
 private:
     GW_Game *game_;
     images_t images_;
@@ -181,7 +187,7 @@ public:
     void SetMode(int mode);
     int GetMode() { return mode_; }
 
-    virtual void DefaultKey(defkeys_t key) {}
+    virtual void Event(GW_Platform_Event *event) {}
 
     void Update();
 
@@ -189,13 +195,17 @@ public:
     bool CheckChanged();
 
     GW_Device *device_get() { return device_; }
+    GW_Platform *platform_get();
+
     GW_GameData &data() { return data_; }
 
     const string &gamepath_get() { return gamepath_; }
-    const string &bgimage_get() { return bgimage_; }
-    const SDL_Rect &gamerect_get() { return gamerect_; }
+    //const string &bgimage_get() { return bgimage_; }
+    const GW_Platform_Rect &gamerect_get() { return gamerect_; }
+    virtual int bgimage_get() { return -1; }
 
     void Load(GW_Device *device, const string &datapath);
+    void Unload();
 protected:
     virtual void do_turnon() {}
     virtual void do_turnoff() {}
@@ -212,22 +222,23 @@ protected:
     void data_delaytimer(int timerid, unsigned int time);
 
     void gamepath_set(const string &gamepath) { gamepath_=gamepath; }
-    void bgimage_set(const string &bgimage) { bgimage_=bgimage; }
+    //void bgimage_set(const string &bgimage) { bgimage_=bgimage; }
     void size_set(int width, int height) { width_=width; height_=height; }
-    void gamerect_set(const SDL_Rect &gamerect) { gamerect_=gamerect; }
+    void gamerect_set(const GW_Platform_Rect &gamerect) { gamerect_=gamerect; }
 private:
     GW_GameData data_;
 
     string gamepath_;
-    string bgimage_;
+    //string bgimage_;
     int width_, height_;
     bool on_;
     int mode_;
-    SDL_Rect gamerect_;
+    GW_Platform_Rect gamerect_;
     GW_Device *device_;
     bool changed_;
 };
 
+/*
 class GW_Platform
 {
 public:
@@ -253,6 +264,7 @@ protected:
 private:
     GW_Device *device_;
 };
+*/
 
 class GW_Device
 {
@@ -262,7 +274,7 @@ public:
         short h, m, s;
     };
 
-    GW_Device(GW_Platform *platform, GW_Game *game);
+    GW_Device(GW_Platform *platform);
     ~GW_Device();
 
     void MoveBG(int xpos, int ypos);
@@ -270,14 +282,13 @@ public:
     void MoveBGCenter();
 
     bool IsOn() { return game_->IsOn(); }
-    void TurnOn() { game_->TurnOn(); curtime_=SDL_GetTicks(); }
+    void TurnOn() { game_->TurnOn(); curtime_=platform_->ticks_get(); }
     void TurnOff() { game_->TurnOff(); }
     void SetMode(int mode) { game_->SetMode(mode); }
-    void DefaultKey(GW_Game::defkeys_t key);
     void Volume(int volume);
     int Volume() { return volume_; }
 
-    void Run();
+    void Run(GW_Game *game);
     void Quit() { quit_=true; }
 
     void GetTime(devtime_t *time);
@@ -289,7 +300,9 @@ private:
     void Load();
     void Unload();
 
-    SDL_Rect position(GW_GameData_Position *pos);
+    GW_Platform_Point position(GW_GameData_Position *pos);
+
+    bool process_event(GW_Platform_Event *event);
 
     void CalculateBGOffset();
 
@@ -298,9 +311,9 @@ private:
     string datapath_;
     bool quit_;
 
-    SDL_Surface *screen_, *bg_;
+    //GW_Platform_Image *bg_;
     int offsetx_, offsety_;
-    SDL_Rect bgsrc_, bgdst_;
+    GW_Platform_Rect bgsrc_, bgdst_;
     int volume_;
 
     unsigned int curtime_;

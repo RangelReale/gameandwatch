@@ -7,57 +7,65 @@ GW_Game_Monkey::GW_Game_Monkey() :
     gamepath_set("monkey");
     size_set(561, 347);
     // game screen position
-    SDL_Rect gr;
-    gr.x=152; gr.y=53; gr.w=257; gr.h=192;
+
+    GW_PLATFORM_RECT(gr, 152, 53, 257, 192);
     gamerect_set(gr);
 
     char sname[50];
 
+    // transparent colors
+    GW_PLATFORM_RGB(tcolor_bg, 255, 0, 255);
+    GW_PLATFORM_RGB(tcolor_img, 255, 255, 255);
+
+    // bg
+    data().
+        image_add(IM_BG, GW_INDEX_DEFAULT, "bg.bmp", &tcolor_bg);
+
     // character
     data().
-        position_add(PS_CHAR_1, 1, 240, 97, IM_CHAR_1, 1, "im_char_1_1.bmp")->
-        position_add(PS_CHAR_1, 2, 228, 92, IM_CHAR_1, 2, "im_char_1_2.bmp")->
-        position_add(PS_CHAR_1, 3, 213, 116, IM_CHAR_1, 3, "im_char_1_3.bmp");
+        position_add(PS_CHAR_1, 1, 240, 97, IM_CHAR_1, 1, "im_char_1_1.bmp", &tcolor_img)->
+        position_add(PS_CHAR_1, 2, 228, 92, IM_CHAR_1, 2, "im_char_1_2.bmp", &tcolor_img)->
+        position_add(PS_CHAR_1, 3, 213, 116, IM_CHAR_1, 3, "im_char_1_3.bmp", &tcolor_img);
     data().
-        position_add(PS_CHAR_2, 1, 273, 110, IM_CHAR_2, 1, "im_char_2_1.bmp")->
-        position_add(PS_CHAR_2, 2, 269, 102, IM_CHAR_2, 2, "im_char_2_2.bmp")->
-        position_add(PS_CHAR_2, 3, 260, 127, IM_CHAR_2, 3, "im_char_2_3.bmp");
+        position_add(PS_CHAR_2, 1, 273, 110, IM_CHAR_2, 1, "im_char_2_1.bmp", &tcolor_img)->
+        position_add(PS_CHAR_2, 2, 269, 102, IM_CHAR_2, 2, "im_char_2_2.bmp", &tcolor_img)->
+        position_add(PS_CHAR_2, 3, 260, 127, IM_CHAR_2, 3, "im_char_2_3.bmp", &tcolor_img);
     data().
-        position_add(PS_CHAR_3, 1, 297, 104, IM_CHAR_3, 1, "im_char_3_1.bmp")->
-        position_add(PS_CHAR_3, 2, 318, 100, IM_CHAR_3, 2, "im_char_3_2.bmp")->
-        position_add(PS_CHAR_3, 3, 319, 121, IM_CHAR_3, 3, "im_char_3_3.bmp");
+        position_add(PS_CHAR_3, 1, 297, 104, IM_CHAR_3, 1, "im_char_3_1.bmp", &tcolor_img)->
+        position_add(PS_CHAR_3, 2, 318, 100, IM_CHAR_3, 2, "im_char_3_2.bmp", &tcolor_img)->
+        position_add(PS_CHAR_3, 3, 319, 121, IM_CHAR_3, 3, "im_char_3_3.bmp", &tcolor_img);
 
     // item (monkey)
     data().
-        position_add(PS_ITEM_1, 1, 210, 221, PS_ITEM_1, 1, "im_item_1_1.bmp")->
-        position_add(PS_ITEM_1, 2, 171, 216, PS_ITEM_1, 2, "im_item_1_2.bmp")->
-        position_add(PS_ITEM_1, 3, 171, 194, PS_ITEM_1, 3, "im_item_1_3.bmp")->
-        position_add(PS_ITEM_1, 4, 172, 169, PS_ITEM_1, 4, "im_item_1_4.bmp")->
-        position_add(PS_ITEM_1, 5, 174, 134, PS_ITEM_1, 5, "im_item_1_5.bmp")->
-        position_add(PS_ITEM_1, IDX_GOT, 207, 184, PS_ITEM_1, IDX_GOT, "im_item_1_got.bmp")->
-        position_add(PS_ITEM_1, IDX_MISS, 210, 150, PS_ITEM_1, IDX_MISS, "im_item_1_miss.bmp")->
-        position_add(PS_ITEM_1, IDX_TARGET, 189, 126, PS_ITEM_1, IDX_TARGET, "im_item_1_target.bmp")->
-        position_add(PS_ITEM_1, IDX_HIT, 174, 134, PS_ITEM_1, 5); // same image as 5
+        position_add(PS_ITEM_1, 1, 210, 221, IM_ITEM_1, 1, "im_item_1_1.bmp", &tcolor_img)->
+        position_add(PS_ITEM_1, 2, 171, 216, IM_ITEM_1, 2, "im_item_1_2.bmp", &tcolor_img)->
+        position_add(PS_ITEM_1, 3, 171, 194, IM_ITEM_1, 3, "im_item_1_3.bmp", &tcolor_img)->
+        position_add(PS_ITEM_1, 4, 172, 169, IM_ITEM_1, 4, "im_item_1_4.bmp", &tcolor_img)->
+        position_add(PS_ITEM_1, 5, 174, 134, IM_ITEM_1, 5, "im_item_1_5.bmp", &tcolor_img)->
+        position_add(PS_ITEM_1, IDX_GOT, 207, 184, IM_ITEM_1, IDX_GOT, "im_item_1_got.bmp", &tcolor_img)->
+        position_add(PS_ITEM_1, IDX_MISS, 210, 150, IM_ITEM_1, IDX_MISS, "im_item_1_miss.bmp", &tcolor_img)->
+        position_add(PS_ITEM_1, IDX_TARGET, 189, 126, IM_ITEM_1, IDX_TARGET, "im_item_1_target.bmp", &tcolor_img)->
+        position_add(PS_ITEM_1, IDX_HIT, 174, 134, IM_ITEM_1, 5); // same image as 5
     data().
-        position_add(PS_ITEM_2, 1, 239, 221, PS_ITEM_2, 1, "im_item_2_1.bmp")->
-        position_add(PS_ITEM_2, 2, 269, 221, PS_ITEM_2, 2, "im_item_2_2.bmp")->
-        position_add(PS_ITEM_2, 3, 273, 194, PS_ITEM_2, 3, "im_item_2_3.bmp")->
-        position_add(PS_ITEM_2, 4, 269, 170, PS_ITEM_2, 4, "im_item_2_4.bmp")->
-        position_add(PS_ITEM_2, 5, 270, 142, PS_ITEM_2, 5, "im_item_2_5.bmp")->
-        position_add(PS_ITEM_2, IDX_GOT, 241, 187, PS_ITEM_2, IDX_GOT, "im_item_2_got.bmp")->
-        position_add(PS_ITEM_2, IDX_MISS, 238, 158, PS_ITEM_2, IDX_MISS, "im_item_2_miss.bmp")->
-        position_add(PS_ITEM_2, IDX_TARGET, 277, 134, PS_ITEM_2, IDX_TARGET, "im_item_2_target.bmp")->
-        position_add(PS_ITEM_2, IDX_HIT, 270, 142, PS_ITEM_2, 5); // same image as 5
+        position_add(PS_ITEM_2, 1, 239, 221, IM_ITEM_2, 1, "im_item_2_1.bmp", &tcolor_img)->
+        position_add(PS_ITEM_2, 2, 269, 221, IM_ITEM_2, 2, "im_item_2_2.bmp", &tcolor_img)->
+        position_add(PS_ITEM_2, 3, 273, 194, IM_ITEM_2, 3, "im_item_2_3.bmp", &tcolor_img)->
+        position_add(PS_ITEM_2, 4, 269, 170, IM_ITEM_2, 4, "im_item_2_4.bmp", &tcolor_img)->
+        position_add(PS_ITEM_2, 5, 270, 142, IM_ITEM_2, 5, "im_item_2_5.bmp", &tcolor_img)->
+        position_add(PS_ITEM_2, IDX_GOT, 241, 187, IM_ITEM_2, IDX_GOT, "im_item_2_got.bmp", &tcolor_img)->
+        position_add(PS_ITEM_2, IDX_MISS, 238, 158, IM_ITEM_2, IDX_MISS, "im_item_2_miss.bmp", &tcolor_img)->
+        position_add(PS_ITEM_2, IDX_TARGET, 277, 134, IM_ITEM_2, IDX_TARGET, "im_item_2_target.bmp", &tcolor_img)->
+        position_add(PS_ITEM_2, IDX_HIT, 270, 142, IM_ITEM_2, 5); // same image as 5
     data().
-        position_add(PS_ITEM_3, 1, 328, 222, PS_ITEM_3, 1, "im_item_3_1.bmp")->
-        position_add(PS_ITEM_3, 2, 352, 221, PS_ITEM_3, 2, "im_item_3_2.bmp")->
-        position_add(PS_ITEM_3, 3, 354, 194, PS_ITEM_3, 3, "im_item_3_3.bmp")->
-        position_add(PS_ITEM_3, 4, 352, 171, PS_ITEM_3, 4, "im_item_3_4.bmp")->
-        position_add(PS_ITEM_3, 5, 342, 138, PS_ITEM_3, 5, "im_item_3_5.bmp")->
-        position_add(PS_ITEM_3, IDX_GOT, 310, 183, PS_ITEM_3, IDX_GOT, "im_item_3_got.bmp")->
-        position_add(PS_ITEM_3, IDX_MISS, 316, 145, PS_ITEM_3, IDX_MISS, "im_item_3_miss.bmp")->
-        position_add(PS_ITEM_3, IDX_TARGET, 351, 130, PS_ITEM_3, IDX_TARGET, "im_item_3_target.bmp")->
-        position_add(PS_ITEM_3, IDX_HIT, 342, 138, PS_ITEM_3, 5);
+        position_add(PS_ITEM_3, 1, 328, 222, IM_ITEM_3, 1, "im_item_3_1.bmp", &tcolor_img)->
+        position_add(PS_ITEM_3, 2, 352, 221, IM_ITEM_3, 2, "im_item_3_2.bmp", &tcolor_img)->
+        position_add(PS_ITEM_3, 3, 354, 194, IM_ITEM_3, 3, "im_item_3_3.bmp", &tcolor_img)->
+        position_add(PS_ITEM_3, 4, 352, 171, IM_ITEM_3, 4, "im_item_3_4.bmp", &tcolor_img)->
+        position_add(PS_ITEM_3, 5, 342, 138, IM_ITEM_3, 5, "im_item_3_5.bmp", &tcolor_img)->
+        position_add(PS_ITEM_3, IDX_GOT, 310, 183, IM_ITEM_3, IDX_GOT, "im_item_3_got.bmp", &tcolor_img)->
+        position_add(PS_ITEM_3, IDX_MISS, 316, 145, IM_ITEM_3, IDX_MISS, "im_item_3_miss.bmp", &tcolor_img)->
+        position_add(PS_ITEM_3, IDX_TARGET, 351, 130, IM_ITEM_3, IDX_TARGET, "im_item_3_target.bmp", &tcolor_img)->
+        position_add(PS_ITEM_3, IDX_HIT, 342, 138, IM_ITEM_3, 5);
 
     // numbers
     data().
@@ -65,12 +73,12 @@ GW_Game_Monkey::GW_Game_Monkey() :
         position_add(PS_NUMBER, 2, 265, 61)->
         position_add(PS_NUMBER, 3, 284, 61)->
         position_add(PS_NUMBER, 4, 299, 61)->
-        position_add(PS_SEMICOLON, 0, 280, 67, IM_SEMICOLON, 0, "im_time_semicolon.bmp");
+        position_add(PS_SEMICOLON, 0, 280, 67, IM_SEMICOLON, 0, "im_time_semicolon.bmp", &tcolor_img);
 
     for (int i=0; i<10; i++)
     {
         sprintf(sname, "im_number_%d.bmp", i);
-        data().image_add(IM_NUMBER, i, sname);
+        data().image_add(IM_NUMBER, i, sname, &tcolor_img);
     }
 
     data().position_get(PS_NUMBER, 1)->image_set(IM_NUMBER, 8);
@@ -80,7 +88,7 @@ GW_Game_Monkey::GW_Game_Monkey() :
 
 
     // miss
-    data().image_add(IM_MISS, 0, "im_miss.bmp");
+    data().image_add(IM_MISS, 0, "im_miss.bmp", &tcolor_img);
 
     data().
         position_add(PS_MISS, 1, 330, 62, IM_MISS)->
@@ -96,16 +104,16 @@ GW_Game_Monkey::GW_Game_Monkey() :
 
     // options
     data().
-        position_add(PS_GAMEA, 0, 153, 61, IM_GAMEA, GW_INDEX_DEFAULT, "im_game_a.bmp")->
-        position_add(PS_GAMEB, 0, 153, 76, IM_GAMEB, GW_INDEX_DEFAULT, "im_game_b.bmp")->
-        position_add(PS_ALARM, 0, 200, 77, IM_ALARM, GW_INDEX_DEFAULT, "im_alarm.bmp")->
-        position_add(PS_BELL, 0, 179, 63, IM_BELL, GW_INDEX_DEFAULT, "im_bell.bmp")->
-        position_add(PS_CHRONO, 0, 217, 77, IM_CHRONO, GW_INDEX_DEFAULT, "im_chrono.bmp")->
-        position_add(PS_DATE, 0, 232, 77, IM_DATE, GW_INDEX_DEFAULT, "im_date.bmp")->
-        position_add(PS_TIME1, 0, 223, 61, IM_TIME1, GW_INDEX_DEFAULT, "im_time_1.bmp")->
-        position_add(PS_TIME2, 0, 200, 61, IM_TIME2, GW_INDEX_DEFAULT, "im_time_2.bmp")->
-        position_add(PS_AM, 0, 315, 61, IM_AM, GW_INDEX_DEFAULT, "im_time_am.bmp")->
-        position_add(PS_PM, 0, 314, 76, IM_PM, GW_INDEX_DEFAULT, "im_time_pm.bmp");
+        position_add(PS_GAMEA, 0, 153, 61, IM_GAMEA, GW_INDEX_DEFAULT, "im_game_a.bmp", &tcolor_img)->
+        position_add(PS_GAMEB, 0, 153, 76, IM_GAMEB, GW_INDEX_DEFAULT, "im_game_b.bmp", &tcolor_img)->
+        position_add(PS_ALARM, 0, 200, 77, IM_ALARM, GW_INDEX_DEFAULT, "im_alarm.bmp", &tcolor_img)->
+        position_add(PS_BELL, 0, 179, 63, IM_BELL, GW_INDEX_DEFAULT, "im_bell.bmp", &tcolor_img)->
+        position_add(PS_CHRONO, 0, 217, 77, IM_CHRONO, GW_INDEX_DEFAULT, "im_chrono.bmp", &tcolor_img)->
+        position_add(PS_DATE, 0, 232, 77, IM_DATE, GW_INDEX_DEFAULT, "im_date.bmp", &tcolor_img)->
+        position_add(PS_TIME1, 0, 223, 61, IM_TIME1, GW_INDEX_DEFAULT, "im_time_1.bmp", &tcolor_img)->
+        position_add(PS_TIME2, 0, 200, 61, IM_TIME2, GW_INDEX_DEFAULT, "im_time_2.bmp", &tcolor_img)->
+        position_add(PS_AM, 0, 315, 61, IM_AM, GW_INDEX_DEFAULT, "im_time_am.bmp", &tcolor_img)->
+        position_add(PS_PM, 0, 314, 76, IM_PM, GW_INDEX_DEFAULT, "im_time_pm.bmp", &tcolor_img);
 
     // sounds
     data().
@@ -125,51 +133,52 @@ GW_Game_Monkey::GW_Game_Monkey() :
         timer_add(TMR_GAMEOVERWAIT, 30000, false);
 }
 
-void GW_Game_Monkey::DefaultKey(defkeys_t key)
+void GW_Game_Monkey::Event(GW_Platform_Event *event)
 {
-    switch (key)
+    if (event->id==GPE_KEYDOWN)
     {
-    case DK_GAMEA:
-        if (GetMode()==MODE_IDLE)
-            SetMode(MODE_TIME1);
-        else
-            SetMode(MODE_GAMEA);
-        break;
-    case DK_GAMEB:
-        SetMode(MODE_GAMEB);
-        break;
-    case DK_TIME:
-        if (GetMode()==MODE_TIME1)
-            SetMode(MODE_TIME2);
-        else if (GetMode()==MODE_TIME2)
-            SetMode(MODE_ALARM);
-        else if (GetMode()==MODE_ALARM)
-            SetMode(MODE_CHRONO);
-        else if (GetMode()==MODE_CHRONO)
-            SetMode(MODE_DATE);
-        else
-            SetMode(MODE_TIME1);
-        break;
-    case DK_LEFT:
-        if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_)
+        switch (event->data)
         {
-            char_position_-=1;
-            if (char_position_<0) char_position_=0;
-            char_update(char_position_, false);
-            //game_update();
+        case GPK_GAMEA:
+            if (GetMode()==MODE_IDLE)
+                SetMode(MODE_TIME1);
+            else
+                SetMode(MODE_GAMEA);
+            break;
+        case GPK_GAMEB:
+            SetMode(MODE_GAMEB);
+            break;
+        case GPK_TIME:
+            if (GetMode()==MODE_TIME1)
+                SetMode(MODE_TIME2);
+            else if (GetMode()==MODE_TIME2)
+                SetMode(MODE_ALARM);
+            else if (GetMode()==MODE_ALARM)
+                SetMode(MODE_CHRONO);
+            else if (GetMode()==MODE_CHRONO)
+                SetMode(MODE_DATE);
+            else
+                SetMode(MODE_TIME1);
+            break;
+        case GPK_LEFT:
+            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_)
+            {
+                char_position_-=1;
+                if (char_position_<0) char_position_=0;
+                char_update(char_position_, false);
+                //game_update();
+            }
+            break;
+        case GPK_RIGHT:
+            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_)
+            {
+                char_position_+=1;
+                if (char_position_>2) char_position_=2;
+                char_update(char_position_, false);
+                //game_update();
+            }
+            break;
         }
-        break;
-    case DK_RIGHT:
-        if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_)
-        {
-            char_position_+=1;
-            if (char_position_>2) char_position_=2;
-            char_update(char_position_, false);
-            //game_update();
-        }
-        break;
-    default:
-        break;
     }
 }
 
@@ -237,7 +246,6 @@ void GW_Game_Monkey::game_start(int mode)
     game_update();
     score_update();
 
-    startdelay_=SDL_GetTicks();
     tick_=0;
     maxonscreen_=1;
     misses_=0;

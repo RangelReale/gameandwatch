@@ -40,6 +40,7 @@ public:
 
     enum
     {
+        IM_BG,
         IM_CHAR_1,
         IM_CHAR_2,
         IM_CHAR_3,
@@ -106,7 +107,11 @@ public:
 
     GW_Game_Monkey();
 
-    virtual void DefaultKey(defkeys_t key);
+    //virtual void DefaultKey(defkeys_t key);
+    virtual void Event(GW_Platform_Event *event);
+
+
+    virtual int bgimage_get() { return IM_BG; }
 
     bool IsGame() { return (GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB); }
 protected:
@@ -147,7 +152,6 @@ private:
     unsigned short tick_, ticksum_;
     unsigned short maxonscreen_;
     int misses_;
-    unsigned int startdelay_;
     bool canmove_, gameover_;
 };
 

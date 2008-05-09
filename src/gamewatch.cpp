@@ -3,7 +3,7 @@
 #include "gwdefs.h"
 #include "device.h"
 #include "devices/dev_monkey.h"
-#include "plat/plat_desktop.h"
+#include "plat/plat_sdl.h"
 #ifdef GP2X
 #include "plat/plat_gp2x.h"
 #endif
@@ -24,14 +24,18 @@ int WinMain(
     try
     {
 #ifdef GP2X
-        GW_Platform_GP2X platform;
+        GW_PlatformGP2X platform;
 #else
-        GW_Platform_Desktop platform(640, 480);
+        GW_PlatformSDL platform(640, 480);
 #endif
-        GW_Game_Monkey g_monkey;
-        GW_Device device(&platform, &g_monkey);
+        platform.initialize();
 
-        device.Run();
+        GW_Game_Monkey g_monkey;
+        GW_Device device(&platform);
+
+        device.Run(&g_monkey);
+
+        platform.finalize();
     } catch (GW_Exception &e) {
         fprintf(stderr, "%s\n", e.what().c_str());
         return 1;
