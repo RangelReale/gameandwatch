@@ -21,6 +21,7 @@ private:
     void draw_title();
     void draw_title_and_line(int y, int spacing, const string &title);
     void draw_gamelist();
+    void draw_bg();
     void rungame();
 
     void current_set(int cur);

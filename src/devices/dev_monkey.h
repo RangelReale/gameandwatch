@@ -12,7 +12,8 @@ class GW_Game_Monkey_Info : public GW_Game_Info
 {
 public:
     GW_Game_Monkey_Info() :
-        GW_Game_Info("monkey", "Game & Watch - Monkey", "monkey", "bg.bmp") {}
+        GW_Game_Info("monkey", "Game & Watch - Monkey", "monkey",
+            "bg.bmp", true, GW_Platform_RGB_create(255, 0, 255)) {}
 
     virtual GW_Game *create();
 };

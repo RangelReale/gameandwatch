@@ -243,18 +243,25 @@ class GW_Game_Info
 {
 public:
     GW_Game_Info(const string &id, const string &description,
-        const string &datapath, const string &bgimg) :
-        id_(id), description_(description), datapath_(datapath), bgimg_(bgimg) {}
+        const string &datapath, const string &bgimg, bool istcolor = false,
+        const GW_Platform_RGB &tcolor = GW_RGB_BLACK) :
+        id_(id), description_(description), datapath_(datapath), bgimg_(bgimg),
+        istcolor_(istcolor), tcolor_(tcolor) {}
     virtual ~GW_Game_Info() {}
 
     const string &id() { return id_; }
     const string &description() { return description_; }
     const string &datapath() { return datapath_; }
     const string &bgimg() { return bgimg_; }
+    bool istcolor() { return istcolor_; }
+    GW_Platform_RGB &tcolor() { return tcolor_; }
+
     string bgimg_path();
     virtual GW_Game *create() = 0;
 private:
     string id_, description_, datapath_, bgimg_;
+    bool istcolor_;
+    GW_Platform_RGB tcolor_;
 };
 
 class GW_Device

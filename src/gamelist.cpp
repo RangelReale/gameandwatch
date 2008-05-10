@@ -17,13 +17,6 @@ GW_GameList::GW_GameList() :
 void GW_GameList::load()
 {
     add(new GW_Game_Monkey_Info); // Monkey
-    add(new GW_Game_Monkey_Info); // Monkey
-    add(new GW_Game_Monkey_Info); // Monkey
-    add(new GW_Game_Monkey_Info); // Monkey
-    add(new GW_Game_Monkey_Info); // Monkey
-    add(new GW_Game_Monkey_Info); // Monkey
-    add(new GW_Game_Monkey_Info); // Monkey
-    add(new GW_Game_Monkey_Info); // Monkey
 }
 
 GW_Game_Info *GW_GameList::get(int index)

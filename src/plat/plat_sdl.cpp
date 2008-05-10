@@ -27,11 +27,16 @@ GW_PlatformSDL_Image::~GW_PlatformSDL_Image()
 
 bool GW_PlatformSDL_Image::resize_fit(int w, int h)
 {
-    SDL_Surface *news=zoomSurface(surface_, 0.4, 0.4, 0);
+    float rw=(float)w/surface_->w, rh=(float)h/surface_->h, r;
+
+    if (rw < rh) r=rw; else r=rh;
+
+    SDL_Surface *news=zoomSurface(surface_, r, r, 0);
     if (news)
     {
         SDL_FreeSurface(surface_);
         surface_=news;
+        SDL_DisplayFormat(surface_);
     }
     return news!=NULL;
 }
@@ -208,17 +213,17 @@ void GW_PlatformSDL::draw_line(int x1, int y1, int x2, int y2,
 }
 
 void GW_PlatformSDL::draw_rectangle(int x1, int y1, int x2, int y2,
-    GW_Platform_RGB *forecolor, GW_Platform_RGB *backcolor)
+    GW_Platform_RGB *forecolor, GW_Platform_RGB *backcolor, int alpha)
 {
     if (forecolor || (!forecolor && !backcolor))
     {
         GW_PLATFORM_RGB(lcolor,255,255,255);
         if (forecolor) lcolor=*forecolor;
-        rectangleRGBA(screen_, x1, y1, x2, y2, lcolor.r, lcolor.g, lcolor.b, 255);
+        rectangleRGBA(screen_, x1, y1, x2, y2, lcolor.r, lcolor.g, lcolor.b, (alpha>-1?alpha:255));
     }
     if (backcolor)
     {
-        boxRGBA(screen_, x1, y1, x2, y2, backcolor->r, backcolor->g, backcolor->b, 255);
+        boxRGBA(screen_, x1, y1, x2, y2, backcolor->r, backcolor->g, backcolor->b, (alpha>-1?alpha:255));
     }
 }
 

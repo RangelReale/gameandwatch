@@ -25,10 +25,8 @@ void GW_Menu::Run()
             // clear screen
             platform_->draw_clear();
 
-            if (bg_.get())
-            {
-                platform_->draw_image(bg_.get(), 0, 0);
-            }
+
+            draw_bg();
 
             draw_title();
             draw_gamelist();
@@ -121,6 +119,21 @@ void GW_Menu::draw_gamelist()
     }
 }
 
+void GW_Menu::draw_bg()
+{
+    if (bg_.get())
+    {
+        int xdraw=(platform_->width_get() / 2) - (bg_->width_get() / 2);
+        int ydraw=(platform_->height_get() / 2) - (bg_->height_get() / 2);
+
+        platform_->draw_image(bg_.get(), xdraw, ydraw);
+
+        GW_PLATFORM_RGB(rcolor, 0, 0, 0);
+        platform_->draw_rectangle(xdraw, ydraw, xdraw+bg_->width_get(), ydraw+bg_->height_get(),
+            NULL, &rcolor, 175);
+    }
+}
+
 void GW_Menu::rungame()
 {
     GW_Game *game=gamelist_->get(current_)->create();
@@ -136,7 +149,8 @@ void GW_Menu::current_set(int cur)
     if (current_>gamelist_->count()-1) current_=gamelist_->count()-1;
     if (current_>-1)
     {
-        bg_.reset(platform_->image_load(gamelist_->get(current_)->bgimg_path()));
+        bg_.reset(platform_->image_load(gamelist_->get(current_)->bgimg_path(),
+            (gamelist_->get(current_)->istcolor()?&gamelist_->get(current_)->tcolor():NULL)));
         bg_->resize_fit(platform_->width_get(), platform_->height_get());
     }
     else

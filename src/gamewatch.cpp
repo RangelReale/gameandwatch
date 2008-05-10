@@ -28,22 +28,14 @@ int WinMain(
 #ifdef GP2X
         GW_PlatformGP2X platform;
 #else
-        GW_PlatformSDL platform(320, 240);
+        GW_PlatformSDL platform(640, 480);
 #endif
         platform.initialize();
-
 
         GW_GameList gamelist;
 
         GW_Menu menu(&platform, &gamelist);
         menu.Run();
-
-/*
-        GW_Game *game=gamelist.get(0)->create();
-        GW_Device device(&platform);
-        device.Run(game);
-        delete game;
-*/
 
         platform.finalize();
     } catch (GW_Exception &e) {

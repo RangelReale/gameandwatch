@@ -15,6 +15,8 @@ using namespace std;
 #define MAKE_GW_PLATFORM_RECT(ps, px, py, pw, ph) \
     ps.x=px; ps.y=py; ps.w=pw; ps.h=ph;
 
+
+
 typedef struct GW_Platform_RGB
 {
     unsigned char r, g, b;
@@ -68,11 +70,19 @@ enum GW_Platform_GameType
     GPG_4DIAG,
 };
 
+// constants
+const GW_Platform_RGB GW_RGB_BLACK = {0, 0, 0};
+
+GW_Platform_RGB GW_Platform_RGB_create(int r, int g, int b);
+
 class GW_Platform_Image
 {
 public:
     GW_Platform_Image() {}
     virtual ~GW_Platform_Image() {};
+
+    virtual int width_get() { return -1; }
+    virtual int height_get() { return -1; }
 
     virtual bool resize_fit(int w, int h) { return false; }
 };
@@ -108,7 +118,8 @@ public:
     virtual void draw_line(int x1, int y1, int x2, int y2,
         GW_Platform_RGB *color = NULL) = 0;
     virtual void draw_rectangle(int x1, int y1, int x2, int y2,
-        GW_Platform_RGB *forecolor = NULL, GW_Platform_RGB *backcolor = NULL) = 0;
+        GW_Platform_RGB *forecolor = NULL, GW_Platform_RGB *backcolor = NULL,
+        int alpha = -1) = 0;
     virtual void draw_flip() = 0;
 
     virtual void text_draw(int x, int y, const string &text,

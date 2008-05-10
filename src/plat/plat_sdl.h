@@ -15,6 +15,9 @@ public:
     GW_PlatformSDL_Image(const string &filename, GW_Platform_RGB *tcolor = NULL);
     virtual ~GW_PlatformSDL_Image();
 
+    virtual int width_get() { return surface_->w; }
+    virtual int height_get() { return surface_->h; }
+
     virtual bool resize_fit(int w, int h);
 
     SDL_Surface *surface_get() { return surface_; }
@@ -55,7 +58,8 @@ public:
     virtual void draw_line(int x1, int y1, int x2, int y2,
         GW_Platform_RGB *color = NULL);
     virtual void draw_rectangle(int x1, int y1, int x2, int y2,
-        GW_Platform_RGB *forecolor = NULL, GW_Platform_RGB *backcolor = NULL);
+        GW_Platform_RGB *forecolor = NULL, GW_Platform_RGB *backcolor = NULL,
+        int alpha = -1);
     virtual void draw_flip();
 
     virtual void text_draw(int x, int y, const string &text, GW_Platform_RGB *color = NULL);
