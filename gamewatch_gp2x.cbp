@@ -39,6 +39,9 @@
 		</Compiler>
 		<Linker>
 			<Add option="-static" />
+			<Add library="SDL_ttf" />
+			<Add library="freetype" />
+			<Add library="SDL_gfx" />
 			<Add library="SDL_mixer" />
 			<Add library="SDL" />
 			<Add library="SDLmain" />
@@ -58,12 +61,18 @@
 		<Unit filename="src/device.h" />
 		<Unit filename="src/devices/dev_monkey.cpp" />
 		<Unit filename="src/devices/dev_monkey.h" />
+		<Unit filename="src/gamelist.cpp" />
+		<Unit filename="src/gamelist.h" />
 		<Unit filename="src/gamewatch.cpp" />
 		<Unit filename="src/gwdefs.h" />
+		<Unit filename="src/menu.cpp" />
+		<Unit filename="src/menu.h" />
 		<Unit filename="src/plat/plat_gp2x.cpp" />
 		<Unit filename="src/plat/plat_gp2x.h" />
 		<Unit filename="src/plat/plat_sdl.cpp" />
 		<Unit filename="src/plat/plat_sdl.h" />
+		<Unit filename="src/platform.cpp" />
+		<Unit filename="src/platform.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
