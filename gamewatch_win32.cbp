@@ -36,26 +36,38 @@
 			<Add directory="src" />
 			<Add directory="$(#boost.include)" />
 			<Add directory="$(#sdl_mixer.include)" />
+			<Add directory="$(#sdl_ttf.include)" />
+			<Add directory="$(#sdl_gfx.include)" />
 		</Compiler>
 		<Linker>
 			<Add library="SDL" />
 			<Add library="SDLmain" />
 			<Add library="SDL_mixer" />
 			<Add library="SDL_image" />
+			<Add library="SDL_ttf" />
+			<Add library="SDL_gfx" />
 			<Add library="boost_filesystem-$(#boost.suffix)" />
 			<Add directory="$(#sdl.lib)" />
 			<Add directory="$(#sdl_image.lib)" />
 			<Add directory="$(#boost.lib)" />
 			<Add directory="$(#sdl_mixer.lib)" />
+			<Add directory="$(#sdl_ttf.lib)" />
+			<Add directory="$(#sdl_gfx.lib)" />
 		</Linker>
 		<Unit filename="src\device.cpp" />
 		<Unit filename="src\device.h" />
 		<Unit filename="src\devices\dev_monkey.cpp" />
 		<Unit filename="src\devices\dev_monkey.h" />
+		<Unit filename="src\gamelist.cpp" />
+		<Unit filename="src\gamelist.h" />
 		<Unit filename="src\gamewatch.cpp" />
 		<Unit filename="src\gwdefs.h" />
+		<Unit filename="src\menu.cpp" />
+		<Unit filename="src\menu.h" />
 		<Unit filename="src\plat\plat_sdl.cpp" />
 		<Unit filename="src\plat\plat_sdl.h" />
+		<Unit filename="src\platform.cpp" />
+		<Unit filename="src\platform.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

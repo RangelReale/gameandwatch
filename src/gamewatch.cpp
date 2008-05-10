@@ -10,6 +10,8 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
+#include "gamelist.h"
+#include "menu.h"
 
 #ifndef WIN32
 int main(int argc, char** argv)
@@ -26,14 +28,22 @@ int WinMain(
 #ifdef GP2X
         GW_PlatformGP2X platform;
 #else
-        GW_PlatformSDL platform(640, 480);
+        GW_PlatformSDL platform(320, 240);
 #endif
         platform.initialize();
 
-        GW_Game_Monkey g_monkey;
-        GW_Device device(&platform);
 
-        device.Run(&g_monkey);
+        GW_GameList gamelist;
+
+        GW_Menu menu(&platform, &gamelist);
+        menu.Run();
+
+/*
+        GW_Game *game=gamelist.get(0)->create();
+        GW_Device device(&platform);
+        device.Run(game);
+        delete game;
+*/
 
         platform.finalize();
     } catch (GW_Exception &e) {

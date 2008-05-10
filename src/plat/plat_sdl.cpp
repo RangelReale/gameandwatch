@@ -1,7 +1,9 @@
 #include <ctime>
 #include "plat/plat_sdl.h"
 #include "gwdefs.h"
+#include <boost/filesystem.hpp>
 
+namespace bf = boost::filesystem;
 
 //////////////////////////////////////////
 ////
@@ -21,6 +23,17 @@ GW_PlatformSDL_Image::GW_PlatformSDL_Image(const string &filename, GW_Platform_R
 GW_PlatformSDL_Image::~GW_PlatformSDL_Image()
 {
     SDL_FreeSurface(surface_);
+}
+
+bool GW_PlatformSDL_Image::resize_fit(int w, int h)
+{
+    SDL_Surface *news=zoomSurface(surface_, 0.4, 0.4, 0);
+    if (news)
+    {
+        SDL_FreeSurface(surface_);
+        surface_=news;
+    }
+    return news!=NULL;
 }
 
 //////////////////////////////////////////
@@ -69,6 +82,9 @@ void GW_PlatformSDL::initialize()
         if ( Mix_OpenAudio(22050, AUDIO_S16SYS, 1, audiobufsize_get()) < 0)
             throw GW_Exception(string("Unable to init SDL_mixer: "+string(Mix_GetError())));
 
+        if ( TTF_Init() < 0 )
+            throw GW_Exception(string("Unable to init SDL_ttf: "+string(TTF_GetError())));
+
         Mix_AllocateChannels(6);
         sound_volume(75);
 
@@ -87,6 +103,11 @@ void GW_PlatformSDL::initialize()
 
         SDL_WM_SetCaption("Game & Watch simulator - by Hitnrun & Madrigal", NULL);
 
+        // load font
+        font_=TTF_OpenFont( bf::path( bf::path(platformdata_get() ) / "andalemo.ttf" ).string().c_str(), fontsize_get() );
+        if (!font_)
+            throw GW_Exception(string("Unable to load font: "+string(TTF_GetError())));
+
         initialized_=true;
     }
 }
@@ -97,7 +118,11 @@ void GW_PlatformSDL::finalize()
     {
         custom_finalize();
 
+        TTF_CloseFont(font_);
+        TTF_Quit();
+
         Mix_CloseAudio();
+
         SDL_Quit();
 
         initialized_=false;
@@ -174,9 +199,71 @@ void GW_PlatformSDL::draw_image(GW_Platform_Image *image, int x, int y)
         &srcpos, screen_, &spos);
 }
 
+void GW_PlatformSDL::draw_line(int x1, int y1, int x2, int y2,
+    GW_Platform_RGB *color)
+{
+    GW_PLATFORM_RGB(lcolor,255,255,255);
+    if (color) lcolor=*color;
+    lineRGBA(screen_, x1, y1, x2, y2, lcolor.r, lcolor.g, lcolor.b, 255);
+}
+
+void GW_PlatformSDL::draw_rectangle(int x1, int y1, int x2, int y2,
+    GW_Platform_RGB *forecolor, GW_Platform_RGB *backcolor)
+{
+    if (forecolor || (!forecolor && !backcolor))
+    {
+        GW_PLATFORM_RGB(lcolor,255,255,255);
+        if (forecolor) lcolor=*forecolor;
+        rectangleRGBA(screen_, x1, y1, x2, y2, lcolor.r, lcolor.g, lcolor.b, 255);
+    }
+    if (backcolor)
+    {
+        boxRGBA(screen_, x1, y1, x2, y2, backcolor->r, backcolor->g, backcolor->b, 255);
+    }
+}
+
+
 void GW_PlatformSDL::draw_flip()
 {
     SDL_Flip(screen_);
+}
+
+void GW_PlatformSDL::text_draw(int x, int y, const string &text,
+    GW_Platform_RGB *color)
+{
+    SDL_Surface *tsurf;
+    SDL_Color tcolor={255,255,255};
+    if (color)
+    {
+        tcolor.r=color->r; tcolor.g=color->g; tcolor.b=color->b;
+    }
+
+    SDL_Rect tpos;
+    tpos.x=x; tpos.y=y;
+    tsurf=TTF_RenderText_Solid(font_, text.c_str(), tcolor);
+    if (tsurf)
+        SDL_BlitSurface(tsurf, NULL, screen_, &tpos);
+}
+
+int GW_PlatformSDL::text_fontheight()
+{
+    return TTF_FontLineSkip(font_);
+}
+
+int GW_PlatformSDL::text_width(const string &text)
+{
+    int s;
+    if (TTF_SizeText(font_, text.c_str(), &s, NULL) == 0)
+        return s;
+    return -1;
+}
+
+int GW_PlatformSDL::text_height(const string &text)
+{
+    int s;
+    if (TTF_SizeText(font_, text.c_str(), NULL, &s) == 0)
+        return s;
+    return -1;
 }
 
 void GW_PlatformSDL::sound_play(GW_Platform_Sound *sound)

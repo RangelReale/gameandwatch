@@ -239,33 +239,23 @@ private:
     bool changed_;
 };
 
-/*
-class GW_Platform
+class GW_Game_Info
 {
 public:
-    GW_Platform() : device_(NULL) {}
-    virtual ~GW_Platform() { }
+    GW_Game_Info(const string &id, const string &description,
+        const string &datapath, const string &bgimg) :
+        id_(id), description_(description), datapath_(datapath), bgimg_(bgimg) {}
+    virtual ~GW_Game_Info() {}
 
-    virtual int sdlinit(int flags) { return flags; }
-
-    virtual void initialize() {}
-    virtual void finalize() {}
-
-    void device_set(GW_Device *device) { device_=device; }
-
-    void process_event(SDL_Event *event) { if (device_) _process_event(event); }
-    virtual int width_get() = 0;
-    virtual int height_get() = 0;
-    virtual unsigned int timems_get() { return SDL_GetTicks(); }
-    virtual int audiobufsize_get() { return 2048; }
-protected:
-    GW_Device *device_get() { return device_; }
-
-    virtual void _process_event(SDL_Event *event) = 0;
+    const string &id() { return id_; }
+    const string &description() { return description_; }
+    const string &datapath() { return datapath_; }
+    const string &bgimg() { return bgimg_; }
+    string bgimg_path();
+    virtual GW_Game *create() = 0;
 private:
-    GW_Device *device_;
+    string id_, description_, datapath_, bgimg_;
 };
-*/
 
 class GW_Device
 {

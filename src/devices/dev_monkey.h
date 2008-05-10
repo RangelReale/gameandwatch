@@ -6,6 +6,18 @@
 
 using namespace std;
 
+
+
+class GW_Game_Monkey_Info : public GW_Game_Info
+{
+public:
+    GW_Game_Monkey_Info() :
+        GW_Game_Info("monkey", "Game & Watch - Monkey", "monkey", "bg.bmp") {}
+
+    virtual GW_Game *create();
+};
+
+
 typedef struct GW_Game_Monkey_Item
 {
     unsigned short id;

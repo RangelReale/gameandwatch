@@ -1,5 +1,10 @@
 #include "devices/dev_monkey.h"
 
+GW_Game *GW_Game_Monkey_Info::create()
+{
+    return new GW_Game_Monkey;
+}
+
 GW_Game_Monkey::GW_Game_Monkey() :
     GW_Game(), mode_(MODE_OFF), gameover_(true)
 {

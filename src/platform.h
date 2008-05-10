@@ -12,6 +12,9 @@ using namespace std;
 #define GW_PLATFORM_RECT(ps, px, py, pw, ph) \
     GW_Platform_Rect ps; ps.x=px; ps.y=py; ps.w=pw; ps.h=ph;
 
+#define MAKE_GW_PLATFORM_RECT(ps, px, py, pw, ph) \
+    ps.x=px; ps.y=py; ps.w=pw; ps.h=ph;
+
 typedef struct GW_Platform_RGB
 {
     unsigned char r, g, b;
@@ -70,6 +73,8 @@ class GW_Platform_Image
 public:
     GW_Platform_Image() {}
     virtual ~GW_Platform_Image() {};
+
+    virtual bool resize_fit(int w, int h) { return false; }
 };
 
 class GW_Platform_Sound
@@ -90,6 +95,7 @@ public:
 
     virtual int width_get() = 0;
     virtual int height_get() = 0;
+    virtual string platformdata_get() { return "data/gamewatch"; }
 
     virtual unsigned int ticks_get() = 0;
     virtual unsigned int time_ms_get() = 0;
@@ -99,7 +105,17 @@ public:
 
     virtual void draw_clear() = 0;
     virtual void draw_image(GW_Platform_Image *image, int x, int y) = 0;
+    virtual void draw_line(int x1, int y1, int x2, int y2,
+        GW_Platform_RGB *color = NULL) = 0;
+    virtual void draw_rectangle(int x1, int y1, int x2, int y2,
+        GW_Platform_RGB *forecolor = NULL, GW_Platform_RGB *backcolor = NULL) = 0;
     virtual void draw_flip() = 0;
+
+    virtual void text_draw(int x, int y, const string &text,
+        GW_Platform_RGB *color = NULL) = 0;
+    virtual int text_fontheight() = 0;
+    virtual int text_width(const string &text) = 0;
+    virtual int text_height(const string &text) = 0;
 
     virtual void sound_play(GW_Platform_Sound *sound) = 0;
     virtual unsigned short sound_volume(unsigned short volume) = 0;

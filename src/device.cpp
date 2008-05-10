@@ -1,10 +1,8 @@
-#include "boost/filesystem.hpp"
-
 #include <iostream>
 #include "gwdefs.h"
 #include "device.h"
+#include <boost/filesystem.hpp>
 
-//using boost::filesystem;
 namespace bf = boost::filesystem;
 
 
@@ -345,6 +343,16 @@ GW_Platform *GW_Game::platform_get()
 
 //////////////////////////////////////////
 ////
+//// GW_Game_Info
+////
+//////////////////////////////////////////
+string GW_Game_Info::bgimg_path()
+{
+    return bf::path( bf::path("data") / datapath_ / "image" / bgimg_ ).string();
+}
+
+//////////////////////////////////////////
+////
 //// GW_Device
 ////
 //////////////////////////////////////////
@@ -412,8 +420,6 @@ void GW_Device::Run(GW_Game *game)
             // draw bg
             if (game_->bgimage_get()>-1)
                 platform_->draw_image(game_->data().image_get(game_->bgimage_get())->data_get(), offsetx_, offsety_);
-
-            //SDL_BlitSurface(bg_, &bgsrc_, screen_, &bgdst_);
 
             draw_game();
 
