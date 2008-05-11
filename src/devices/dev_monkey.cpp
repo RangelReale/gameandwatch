@@ -579,7 +579,7 @@ void GW_Game_Monkey::clock_update(int mode)
         setnumber(0, 3, 4);
     } else if (mode==MODE_DATE) {
         // show day and month
-        setnumber(time.d, 1, 2);
+        setnumber(time.d, 1, 2, false);
         setnumber(time.m, 3, 4, false);
     }
 }

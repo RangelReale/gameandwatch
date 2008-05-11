@@ -38,10 +38,7 @@ bool GW_PlatformGP2X::process_event(GW_Platform_GameType gametype,
                 event->data=GPK_LEFT;
                 break;
             case GP2X_VK_RIGHT:
-                if (gametype!=GPG_LEFTRIGHT)
-                    event->data=GPK_RIGHT;
-                else
-                    proc=false;
+                event->data=GPK_RIGHT;
                 break;
             case GP2X_VK_UP:
                 event->data=GPK_UP;

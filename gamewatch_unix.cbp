@@ -41,6 +41,8 @@
 			<Add library="SDLmain" />
 			<Add library="SDL_image" />
 			<Add library="SDL_mixer" />
+			<Add library="SDL_gfx" />
+			<Add library="SDL_ttf" />
 			<Add library="boost_filesystem-$(#boost.suffix)" />
 			<Add directory="$(#sdl.lib)" />
 			<Add directory="$(#sdl_image.lib)" />
@@ -51,8 +53,12 @@
 		<Unit filename="src/device.h" />
 		<Unit filename="src/devices/dev_monkey.cpp" />
 		<Unit filename="src/devices/dev_monkey.h" />
+		<Unit filename="src/gamelist.cpp" />
+		<Unit filename="src/gamelist.h" />
 		<Unit filename="src/gamewatch.cpp" />
 		<Unit filename="src/gwdefs.h" />
+		<Unit filename="src/menu.cpp" />
+		<Unit filename="src/menu.h" />
 		<Unit filename="src/plat/plat_sdl.cpp" />
 		<Unit filename="src/plat/plat_sdl.h" />
 		<Unit filename="src/platform.cpp" />
