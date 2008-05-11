@@ -49,6 +49,7 @@ public:
     virtual int height_get() { return height_; }
     virtual unsigned int ticks_get();
     virtual unsigned int time_ms_get();
+    virtual GW_Platform_Time time_get();
 
     virtual bool event(GW_Platform_GameType gametype,
         GW_Platform_Event *event);
@@ -69,6 +70,7 @@ public:
 
     virtual void sound_play(GW_Platform_Sound *sound);
     virtual unsigned short sound_volume(unsigned short volume);
+    virtual void sound_stop_all();
 
     virtual GW_Platform_Image *image_load(const string &filename, GW_Platform_RGB *tcolor = NULL);
     virtual GW_Platform_Sound *sound_load(const string &filename);

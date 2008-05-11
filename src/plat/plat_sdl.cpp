@@ -150,6 +150,23 @@ unsigned int GW_PlatformSDL::time_ms_get()
     //return SDL_GetTicks();
 }
 
+GW_Platform_Time GW_PlatformSDL::time_get()
+{
+    time_t date;
+    struct tm  *ts;
+    time(&date);
+    ts=localtime(&date);
+
+    GW_Platform_Time ret;
+    ret.d=ts->tm_mday;
+    ret.m=ts->tm_mon+1;
+    ret.y=ts->tm_year;
+    ret.h=ts->tm_hour;
+    ret.n=ts->tm_min;
+    ret.s=ts->tm_sec;
+    return ret;
+}
+
 bool GW_PlatformSDL::event(GW_Platform_GameType gametype,
     GW_Platform_Event *event)
 {
@@ -274,6 +291,11 @@ int GW_PlatformSDL::text_height(const string &text)
 void GW_PlatformSDL::sound_play(GW_Platform_Sound *sound)
 {
     Mix_PlayChannel(-1, dynamic_cast<GW_PlatformSDL_Sound*>(sound)->sample_get(), 0);
+}
+
+void GW_PlatformSDL::sound_stop_all()
+{
+    Mix_HaltChannel(-1);
 }
 
 unsigned short GW_PlatformSDL::sound_volume(unsigned short volume)

@@ -134,6 +134,7 @@ GW_Game_Monkey::GW_Game_Monkey() :
         timer_add(TMR_HIT, 100, false)->
         timer_add(TMR_REPRISE, 1100, false)->
         timer_add(TMR_GAMEOVER, 100, false)->
+        timer_add(TMR_GAMEOVERSOUND, 3500, false)->
         timer_add(TMR_GAMEOVERWAIT, 30000, false);
 }
 
@@ -150,7 +151,10 @@ void GW_Game_Monkey::Event(GW_Platform_Event *event)
                 SetMode(MODE_GAMEA);
             break;
         case GPK_GAMEB:
-            SetMode(MODE_GAMEB);
+            if (GetMode()==MODE_IDLE)
+                SetMode(MODE_TIME1);
+            else
+                SetMode(MODE_GAMEB);
             break;
         case GPK_TIME:
             if (GetMode()==MODE_TIME1)
@@ -161,7 +165,7 @@ void GW_Game_Monkey::Event(GW_Platform_Event *event)
                 SetMode(MODE_CHRONO);
             else if (GetMode()==MODE_CHRONO)
                 SetMode(MODE_DATE);
-            else
+            else if (GetMode()==MODE_DATE||gameover_)
                 SetMode(MODE_TIME1);
             break;
         case GPK_LEFT:
@@ -209,10 +213,14 @@ void GW_Game_Monkey::do_timer(int timerid)
         // game is over: play "Game Over" tune, then freeze for 30 seconds, and finally
         // change mode to "Time 1", if no button is pressed
         data_playsound(SND_GAMEOVER);
+        data_starttimer(TMR_GAMEOVERSOUND);
         data_starttimer(TMR_GAMEOVERWAIT);
         break;
-    case TMR_GAMEOVERWAIT:
+    case TMR_GAMEOVERSOUND:
         gameover_=true;
+        break;
+    case TMR_GAMEOVERWAIT:
+        //gameover_=true;
         SetMode(MODE_TIME1);
         break;
     }
@@ -220,7 +228,7 @@ void GW_Game_Monkey::do_timer(int timerid)
 
 void GW_Game_Monkey::do_update()
 {
-    if (GetMode()==MODE_TIME1 || GetMode()==MODE_TIME2)
+    if (GetMode()==MODE_TIME1 || GetMode()==MODE_TIME2 || GetMode()==MODE_ALARM || GetMode()==MODE_DATE)
         clock_update();
 }
 
@@ -420,7 +428,7 @@ void GW_Game_Monkey::level_update(int mode)
 {
     if (mode==-1) mode=GetMode();
     int i=score_;
-    while (i>199) i+=200;
+    while (i>199) i-=200;
     switch (mode)
     {
     case MODE_GAMEA:
@@ -482,11 +490,13 @@ bool GW_Game_Monkey::do_setmode(int mode)
     {
     case MODE_OFF:
         data_stopalltimers();
+        data_stopallsounds();
         data_hideall();
         break;
     case MODE_IDLE:
         data_stopalltimers();
         data_showall();
+        gameover_=true;
         break;
     case MODE_GAMEA:
     case MODE_GAMEB:
@@ -497,27 +507,31 @@ bool GW_Game_Monkey::do_setmode(int mode)
         data_stopalltimers();
         data_hideall();
         data().position_get(PS_TIME1)->show();
-        clock_update();
+        clock_update(mode);
         break;
     case MODE_TIME2:
         data_stopalltimers();
         data_hideall();
         data().position_get(PS_TIME2)->show();
+        clock_update(mode);
         break;
     case MODE_ALARM:
         data_stopalltimers();
         data_hideall();
         data().position_get(PS_ALARM)->show();
+        clock_update(mode);
         break;
     case MODE_CHRONO:
         data_stopalltimers();
         data_hideall();
         data().position_get(PS_CHRONO)->show();
+        clock_update(mode);
         break;
     case MODE_DATE:
         data_stopalltimers();
         data_hideall();
         data().position_get(PS_DATE)->show();
+        clock_update(mode);
         break;
     default:
         return false;
@@ -527,26 +541,50 @@ bool GW_Game_Monkey::do_setmode(int mode)
 }
 
 
-void GW_Game_Monkey::clock_update()
+void GW_Game_Monkey::clock_update(int mode)
 {
+    if (mode==-1) mode=GetMode();
+
     // display clock
     data().position_get(PS_NUMBER, 1)->show();
     data().position_get(PS_NUMBER, 2)->show();
     data().position_get(PS_NUMBER, 3)->show();
     data().position_get(PS_NUMBER, 4)->show();
 
-    GW_Device::devtime_t time;
-    device_get()->GetTime(&time);
 
-    data().position_get(PS_SEMICOLON)->visible_set(time.s % 2 == 0);
-    data().position_get(PS_AM)->visible_set(time.h<12);
-    data().position_get(PS_PM)->visible_set(time.h>=12);
+    GW_Platform_Time time=platform_get()->time_get();
 
-    setnumber((time.h>12?time.h-12:time.h), 1, 2);
-    setnumber(time.m, 3, 4);
+    //GW_Device::devtime_t time;
+    //device_get()->GetTime(&time);
+
+    if (mode!=MODE_CHRONO)
+        data().position_get(PS_SEMICOLON)->visible_set(time.s % 2 == 0);
+    if (mode==MODE_TIME1 || mode==MODE_TIME2)
+    {
+        // show current time
+        data().position_get(PS_AM)->visible_set(time.h<12);
+        data().position_get(PS_PM)->visible_set(time.h>=12);
+
+        setnumber((time.h>12?time.h-12:time.h), 1, 2, false);
+        setnumber(time.n, 3, 4);
+    } else if (mode==MODE_ALARM) {
+        // show 12:00 AM
+        data().position_get(PS_AM)->show();
+        setnumber(12, 1, 2);
+        setnumber(0, 3, 4);
+    } else if (mode==MODE_CHRONO) {
+        // show 00:00
+        data().position_get(PS_SEMICOLON)->show();
+        setnumber(0, 1, 2);
+        setnumber(0, 3, 4);
+    } else if (mode==MODE_DATE) {
+        // show day and month
+        setnumber(time.d, 1, 2);
+        setnumber(time.m, 3, 4, false);
+    }
 }
 
-void GW_Game_Monkey::setnumber(int n, int ps1, int ps2)
+void GW_Game_Monkey::setnumber(int n, int ps1, int ps2, bool leadzero)
 {
     // set a number on the display
     if (n>=0 && n<=99)
@@ -558,7 +596,10 @@ void GW_Game_Monkey::setnumber(int n, int ps1, int ps2)
         }
         else
         {
-            data().position_get(PS_NUMBER, ps1)->image_set(IM_NUMBER, 0);
+            if (leadzero)
+                data().position_get(PS_NUMBER, ps1)->image_set(IM_NUMBER, 0);
+            else
+                data().position_get(PS_NUMBER, ps1)->hide();
             data().position_get(PS_NUMBER, ps2)->image_set(IM_NUMBER, n);
         }
     }

@@ -70,6 +70,13 @@ enum GW_Platform_GameType
     GPG_4DIAG,
 };
 
+typedef struct GW_Platform_Time
+{
+    short d, m, y;
+    short h, n, s;
+};
+
+
 // constants
 const GW_Platform_RGB GW_RGB_BLACK = {0, 0, 0};
 
@@ -109,6 +116,7 @@ public:
 
     virtual unsigned int ticks_get() = 0;
     virtual unsigned int time_ms_get() = 0;
+    virtual GW_Platform_Time time_get() = 0;
 
     virtual bool event(GW_Platform_GameType gametype,
         GW_Platform_Event *event) = 0;
@@ -130,6 +138,7 @@ public:
 
     virtual void sound_play(GW_Platform_Sound *sound) = 0;
     virtual unsigned short sound_volume(unsigned short volume) = 0;
+    virtual void sound_stop_all() = 0;
 
     virtual GW_Platform_Image *image_load(const string &filename, GW_Platform_RGB *tcolor = NULL) = 0;
     virtual GW_Platform_Sound *sound_load(const string &filename) = 0;

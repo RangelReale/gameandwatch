@@ -93,13 +93,14 @@ class GW_GameData_Timer : public GW_GameData_Item
 public:
     GW_GameData_Timer(GW_GameData *gdata, int timerid, unsigned int time, bool autoloop) :
         GW_GameData_Item(gdata),
-        timerid_(timerid), time_(time), autoloop_(autoloop), curtime_(0) {}
+        timerid_(timerid), time_(time), autoloop_(autoloop), curtime_(0), delay_(0) {}
     ~GW_GameData_Timer() {}
 
     void start(unsigned int time = 0);
     void stop();
     bool started();
     bool finished();
+    void loop();
     void delay(unsigned int time);
 
     int timerid() { return timerid_; }
@@ -111,7 +112,7 @@ private:
     int timerid_;
     unsigned int time_;
     bool autoloop_;
-    unsigned int curtime_;
+    unsigned int curtime_, delay_;
 };
 
 class GW_GameData
@@ -218,6 +219,7 @@ protected:
     void data_showall();
     void data_hideall();
     void data_playsound(int soundid);
+    void data_stopallsounds();
     void data_starttimer(int timerid, unsigned int time = 0);
     void data_stopalltimers();
     void data_delaytimer(int timerid, unsigned int time);
@@ -269,7 +271,8 @@ class GW_Device
 public:
     typedef struct devtime_t
     {
-        short h, m, s;
+        short d, m, y;
+        short h, n, s;
     };
 
     GW_Device(GW_Platform *platform);

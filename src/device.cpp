@@ -49,6 +49,7 @@ void GW_GameData_Timer::start(unsigned int time)
 {
     if (time>0)
         time_=time;
+    delay_=0;
     curtime_=platform_get()->ticks_get();
 }
 
@@ -66,8 +67,9 @@ bool GW_GameData_Timer::finished()
 {
     bool ret=
         started() &&
-        (curtime_ <= platform_get()->ticks_get()) &&
-        (platform_get()->ticks_get()-curtime_ > time_);
+        (curtime_+delay_ <= platform_get()->ticks_get()) &&
+        (platform_get()->ticks_get()-curtime_+delay_ > time_);
+/*
     if (ret)
     {
         if (!autoloop_)
@@ -75,13 +77,27 @@ bool GW_GameData_Timer::finished()
         else
             curtime_=platform_get()->ticks_get();
     }
+*/
     return ret;
+}
+
+void GW_GameData_Timer::loop()
+{
+    if (finished())
+    {
+        delay_=0;
+        if (!autoloop_)
+            curtime_=0;
+        else
+            curtime_=platform_get()->ticks_get();
+    }
 }
 
 void GW_GameData_Timer::delay(unsigned int time)
 {
     if (started())
-        curtime_+=time;
+        delay_+=time;
+        //curtime_+=time;
 }
 
 //////////////////////////////////////////
@@ -277,6 +293,11 @@ void GW_Game::data_playsound(int soundid)
     platform_get()->sound_play(data_.sound_get(soundid)->data_get());
 }
 
+void GW_Game::data_stopallsounds()
+{
+    platform_get()->sound_stop_all();
+}
+
 void GW_Game::data_starttimer(int timerid, unsigned int time)
 {
     data().timer_get(timerid)->start(time);
@@ -318,7 +339,10 @@ void GW_Game::Update()
         ti!=data().timers_list().end(); ti++)
     {
         if (ti->second->finished())
+        {
             do_timer(ti->second->timerid());
+            ti->second->loop();
+        }
     }
 
     do_update();
