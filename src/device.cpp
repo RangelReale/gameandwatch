@@ -67,8 +67,8 @@ bool GW_GameData_Timer::finished()
 {
     bool ret=
         started() &&
-        (curtime_+delay_ <= platform_get()->ticks_get()) &&
-        (platform_get()->ticks_get()-curtime_+delay_ > time_);
+        (curtime_ <= platform_get()->ticks_get()) &&
+        (platform_get()->ticks_get()-curtime_ > time_);
 /*
     if (ret)
     {
@@ -85,11 +85,11 @@ void GW_GameData_Timer::loop()
 {
     if (finished())
     {
-        delay_=0;
         if (!autoloop_)
             curtime_=0;
         else
-            curtime_=platform_get()->ticks_get();
+            curtime_=platform_get()->ticks_get()+delay_;
+        delay_=0;
     }
 }
 

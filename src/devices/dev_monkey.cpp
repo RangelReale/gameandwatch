@@ -326,7 +326,7 @@ void GW_Game_Monkey::game_tick()
         score_update();
         level_update();
         iGot=char_position_;
-        data_delaytimer(TMR_GAME, 40); // when hit, delay the game a little to allow for moving
+        data_delaytimer(TMR_GAME, 60); // when hit, delay the game a little to allow for moving
     }
 
     // moves and generates items
