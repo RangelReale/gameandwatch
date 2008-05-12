@@ -54,6 +54,9 @@
 			<Add directory="$(#sdl_ttf.lib)" />
 			<Add directory="$(#sdl_gfx.lib)" />
 		</Linker>
+		<Unit filename="res\gwresources.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
 		<Unit filename="src\device.cpp" />
 		<Unit filename="src\device.h" />
 		<Unit filename="src\devices\dev_monkey.cpp" />

@@ -6,6 +6,10 @@
 #include <SDL_ttf.h>
 #include <SDL_gfxPrimitives.h>
 #include <SDL_rotozoom.h>
+#ifdef WIN32
+#include <SDL_syswm.h>
+#include <windows.h>
+#endif //WIN32
 
 #include "platform.h"
 
@@ -85,11 +89,17 @@ protected:
     virtual bool process_event(GW_Platform_GameType gametype,
         SDL_Event *sdlevent, GW_Platform_Event *event);
 private:
+    void plat_init();
+    void plat_finish();
+
     int width_, height_;
     bool initialized_;
 
     TTF_Font *font_;
     SDL_Surface *screen_;
+#ifdef WIN32
+    HICON icon_;
+#endif
 };
 
 #endif //H__PLAT_SDL__H

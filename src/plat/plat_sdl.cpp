@@ -98,6 +98,9 @@ void GW_PlatformSDL::initialize()
         // make sure SDL cleans up before exit
         atexit(SDL_Quit);
 
+        // set application icon
+        plat_init();
+
         // create a new window
         screen_ = SDL_SetVideoMode(width_get(), height_get(), 16,
                                                SDL_HWSURFACE|SDL_DOUBLEBUF);
@@ -122,6 +125,9 @@ void GW_PlatformSDL::finalize()
     if (initialized_)
     {
         custom_finalize();
+
+        // set application icon
+        plat_finish();
 
         TTF_CloseFont(font_);
         TTF_Quit();
@@ -382,4 +388,34 @@ bool GW_PlatformSDL::process_event(GW_Platform_GameType gametype,
         return false;
     }
     return true;
+}
+
+void GW_PlatformSDL::plat_init()
+{
+#ifdef WIN32
+    HWND hwnd;
+
+    HINSTANCE handle = ::GetModuleHandle(NULL);
+    icon_ = ::LoadIcon(handle, "GWICON");
+
+    SDL_SysWMinfo wminfo;
+    SDL_VERSION(&wminfo.version)
+    if (SDL_GetWMInfo(&wminfo) != 1)
+    {
+    // error: wrong SDL version
+    }
+
+    hwnd = wminfo.window;
+
+    ::SetClassLong(hwnd, GCL_HICON, (LONG) icon_);
+
+    //oldProc = (WNDPROC) ::SetWindowLong(hwnd, GWL_WNDPROC, (LONG) WndProc);
+#endif //WIN32
+}
+
+void GW_PlatformSDL::plat_finish()
+{
+#ifdef WIN32
+    ::DestroyIcon(icon_);
+#endif //WIN32
 }
