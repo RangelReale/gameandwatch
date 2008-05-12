@@ -1,0 +1,21 @@
+Game & Watch Simulators 0.1 - GP2X port
+=======================================
+http://sourceforge.net/projects/gameandwatch/
+
+The gp2x port should work the same as the desktop version, but as the screen is only 320x240, the screen is scrolled to the game screen area, no resizing is done.
+
+Menu keys:
+	ARROW KEYS		- Move selection
+	SELECT			- Select game
+
+In-game keys:
+	SELECT 			- Turn on/off toggle
+	START/HOME		- Exit
+	L			- Game A
+	R			- Game B
+	A			- Time
+	LEFT ARROW		- Move left
+	RIGHT ARROW/B		- Move right
+	Vol +			- Volume up
+	Vol -			- Volume down
+

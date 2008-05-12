@@ -1,0 +1,41 @@
+Game & Watch Simulators 0.1
+===========================
+http://sourceforge.net/projects/gameandwatch/
+
+This is a generic engine for simulation of Game & Watch-like games, created by Hitnrun, starting with ports of the Madrigal Game & Watch Simulators (http://www.madrigaldesign.it/sim/), with permission. It is designed to run anywhere SDL is available, with emphasis in handheld machines.
+
+As for the Madrigal simulators, the simulation is aimed to be as close as possible to the real machine, simulating on-off, ACL mode, time modes, etc. Alarm and chrono modes only display default data, as there is not enough motivation for its simulation. Currently missing but in the TODO list is hiscore keeping.
+
+For the first version, there is a port of the "Time & Watch - Monkey" game.
+
+Menu keys:
+	ARROW KEYS		- Move selection
+	ENTER			- Select game
+
+In-game keys:
+	ENTER 			- Turn on
+	BACKSPACE		- Turn off
+	ESCAPE			- Exit
+	1			- Game A
+	2			- Game B
+	3			- Time
+	LEFT ARROW		- Move left
+	RIGHT ARROW		- Move right
+	+			- Volume up
+	-			- Volume down
+
+
+Hitnrun
+
+Credits
+=======
+- Hitnrun (rreale@bol.com.br) - Engine implementation, game ports, GP2X platform port
+- Madrigal (http://www.madrigaldesign.it/sim/) - Original simulators and images scanning, this simulator is based on his Delphi source code and images.
+
+Changelog
+=========
+
+0.1 (2008-05-12)
+----------------
+- Initial release, "Time & Watch - Monkey" implementation
+
