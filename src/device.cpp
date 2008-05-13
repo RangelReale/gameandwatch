@@ -153,6 +153,12 @@ GW_GameData *GW_GameData::position_add(int id, int index, int x, int y,
     return this;
 }
 
+GW_GameData *GW_GameData::position_change(int id, int index, int x, int y)
+{
+    position_get(id, index)->position_set(x, y);
+    return this;
+}
+
 GW_GameData *GW_GameData::sound_add(int id, const string &sound)
 {
     if (sound.empty())

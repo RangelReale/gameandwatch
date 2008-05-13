@@ -77,6 +77,7 @@ public:
     int imageindex_get() { return imageindex_; }
     void image_set(int imageid, int imageindex, bool doshow = false)
         { imageid_=imageid; imageindex_=imageindex; if (doshow) show(); Changed(); }
+    void position_set(int x, int y) { x_=x; y_=y; Changed(); }
 
     bool visible_get() { return visible_; }
     void visible_set(bool v) { visible_=v; Changed(); }
@@ -132,6 +133,7 @@ public:
     GW_GameData *position_add(int id, int index = GW_INDEX_DEFAULT, int x = 0, int y = 0,
         int imageid = -1, int imageindex = GW_INDEX_DEFAULT,
         const string &image = "", GW_Platform_RGB *tcolor = NULL);
+    GW_GameData *position_change(int id, int index = GW_INDEX_DEFAULT, int x = 0, int y = 0);
     GW_GameData *sound_add(int id, const string &sound);
     GW_GameData *timer_add(int timerid, unsigned int time, bool autoloop);
 
