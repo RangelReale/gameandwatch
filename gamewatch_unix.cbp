@@ -51,8 +51,14 @@
 		</Linker>
 		<Unit filename="src/device.cpp" />
 		<Unit filename="src/device.h" />
+		<Unit filename="src/devices/dev_defendo.cpp" />
+		<Unit filename="src/devices/dev_defendo.h" />
 		<Unit filename="src/devices/dev_monkey.cpp" />
 		<Unit filename="src/devices/dev_monkey.h" />
+		<Unit filename="src/devices/dev_pirate.cpp" />
+		<Unit filename="src/devices/dev_pirate.h" />
+		<Unit filename="src/devices/deveng_vtech_monkey.cpp" />
+		<Unit filename="src/devices/deveng_vtech_monkey.h" />
 		<Unit filename="src/gamelist.cpp" />
 		<Unit filename="src/gamelist.h" />
 		<Unit filename="src/gamewatch.cpp" />
