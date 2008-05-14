@@ -285,7 +285,7 @@ public:
     void MoveBGCenter();
 
     bool IsOn() { return game_->IsOn(); }
-    void TurnOn() { game_->TurnOn(); curtime_=platform_->ticks_get(); }
+    void TurnOn() { MoveBGCenter(); game_->TurnOn(); curtime_=platform_->ticks_get(); }
     void TurnOff() { game_->TurnOff(); }
     void SetMode(int mode) { game_->SetMode(mode); }
     void Volume(int volume);

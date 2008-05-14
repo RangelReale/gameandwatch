@@ -7,8 +7,8 @@ GW_GameEngine_VTech_Monkey::GW_GameEngine_VTech_Monkey(bool havetarget) :
 
     gamepath_set("monkey");
     size_set(561, 347);
-    // game screen position
 
+    // game screen position
     GW_PLATFORM_RECT(gr, 152, 53, 257, 192);
     gamerect_set(gr);
 

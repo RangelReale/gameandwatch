@@ -493,7 +493,43 @@ bool GW_Device::process_event(GW_Platform_Event *event)
     default:
         break;
     }
+
     game_->Event(event);
+
+    // move screen
+    if (!IsOn())
+    {
+        switch (event->id)
+        {
+        case GPE_KEYDOWN:
+            switch (event->data)
+            {
+            case  GPK_UP:
+                MoveBGOffset(0, 15);
+                break;
+            case  GPK_DOWN:
+                MoveBGOffset(0, -15);
+                break;
+            case  GPK_LEFT:
+                MoveBGOffset(15, 0);
+                break;
+            case  GPK_RIGHT:
+                MoveBGOffset(-15, 0);
+                break;
+            case GPK_GAMEA:
+            case GPK_GAMEB:
+            case GPK_TIME:
+                MoveBGCenter();
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
     return true;
 }
 
@@ -513,6 +549,7 @@ void GW_Device::MoveBG(int xpos, int ypos)
     offsetx_=xpos;
     offsety_=ypos;
     CalculateBGOffset();
+    game_->Changed();
 }
 
 void GW_Device::MoveBGOffset(int xoff, int yoff)
@@ -520,6 +557,7 @@ void GW_Device::MoveBGOffset(int xoff, int yoff)
     offsetx_+=xoff;
     offsety_+=yoff;
     CalculateBGOffset();
+    game_->Changed();
 }
 
 void GW_Device::MoveBGCenter()
@@ -528,6 +566,7 @@ void GW_Device::MoveBGCenter()
     offsetx_=((platform_->width_get()-game_->gamerect_get().w)/2)-game_->gamerect_get().x;
     offsety_=((platform_->height_get()-game_->gamerect_get().h)/2)-game_->gamerect_get().y;
     CalculateBGOffset();
+    game_->Changed();
 }
 
 void GW_Device::GetTime(devtime_t *time)
