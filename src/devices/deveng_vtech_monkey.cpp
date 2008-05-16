@@ -1,7 +1,7 @@
 #include "devices/deveng_vtech_monkey.h"
 
-GW_GameEngine_VTech_Monkey::GW_GameEngine_VTech_Monkey(bool havetarget) :
-    GW_Game(), havetarget_(havetarget), mode_(MODE_OFF), gameover_(true)
+GW_GameEngine_VTech_Monkey::GW_GameEngine_VTech_Monkey(int options) :
+    GW_Game(), options_(options), mode_(MODE_OFF), gameover_(true)
 {
     // "MONKEY" is default
 
@@ -46,7 +46,7 @@ GW_GameEngine_VTech_Monkey::GW_GameEngine_VTech_Monkey(bool havetarget) :
         position_add(PS_ITEM_1, IDX_GOT, 207, 184, IM_ITEM_1, IDX_GOT, "im_item_1_got.bmp", &tcolor_img)->
         position_add(PS_ITEM_1, IDX_MISS, 210, 150, IM_ITEM_1, IDX_MISS, "im_item_1_miss.bmp", &tcolor_img)->
         position_add(PS_ITEM_1, IDX_HIT, 174, 134, IM_ITEM_1, 5); // same image as 5
-    if (havetarget_)
+    if ((options_&GO_HAVETARGET)==GO_HAVETARGET)
         data().
             position_add(PS_ITEM_1, IDX_TARGET, 189, 126, IM_ITEM_1, IDX_TARGET, "im_item_1_target.bmp", &tcolor_img);
     data().
@@ -58,7 +58,7 @@ GW_GameEngine_VTech_Monkey::GW_GameEngine_VTech_Monkey(bool havetarget) :
         position_add(PS_ITEM_2, IDX_GOT, 241, 187, IM_ITEM_2, IDX_GOT, "im_item_2_got.bmp", &tcolor_img)->
         position_add(PS_ITEM_2, IDX_MISS, 238, 158, IM_ITEM_2, IDX_MISS, "im_item_2_miss.bmp", &tcolor_img)->
         position_add(PS_ITEM_2, IDX_HIT, 270, 142, IM_ITEM_2, 5); // same image as 5
-    if (havetarget_)
+    if ((options_&GO_HAVETARGET)==GO_HAVETARGET)
         data().
             position_add(PS_ITEM_2, IDX_TARGET, 277, 134, IM_ITEM_2, IDX_TARGET, "im_item_2_target.bmp", &tcolor_img);
     data().
@@ -70,7 +70,7 @@ GW_GameEngine_VTech_Monkey::GW_GameEngine_VTech_Monkey(bool havetarget) :
         position_add(PS_ITEM_3, IDX_GOT, 310, 183, IM_ITEM_3, IDX_GOT, "im_item_3_got.bmp", &tcolor_img)->
         position_add(PS_ITEM_3, IDX_MISS, 316, 145, IM_ITEM_3, IDX_MISS, "im_item_3_miss.bmp", &tcolor_img)->
         position_add(PS_ITEM_3, IDX_HIT, 342, 138, IM_ITEM_3, 5);
-    if (havetarget_)
+    if ((options_&GO_HAVETARGET)==GO_HAVETARGET)
         data().
             position_add(PS_ITEM_3, IDX_TARGET, 351, 130, IM_ITEM_3, IDX_TARGET, "im_item_3_target.bmp", &tcolor_img);
 
@@ -82,17 +82,23 @@ GW_GameEngine_VTech_Monkey::GW_GameEngine_VTech_Monkey(bool havetarget) :
         position_add(PS_NUMBER, 4, 299, 61)->
         position_add(PS_SEMICOLON, 0, 280, 67, IM_SEMICOLON, 0, "im_time_semicolon.bmp", &tcolor_img);
 
-    for (int i=0; i<10; i++)
+    int nmax=10;
+    if ((options_&GO_NUMBERSEPARATED)==GO_NUMBERSEPARATED)
+        nmax=40;
+
+    for (int i=0; i<nmax; i++)
     {
-        sprintf(sname, "im_number_%d.bmp", i);
+        if ((options_&GO_NUMBERSEPARATED)==GO_NUMBERSEPARATED)
+            sprintf(sname, "im_number_%d_%d.bmp", (i/10)+1, i%10);
+        else
+            sprintf(sname, "im_number_%d.bmp", i);
         data().image_add(IM_NUMBER, i, sname, &tcolor_img);
     }
 
-    data().position_get(PS_NUMBER, 1)->image_set(IM_NUMBER, 8);
-    data().position_get(PS_NUMBER, 2)->image_set(IM_NUMBER, 8);
-    data().position_get(PS_NUMBER, 3)->image_set(IM_NUMBER, 8);
-    data().position_get(PS_NUMBER, 4)->image_set(IM_NUMBER, 8);
-
+    display_number(1, 8, false);
+    display_number(2, 8, false);
+    display_number(3, 8, false);
+    display_number(4, 8, false);
 
     // miss
     data().image_add(IM_MISS, 0, "im_miss.bmp", &tcolor_img);
@@ -254,7 +260,7 @@ void GW_GameEngine_VTech_Monkey::game_start(int mode)
 
     data().position_get((mode==MODE_GAMEA?PS_GAMEA:PS_GAMEB))->show();
 
-    if (havetarget_)
+    if ((options_&GO_HAVETARGET)==GO_HAVETARGET)
     {
         data().position_get(PS_ITEM_1, IDX_TARGET)->show();
         data().position_get(PS_ITEM_2, IDX_TARGET)->show();
@@ -373,7 +379,7 @@ void GW_GameEngine_VTech_Monkey::game_tick()
         data_stopalltimers();
 
         data().position_get(PS_ITEM_1+iMistake, IDX_MISS)->show();
-        if (havetarget_)
+        if ((options_&GO_HAVETARGET)==GO_HAVETARGET)
             data().position_get(PS_ITEM_1+iMistake, IDX_TARGET)->hide();
         misses_++;
         miss_update();
@@ -425,10 +431,10 @@ void GW_GameEngine_VTech_Monkey::score_update()
     while (p>=10000) p-=10000;
     for (int i=1; i<=4; i++) data().position_get(PS_NUMBER, i)->hide();
 
-    if (p>999) data().position_get(PS_NUMBER, 1)->image_set(IM_NUMBER, p / 1000, true);
-    if (p>99) data().position_get(PS_NUMBER, 2)->image_set(IM_NUMBER, p / 100 % 10, true);
-    if (p>9) data().position_get(PS_NUMBER, 3)->image_set(IM_NUMBER, p / 10 % 10, true);
-    if (p>=0) data().position_get(PS_NUMBER, 4)->image_set(IM_NUMBER, p % 10 % 10, true);
+    if (p>999) display_number(1, p / 1000);
+    if (p>99) display_number(2, p / 100 % 10);
+    if (p>9) display_number(3, p / 10 % 10);
+    if (p>=0) display_number(4, p % 10 % 10);
 }
 
 void GW_GameEngine_VTech_Monkey::level_update(int mode)
@@ -475,7 +481,7 @@ void GW_GameEngine_VTech_Monkey::miss_update()
 
 void GW_GameEngine_VTech_Monkey::showall_target(bool b)
 {
-    if (!havetarget_) return;
+    if (!(options_&GO_HAVETARGET)==GO_HAVETARGET) return;
 
     for (int i=PS_ITEM_1; i<=PS_ITEM_3; i++)
         data().position_get(i, IDX_TARGET)->visible_set(b);
@@ -600,16 +606,31 @@ void GW_GameEngine_VTech_Monkey::setnumber(int n, int ps1, int ps2, bool leadzer
     {
         if (n>10)
         {
-            data().position_get(PS_NUMBER, ps1)->image_set(IM_NUMBER, n / 10);
-            data().position_get(PS_NUMBER, ps2)->image_set(IM_NUMBER, n % 10);
+            display_number(ps1, n / 10);
+            display_number(ps2, n % 10);
         }
         else
         {
             if (leadzero)
-                data().position_get(PS_NUMBER, ps1)->image_set(IM_NUMBER, 0);
+                display_number(ps1, 0);
             else
-                data().position_get(PS_NUMBER, ps1)->hide();
-            data().position_get(PS_NUMBER, ps2)->image_set(IM_NUMBER, n);
+                display_number(ps1, -1);
+            display_number(ps2, n);
         }
     }
+}
+
+void GW_GameEngine_VTech_Monkey::display_number(int pos, int n, bool show)
+{
+    if (n>=0 && n<=9)
+    {
+        if ((options_&GO_NUMBERSEPARATED)==GO_NUMBERSEPARATED)
+            n=n+((pos-1)*10);
+
+        if (show)
+            data().position_get(PS_NUMBER, pos)->show();
+        data().position_get(PS_NUMBER, pos)->image_set(IM_NUMBER, n);
+    }
+    else if (show)
+        data().position_get(PS_NUMBER, pos)->hide();
 }

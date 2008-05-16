@@ -6,7 +6,7 @@ GW_Game *GW_Game_Pirate_Info::create()
 }
 
 
-GW_Game_Pirate::GW_Game_Pirate() : GW_GameEngine_VTech_Monkey(false)
+GW_Game_Pirate::GW_Game_Pirate() : GW_GameEngine_VTech_Monkey(0)
 {
     gamepath_set("pirate");
 

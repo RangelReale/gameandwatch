@@ -6,7 +6,7 @@ GW_Game *GW_Game_Monkey_Info::create()
 }
 
 GW_Game_Monkey::GW_Game_Monkey() :
-    GW_GameEngine_VTech_Monkey(true)
+    GW_GameEngine_VTech_Monkey(GO_HAVETARGET)
 {
     // game "MONKEY" is default
 }

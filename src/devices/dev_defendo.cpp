@@ -6,7 +6,7 @@ GW_Game *GW_Game_Defendo_Info::create()
 }
 
 GW_Game_Defendo::GW_Game_Defendo() :
-    GW_GameEngine_VTech_Monkey(false)
+    GW_GameEngine_VTech_Monkey(GO_NUMBERSEPARATED)
 {
     gamepath_set("defendo");
 

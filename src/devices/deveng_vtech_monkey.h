@@ -16,6 +16,12 @@ typedef struct GW_GameEngine_VTech_Monkey_Item
 class GW_GameEngine_VTech_Monkey : public GW_Game
 {
 public:
+    enum options_t
+    {
+        GO_HAVETARGET = 1,
+        GO_NUMBERSEPARATED = 2,
+    };
+
     enum
     {
         PS_CHAR_1,
@@ -107,7 +113,7 @@ public:
         MODE_MAX,
     };
 
-    GW_GameEngine_VTech_Monkey(bool havetarget);
+    GW_GameEngine_VTech_Monkey(int options);
 
     //virtual void DefaultKey(defkeys_t key);
     virtual void Event(GW_Platform_Event *event);
@@ -128,6 +134,8 @@ private:
     void clock_update(int mode = -1);
     void setnumber(int n, int ps1, int ps2, bool leadzero = true);
 
+    void display_number(int pos, int n, bool show = true);
+
     void game_start(int mode);
     void game_update();
     void game_tick();
@@ -143,7 +151,7 @@ private:
     void showall_miss(bool b);
     void showall_got(bool b);
 
-    bool havetarget_;
+    int options_;
     mode_t mode_;
     int score_;
     int char_position_;
