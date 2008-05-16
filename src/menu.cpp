@@ -130,7 +130,7 @@ void GW_Menu::draw_bg()
 
         GW_PLATFORM_RGB(rcolor, 0, 0, 0);
         platform_->draw_rectangle(xdraw, ydraw, xdraw+bg_->width_get(), ydraw+bg_->height_get(),
-            NULL, &rcolor, 175);
+            NULL, &rcolor, 140);
     }
 }
 

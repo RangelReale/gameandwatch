@@ -57,5 +57,5 @@ AC_STRUCT_TM
 # Checks for library functions.
 AC_CHECK_FUNCS([atexit])
 
-AC_OUTPUT(Makefile src/Makefile data/Makefile)
+AC_OUTPUT(Makefile src/Makefile data/Makefile doc/Makefile)
 
