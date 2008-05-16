@@ -378,7 +378,7 @@ GW_Platform *GW_Game::platform_get()
 //////////////////////////////////////////
 string GW_Game_Info::bgimg_path()
 {
-    return bf::path( bf::path("data") / datapath_ / "image" / bgimg_ ).string();
+    return bf::path( bf::path(GW_Platform_DataPath) / datapath_ / "image" / bgimg_ ).string();
 }
 
 //////////////////////////////////////////
@@ -388,7 +388,7 @@ string GW_Game_Info::bgimg_path()
 //////////////////////////////////////////
 GW_Device::GW_Device(GW_Platform *platform) :
     platform_(platform), game_(NULL),
-    datapath_("data"), quit_(false),
+    datapath_(GW_Platform_DataPath), quit_(false),
     volume_(75)
 {
 }

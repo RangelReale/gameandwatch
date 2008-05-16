@@ -77,6 +77,14 @@ typedef struct GW_Platform_Time
 };
 
 
+const string GW_Platform_DataPath =
+#ifdef HAVE_CONFIG_H
+"/usr/share/gameandwatch/data";
+#else
+"data";
+#endif
+
+
 // constants
 const GW_Platform_RGB GW_RGB_BLACK = {0, 0, 0};
 
@@ -112,7 +120,7 @@ public:
 
     virtual int width_get() = 0;
     virtual int height_get() = 0;
-    virtual string platformdata_get() { return "data/gamewatch"; }
+    virtual string platformdata_get() { return GW_Platform_DataPath + string("/gamewatch"); }
 
     virtual unsigned int ticks_get() = 0;
     virtual unsigned int time_ms_get() = 0;
