@@ -32,7 +32,7 @@ bool GW_PlatformGP2X::process_event(GW_Platform_GameType gametype,
             switch(sdlevent->jbutton.button)
             {
             case GP2X_VK_START:
-                event->data=GPK_QUIT;
+                event->data=GPK_TURNONTOGGLE;
                 break;
             case GP2X_VK_LEFT:
                 event->data=GPK_LEFT;
@@ -47,7 +47,7 @@ bool GW_PlatformGP2X::process_event(GW_Platform_GameType gametype,
                 event->data=GPK_DOWN;
                 break;
             case GP2X_VK_SELECT:
-                event->data=GPK_TURNONTOGGLE;
+                event->data=GPK_QUIT;
                 break;
             case GP2X_VK_FL:
                 event->data=GPK_GAMEA;
