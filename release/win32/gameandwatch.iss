@@ -12,9 +12,11 @@ Name: "{app}\data"
 
 [Files]
 Source: "bin\Release\gamewatch.exe"; DestDir: "{app}"
+Source: "doc\README"; DestDir: "{app}"; DestName: "README.txt"
 Source: "bin\Release\*.dll"; DestDir: "{app}"
 Source: "data\*"; DestDir: "{app}\data"; Excludes: "Makefile.*,.svn"; Flags: recursesubdirs
 
 [Icons]
 Name: "{group}\Game & Watch Simulator"; Filename: "{app}\gamewatch.exe"; WorkingDir: "{app}"
+Name: "{group}\README"; Filename: "{app}\README.txt"; WorkingDir: "{app}"
 Name: "{group}\Uninstall Game & Watch Simulator"; Filename: "{uninstallexe}"

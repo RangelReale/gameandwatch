@@ -39,3 +39,7 @@ Changelog
 ----------------
 - Initial release, "Time & Watch - Monkey" implementation
 
+0.2 (2008-05-17)
+----------------
+- Implemented 2 more games - DEFENDO and PIRATE
+- Cursor keys move the view when device is off

@@ -1,4 +1,4 @@
-Game & Watch Simulators 0.1 - GP2X port
+Game & Watch Simulators 0.2 - GP2X port
 =======================================
 http://sourceforge.net/projects/gameandwatch/
 
@@ -6,11 +6,12 @@ The gp2x port should work the same as the desktop version, but as the screen is 
 
 Menu keys:
 	ARROW KEYS		- Move selection
-	SELECT			- Select game
+	START			- Start game
+	SELECT			- Exit
 
 In-game keys:
-	SELECT 			- Turn on/off toggle
-	START/HOME		- Exit
+	SELECT 			- Exit
+	START/HOME		- Turn on/off toggle
 	L			- Game A
 	R			- Game B
 	A			- Time
