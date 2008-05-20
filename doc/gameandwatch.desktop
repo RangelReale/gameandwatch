@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Game & Watch Simulator
+Comment=Game & Watch-like games simulator
+Exec=gameandwatch %U
+TryExec=gameandwatch
+Icon=gameandwatch.png
+Terminal=false
+Type=Application
+Categories=Application;Game;
+GenericName[en_US]=

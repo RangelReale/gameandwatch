@@ -15,4 +15,6 @@ Description: This is a generic engine for simulation of Game & Watch-like games,
  As for the Madrigal simulators, the simulation is aimed to be as close as possible to the real machine, 
  simulating on-off, ACL mode, time modes, etc. Alarm and chrono modes only display default data, 
  as there is not enough motivation for its simulation.
+ .
+ To turn the device on, press ENTER.
 
