@@ -638,9 +638,6 @@ void GW_GameEngine_VTech_Condor::display_number(int pos, int n, bool show)
 {
     if (n>=0 && n<=9)
     {
-        if ((options_&GO_NUMBERSEPARATED)==GO_NUMBERSEPARATED)
-            n=n+((pos-1)*10);
-
         if (show)
             data().position_get(PS_NUMBER, pos)->show();
         data().position_get(PS_NUMBER, pos)->image_set(IM_NUMBER, n);

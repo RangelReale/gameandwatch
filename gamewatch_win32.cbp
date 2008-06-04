@@ -71,6 +71,8 @@
 		<Unit filename="src\devices\dev_pirate.h" />
 		<Unit filename="src\devices\dev_rollerc.cpp" />
 		<Unit filename="src\devices\dev_rollerc.h" />
+		<Unit filename="src\devices\deveng_vtech.cpp" />
+		<Unit filename="src\devices\deveng_vtech.h" />
 		<Unit filename="src\devices\deveng_vtech_condor.cpp" />
 		<Unit filename="src\devices\deveng_vtech_condor.h" />
 		<Unit filename="src\devices\deveng_vtech_monkey.cpp" />
