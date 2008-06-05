@@ -59,10 +59,14 @@ protected:
     virtual void game_reprise();
     virtual void level_update(int mode = -1);
 private:
-    void char_update(int pos, bool hit);
+    void char_update(int pos);
+    void items_left_update(int pos);
+    void items_right_update(int pos);
+
+    void showall_miss(bool b);
 
     int options_;
-    int char_position_;
+    int char_position_, items_left_;
     unsigned short tick_;
     unsigned short maxonscreen_;
 };

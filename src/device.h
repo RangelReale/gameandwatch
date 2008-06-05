@@ -68,7 +68,7 @@ class GW_GameData_Position : public GW_GameData_Item
 public:
     GW_GameData_Position(GW_GameData *gdata, int x, int y) :
         GW_GameData_Item(gdata),
-        x_(x), y_(y), imageid_(-1), imageindex_(-1), visible_(false) {}
+        x_(x), y_(y), imageid_(-1), imageindex_(-1), status_(-1), visible_(false) {}
 
     int x_get() { return x_; }
     int y_get() { return y_; }
@@ -83,9 +83,17 @@ public:
     void visible_set(bool v) { visible_=v; Changed(); }
     void show() { visible_set(true); }
     void hide() { visible_set(false); }
+
+    void show_status(int s) { show(); status_set(s); }
+    void hide_status(int s) { hide(); status_set(s); }
+    void visible_status(bool v, int s) { visible_set(v); status_set(s); }
+    void visible_status(GW_GameData_Position *source) { visible_set(source->visible_get()); status_set(source->status_get()); }
+
+    int status_get() { return status_; }
+    void status_set(int s) { status_=s; }
 private:
     int x_, y_;
-    int imageid_, imageindex_;
+    int imageid_, imageindex_, status_;
     bool visible_;
 };
 
@@ -219,7 +227,7 @@ protected:
     virtual void do_update() {}
 
     void data_showall();
-    void data_hideall();
+    void data_hideall(bool resetstatus = false);
     void data_playsound(int soundid);
     void data_stopallsounds();
     void data_starttimer(int timerid, unsigned int time = 0);

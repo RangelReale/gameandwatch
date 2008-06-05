@@ -123,6 +123,12 @@ GW_GameEngine_VTech_Condor::GW_GameEngine_VTech_Condor(int engineoptions, int op
         position_change(PS_AM, 0, 318, 54)->
         position_change(PS_PM, 0, 318, 69);
 
+
+    // timers
+    data().
+        timer_add(TMR_GAMEOVER, 120, false)->
+        timer_add(TMR_GAMEOVER, 2000, false)->
+        timer_add(TMR_REPRISE, 800, false);
 }
 
 void GW_GameEngine_VTech_Condor::Event(GW_Platform_Event *event)
@@ -131,29 +137,25 @@ void GW_GameEngine_VTech_Condor::Event(GW_Platform_Event *event)
 
     if (event->id==GPE_KEYDOWN)
     {
-/*
         switch (event->data)
         {
         case GPK_LEFT:
-            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_)
+            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
             {
                 char_position_-=1;
-                if (char_position_<0) char_position_=0;
-                char_update(char_position_, false);
-                //game_update();
+                if (char_position_<1) char_position_=1;
+                char_update(char_position_);
             }
             break;
         case GPK_RIGHT:
-            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_)
+            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
             {
                 char_position_+=1;
-                if (char_position_>2) char_position_=2;
-                char_update(char_position_, false);
-                //game_update();
+                if (char_position_>3) char_position_=3;
+                char_update(char_position_);
             }
             break;
         }
-*/
     }
 }
 
@@ -164,32 +166,209 @@ void GW_GameEngine_VTech_Condor::do_timer(int timerid)
 
 void GW_GameEngine_VTech_Condor::game_start(int mode)
 {
-    char_position_=1; // middle
+    char_position_=3; // right
+    items_left_=1;
 
-    tick_=0;
-    maxonscreen_=1;
+    tick_=6;
 
-    char_update(char_position_, false);
+    char_update(char_position_);
+    items_left_update(items_left_);
+    items_right_update(0);
 }
 
 void GW_GameEngine_VTech_Condor::game_tick()
 {
+    // main game action
+    int i, iOnscreen, iMistake, iGot, iMoved;
 
+    // animates items on rightmost part of the screen
+    items_right_update(tick_);
+
+    // puts item on left to the "normal" status
+    items_left_=1; items_left_update(items_left_);
+
+    // various initialization (for later use within this procedure)
+    iMistake=0;
+    iGot=0;
+    iMoved=0;
+
+    // checks for mistakes
+    if (data().position_get(PS_ITEM, 23)->status_get()==1 && char_position_!=1) { data().position_get(PS_ITEM, 23)->show_status(3); iMistake=1; }
+    if (data().position_get(PS_ITEM, 16)->status_get()==1 && char_position_!=2) { data().position_get(PS_ITEM, 16)->show_status(3); iMistake=2; }
+    if (data().position_get(PS_ITEM, 7)->status_get()==1 && char_position_!=3) { data().position_get(PS_ITEM, 7)->show_status(3); iMistake=3; }
+
+    // checks for collisions character-items in certain positions
+    if (iMistake==0)
+    {
+        if (data().position_get(PS_ITEM, 23)->status_get()==1 && char_position_==1) { data().position_get(PS_ITEM, 23)->show_status(2); iGot=1; }
+        if (data().position_get(PS_ITEM, 16)->status_get()==1 && char_position_==2) { data().position_get(PS_ITEM, 16)->show_status(2); iGot=2; }
+        if (data().position_get(PS_ITEM, 7)->status_get()==1 && char_position_==3) { data().position_get(PS_ITEM, 7)->show_status(2); iGot=3; }
+    }
+
+    // moves and generates items
+    if (iMistake==0)
+    {
+      // columns 1 (leftmost) and 4 (rightmost)
+      if (tick_==1 || tick_==4)
+      {
+          // checks for items on position 27, to increase score & sets current level
+          if (data().position_get(PS_ITEM, 27)->status_get()==1)
+          {
+              score_add();
+              items_left_=2; items_left_update(items_left_);
+          }
+
+          // moves items on column 1 (leftmost)
+          if (data().position_get(PS_ITEM, 23)->status_get()==2) data().position_get(PS_ITEM, 23)->show_status(1);
+          for (i=27; i>=24; i--) data().position_get(PS_ITEM, i)->visible_status(data().position_get(PS_ITEM, i-1));
+          data().position_get(PS_ITEM, 23)->hide_status(0);
+
+          // moves items on column 4 (rightmost)
+          for (i=7; i>=1; i--) data().position_get(PS_ITEM, i)->visible_status(data().position_get(PS_ITEM, i-1));
+          if ((options_&GO_HAVEITEM0)==GO_HAVEITEM0)
+            if (tick_==1) data().position_get(PS_ITEM, 0)->hide_status(0);
+
+          // checks for collisions character-items
+          if (data().position_get(PS_ITEM, 7)->status_get()==1 && char_position_==3) { data().position_get(PS_ITEM, 7)->show_status(2); iGot=3; }
+
+          // generates new items when iLoop=4
+          if (tick_==4)
+          {
+              iOnscreen=0;
+              for (i=0; i<=27; i++)
+                if (data().position_get(PS_ITEM, i)->visible_get()) iOnscreen++;       // counts items on screen
+              if (rand() % 4==0) data().position_get(PS_ITEM, 0)->show_status(1); else data().position_get(PS_ITEM, 0)->hide_status(0);                   // generates new item randomly
+              if (iOnscreen==0) data().position_get(PS_ITEM, 0)->show_status(1);          // forces new item generation if none on screen
+              if (iOnscreen>=maxonscreen_) data().position_get(PS_ITEM, 0)->hide_status(0);;                             // prevents new item from being generated if more onscreen items than allowed
+          }
+
+          // gets ready to play "pfMove" sound
+          for (i=0; i<=7; i++) if (data().position_get(PS_ITEM, i)->status_get()==1) iMoved++;
+          for (i=24; i<=27; i++) if (data().position_get(PS_ITEM, i)->status_get()==1) iMoved++;
+      }
+
+      // column 2 (left-of-middle)
+      if (tick_==2 || tick_==5)
+      {
+          // moves items on column 2 (left-of-middle)
+          if (data().position_get(PS_ITEM, 16)->status_get()==2) data().position_get(PS_ITEM, 16)->show_status(1);
+          for (i=23; i>=17; i--) data().position_get(PS_ITEM, i)->visible_status(data().position_get(PS_ITEM, i-1));
+          data().position_get(PS_ITEM, 16)->hide_status(0);
+
+          // checks for collisions character-items
+          if (data().position_get(PS_ITEM, 23)->status_get()==1 && char_position_==1) { data().position_get(PS_ITEM, 23)->show_status(2); iGot=1; }
+
+          // gets ready to play "pfMove" sound
+          for (i=17; i<=23; i++) if (data().position_get(PS_ITEM, i)->status_get()==1) iMoved++;
+      }
+
+      // column 3 (right-of-middle)
+      if (tick_==3 || tick_==6)
+      {
+          // moves items on column 3 (right-of-middle)
+          if (data().position_get(PS_ITEM, 7)->status_get()==2) data().position_get(PS_ITEM, 7)->show_status(1);
+          for (i=16; i>=8; i--) data().position_get(PS_ITEM, i)->visible_status(data().position_get(PS_ITEM, i-1));
+          data().position_get(PS_ITEM, 7)->hide_status(0);
+
+          // checks for collisions character-items
+          if (data().position_get(PS_ITEM, 16)->status_get()==1 && char_position_==2) { data().position_get(PS_ITEM, 16)->show_status(2); iGot=2; }
+
+          // gets ready to play "pfMove" sound
+          for (i=8; i<=16; i++) if (data().position_get(PS_ITEM, i)->status_get()==1) iMoved++;
+      }
+    }
+
+  // executes miss routine, counts misses and reprises or goes to "game over"
+  if (iMistake!=0)
+  {
+      canmove_set(false);
+      data_stopalltimers();
+
+      switch (iMistake)
+      {
+        case 1: { data().position_get(PS_ITEM, 23)->hide_status(0); data().position_get(PS_ITEM, IDX_MISS_1)->show(); } break;
+        case 2: { data().position_get(PS_ITEM, 16)->hide_status(0); data().position_get(PS_ITEM, IDX_MISS_2)->show(); } break;
+        case 3: { data().position_get(PS_ITEM, 7)->hide_status(0); data().position_get(PS_ITEM, IDX_MISS_3)->show(); } break;
+      }
+      misses_add();
+      if (misses_get()<5)
+      {                                                         // checks how many misses were done
+          // game continues if misses<5
+          data_starttimer(TMR_REPRISE);
+      }
+      else
+      {
+          // game is over if misses=5
+          tick_=0; // becomes 1 before the end of this procedure
+          data_starttimer(TMR_GAMEOVER);
+      }
+  }
+
+  // renders items on screen
+  //for i:=0 to 27 do if aItems[i]>0 then aimItems[i].visible:=true else aimItems[i].visible:=false;
+
+  // plays correct sound (miss
+
+    if (iMistake>0)
+        data_playsound(SND_MISS);
+    else if (iGot>0)
+        data_playsound(SND_GOT);
+    else if (iMoved>0)
+        data_playsound(SND_MOVE);
+
+    // loops action
+    tick_++;
+    if (tick_>6) tick_=1;
 }
 
 void GW_GameEngine_VTech_Condor::game_reprise()
 {
-
+    showall_miss(false);
 }
 
-void GW_GameEngine_VTech_Condor::char_update(int pos, bool hit)
+void GW_GameEngine_VTech_Condor::char_update(int pos)
 {
-    for (int i=PS_CHAR; i<=PS_CHAR; i++)
+    for (int i=1; i<=3; i++)
     {
-        data().position_get(i, 1)->visible_set(i-PS_CHAR==pos);
-        data().position_get(i, 2)->visible_set(i-PS_CHAR==pos && !hit);
-        data().position_get(i, 3)->visible_set(i-PS_CHAR==pos && hit);
+        data().position_get(PS_CHAR, i)->visible_set(i==pos);
     }
+}
+
+void GW_GameEngine_VTech_Condor::items_left_update(int pos)
+{
+    int min=1, max=2;
+    for (int i=min; i<=max; i++)
+        data().position_get(PS_ITEMLEFT, i)->visible_set(i==pos);
+}
+
+void GW_GameEngine_VTech_Condor::items_right_update(int pos)
+{
+/*
+ shows animated items on the right of screen. frame '0' is used when game
+ begins, then is never used anymore. frames '1'='2' and '4'='5' in order to
+ have 6 frames looping, with '1' and '4' lasting double the times than others
+*/
+  bool ir[5] = {false, false, false, false, false};
+
+  switch (pos)
+  {
+    case 0: { ir[1]=true; ir[2]=false; ir[3]=true; ir[4]=true; } break;
+    case 1: { ir[1]=true; ir[2]=true;  ir[3]=false; ir[4]=true; } break;
+    case 2: { ir[1]=true; ir[2]=true;  ir[3]=false; ir[4]=true; } break;
+    case 3: { ir[1]=true; ir[2]=false; ir[3]=true;  ir[4]=false; } break;
+    case 4: { ir[1]=true; ir[2]=false; ir[3]=true;  ir[4]=false; } break;
+    case 5: { ir[1]=true; ir[2]=false; ir[3]=true;  ir[4]=false; } break;
+    case 6: { ir[1]=true; ir[2]=true;  ir[3]=false; ir[4]=false; } break;
+  }
+    int min=1, max=4;
+    for (int i=min; i<=max; i++)
+        data().position_get(PS_ITEMRIGHT, i)->visible_set(ir[i]);
+}
+
+void GW_GameEngine_VTech_Condor::showall_miss(bool b)
+{
+    for (int i=IDX_MISS_1; i<=IDX_MISS_3; i++)
+        data().position_get(PS_ITEM, i)->visible_set(b);
 }
 
 void GW_GameEngine_VTech_Condor::level_update(int mode)
@@ -200,26 +379,24 @@ void GW_GameEngine_VTech_Condor::level_update(int mode)
     switch (mode)
     {
     case MODE_GAMEA:
-        // maximum moveable items on screen
-        if (i>=0 && i<4) maxonscreen_=1;
-        else if (i>=4 && i<50) maxonscreen_=3;
-        else if (i>=51 && i<100) maxonscreen_=4;
-        else if (i>=100 && i<200) maxonscreen_=5;
-
-        // game speed
-        if (i>=0 && i<99) data().timer_get(TMR_GAME)->time_set(250);
-        else if (i>=100 && i<199) data().timer_get(TMR_GAME)->time_set(215);
+         // maximum moveable items on screen
+         if (i>=0 && i<4) maxonscreen_=1;
+         else if (i>=4 && i<30)  maxonscreen_=3;
+         else if (i>=30 && i<100) maxonscreen_=5;
+         // game speed
+         if (i>=0 && i<40) data().timer_get(TMR_GAME)->time_set(215);
+         else if (i>=40 && i<70) data().timer_get(TMR_GAME)->time_set(185);
+         if (i>=70 && i<100) data().timer_get(TMR_GAME)->time_set(150);
         break;
     case MODE_GAMEB:
-        // maximum moveable items on screen
-        if (i>=0 && i<4) maxonscreen_=1;
-        else if (i>=4 && i<50) maxonscreen_=4;
-        else if (i>=51 && i<100) maxonscreen_=5;
-        else if (i>=100 && i<200) maxonscreen_=6;
-
-        // game speed
-        if (i>=0 && i<99) data().timer_get(TMR_GAME)->time_set(215);
-        else if (i>=100 && i<199) data().timer_get(TMR_GAME)->time_set(185);
+         // maximum moveable items on screen
+         if (i>=0 && i<4) maxonscreen_=1;
+         else if (i>=4 && i<24) maxonscreen_=4;
+         else if (i>=24 && i<100) maxonscreen_=6;
+         // game speed
+         if (i>=0 && i<40) data().timer_get(TMR_GAME)->time_set(180);
+         else if (i>=40 && i<70) data().timer_get(TMR_GAME)->time_set(155);
+         else if (i>=70 && i<100) data().timer_get(TMR_GAME)->time_set(130);
         break;
     default:
         break;

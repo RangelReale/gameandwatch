@@ -169,7 +169,7 @@ void GW_GameEngine_VTech::do_turnoff()
 
 void GW_GameEngine_VTech::do_game_start(int mode)
 {
-    data_hideall();
+    data_hideall(true);
 
     score_=0;
 
@@ -226,7 +226,7 @@ bool GW_GameEngine_VTech::do_setmode(int mode)
     case MODE_OFF:
         data_stopalltimers();
         data_stopallsounds();
-        data_hideall();
+        data_hideall(true);
         break;
     case MODE_IDLE:
         data_stopalltimers();
@@ -240,31 +240,31 @@ bool GW_GameEngine_VTech::do_setmode(int mode)
         break;
     case MODE_TIME1:
         data_stopalltimers();
-        data_hideall();
+        data_hideall(true);
         data().position_get(PS_TIME1)->show();
         clock_update(mode);
         break;
     case MODE_TIME2:
         data_stopalltimers();
-        data_hideall();
+        data_hideall(true);
         data().position_get(PS_TIME2)->show();
         clock_update(mode);
         break;
     case MODE_ALARM:
         data_stopalltimers();
-        data_hideall();
+        data_hideall(true);
         data().position_get(PS_ALARM)->show();
         clock_update(mode);
         break;
     case MODE_CHRONO:
         data_stopalltimers();
-        data_hideall();
+        data_hideall(true);
         data().position_get(PS_CHRONO)->show();
         clock_update(mode);
         break;
     case MODE_DATE:
         data_stopalltimers();
-        data_hideall();
+        data_hideall(true);
         data().position_get(PS_DATE)->show();
         clock_update(mode);
         break;
@@ -360,6 +360,7 @@ void GW_GameEngine_VTech::score_add(int count)
     score_+=count;
     if (score_>9999) score_-=10000;
     score_update();
+    level_update();
 }
 
 void GW_GameEngine_VTech::misses_add(int count)

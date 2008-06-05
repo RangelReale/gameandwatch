@@ -185,7 +185,6 @@ void GW_GameEngine_VTech_Monkey::game_tick()
         data().position_get(PS_ITEM_1+char_position_, IDX_GOT)->hide();
         data().position_get(PS_ITEM_1+char_position_, IDX_HIT)->show();
         score_add();
-        level_update();
         iGot=char_position_;
         data_delaytimer(TMR_GAME, 60); // when hit, delay the game a little to allow for moving
     }

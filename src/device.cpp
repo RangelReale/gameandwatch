@@ -281,7 +281,7 @@ void GW_Game::data_showall()
     }
 }
 
-void GW_Game::data_hideall()
+void GW_Game::data_hideall(bool resetstatus)
 {
     for (GW_GameData::positions_t::const_iterator i=data_.positions_list().begin();
         i!=data_.positions_list().end(); i++)
@@ -290,6 +290,8 @@ void GW_Game::data_hideall()
             j!=i->second.end(); j++)
         {
             j->second->visible_set(false);
+            if (resetstatus)
+                j->second->status_set(-1);
         }
     }
 }
