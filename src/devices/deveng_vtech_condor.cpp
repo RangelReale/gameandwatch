@@ -71,8 +71,8 @@ GW_GameEngine_VTech_Condor::GW_GameEngine_VTech_Condor(int engineoptions, int op
     if ((options_&GO_HAVERIGHT1A)==GO_HAVERIGHT1A)
     {
         data().
-            position_add(PS_ITEMRIGHT, 1, 210, 221, IM_ITEMRIGHT, 1, "item_right_1a.bmp", &tcolor_img)->
-            position_add(PS_ITEMRIGHT, IDX_RIGTH_1B, 210, 221, IM_ITEMRIGHT, IDX_RIGTH_1B, "item_right_1b.bmp", &tcolor_img);
+            position_add(PS_ITEMRIGHT, 0, 210, 221, IM_ITEMRIGHT, 0, "item_right_1a.bmp", &tcolor_img)->
+            position_add(PS_ITEMRIGHT, 1, 210, 221, IM_ITEMRIGHT, 1, "item_right_1b.bmp", &tcolor_img);
     }
     else
         data().
@@ -129,6 +129,20 @@ GW_GameEngine_VTech_Condor::GW_GameEngine_VTech_Condor(int engineoptions, int op
         timer_add(TMR_GAMEOVER, 120, false)->
         timer_add(TMR_GAMEOVER, 2000, false)->
         timer_add(TMR_REPRISE, 800, false);
+
+
+    if ((options_&GO_HAVEITEM0)==GO_HAVEITEM0)
+    {
+        item_first_=0;
+        item_new_loop_=4;
+        loop_start_=6;
+    }
+    else
+    {
+        item_first_=1;
+        item_new_loop_=1;
+        loop_start_=2;
+    }
 }
 
 void GW_GameEngine_VTech_Condor::Event(GW_Platform_Event *event)
@@ -169,7 +183,7 @@ void GW_GameEngine_VTech_Condor::game_start(int mode)
     char_position_=3; // right
     items_left_=1;
 
-    tick_=6;
+    tick_=loop_start_;
 
     char_update(char_position_);
     items_left_update(items_left_);
@@ -203,6 +217,8 @@ void GW_GameEngine_VTech_Condor::game_tick()
         if (data().position_get(PS_ITEM, 23)->status_get()==1 && char_position_==1) { data().position_get(PS_ITEM, 23)->show_status(2); iGot=1; }
         if (data().position_get(PS_ITEM, 16)->status_get()==1 && char_position_==2) { data().position_get(PS_ITEM, 16)->show_status(2); iGot=2; }
         if (data().position_get(PS_ITEM, 7)->status_get()==1 && char_position_==3) { data().position_get(PS_ITEM, 7)->show_status(2); iGot=3; }
+
+        if (iGot>0) data_delaytimer(TMR_GAME, 60); // when hit, delay the game a little to allow for moving
     }
 
     // moves and generates items
@@ -224,27 +240,39 @@ void GW_GameEngine_VTech_Condor::game_tick()
           data().position_get(PS_ITEM, 23)->hide_status(0);
 
           // moves items on column 4 (rightmost)
-          for (i=7; i>=1; i--) data().position_get(PS_ITEM, i)->visible_status(data().position_get(PS_ITEM, i-1));
-          if ((options_&GO_HAVEITEM0)==GO_HAVEITEM0)
-            if (tick_==1) data().position_get(PS_ITEM, 0)->hide_status(0);
+          for (i=7; i>=item_first_+1; i--) data().position_get(PS_ITEM, i)->visible_status(data().position_get(PS_ITEM, i-1));
+          if (tick_!=item_new_loop_) data().position_get(PS_ITEM, item_first_)->hide_status(0);
 
           // checks for collisions character-items
           if (data().position_get(PS_ITEM, 7)->status_get()==1 && char_position_==3) { data().position_get(PS_ITEM, 7)->show_status(2); iGot=3; }
 
           // generates new items when iLoop=4
-          if (tick_==4)
+          if (tick_==item_new_loop_)
           {
               iOnscreen=0;
-              for (i=0; i<=27; i++)
+              for (i=item_first_; i<=27; i++)
                 if (data().position_get(PS_ITEM, i)->visible_get()) iOnscreen++;       // counts items on screen
-              if (rand() % 4==0) data().position_get(PS_ITEM, 0)->show_status(1); else data().position_get(PS_ITEM, 0)->hide_status(0);                   // generates new item randomly
-              if (iOnscreen==0) data().position_get(PS_ITEM, 0)->show_status(1);          // forces new item generation if none on screen
-              if (iOnscreen>=maxonscreen_) data().position_get(PS_ITEM, 0)->hide_status(0);;                             // prevents new item from being generated if more onscreen items than allowed
+              if (rand() % 4==0) data().position_get(PS_ITEM, item_first_)->show_status(1); else data().position_get(PS_ITEM, item_first_)->hide_status(0);                   // generates new item randomly
+              if (iOnscreen==0) data().position_get(PS_ITEM, item_first_)->show_status(1);          // forces new item generation if none on screen
+              if (iOnscreen>=maxonscreen_) data().position_get(PS_ITEM, item_first_)->hide_status(0);;                             // prevents new item from being generated if more onscreen items than allowed
           }
 
           // gets ready to play "pfMove" sound
-          for (i=0; i<=7; i++) if (data().position_get(PS_ITEM, i)->status_get()==1) iMoved++;
+          for (i=item_first_; i<=7; i++) if (data().position_get(PS_ITEM, i)->status_get()==1) iMoved++;
           for (i=24; i<=27; i++) if (data().position_get(PS_ITEM, i)->status_get()==1) iMoved++;
+/*
+          if ((options_&GO_HAVEITEM0)!=GO_HAVEITEM0)
+          {
+              // gets ready to play "pfMove" sound if iLoop=4 and no items are on screen
+                if (tick_==4)
+                {
+                  // counts items on screen
+                  iOnscreen=0;
+                  for (i=item_first_; i<=27; i++) if (data().position_get(PS_ITEM, i)->visible_get()) iOnscreen++;
+                  if (iOnscreen==0) iMoved++;
+                }
+          }
+*/
       }
 
       // column 2 (left-of-middle)
@@ -337,6 +365,9 @@ void GW_GameEngine_VTech_Condor::char_update(int pos)
 void GW_GameEngine_VTech_Condor::items_left_update(int pos)
 {
     int min=1, max=2;
+    if ((options_&GO_HAVELEFT0)==GO_HAVELEFT0)
+        data().position_get(PS_ITEMLEFT, 0)->show();
+
     for (int i=min; i<=max; i++)
         data().position_get(PS_ITEMLEFT, i)->visible_set(i==pos);
 }
@@ -348,21 +379,57 @@ void GW_GameEngine_VTech_Condor::items_right_update(int pos)
  begins, then is never used anymore. frames '1'='2' and '4'='5' in order to
  have 6 frames looping, with '1' and '4' lasting double the times than others
 */
-  bool ir[5] = {false, false, false, false, false};
+  bool ir[7] = {false, false, false, false, false, false, false};
+  int min=1, max=4;
 
-  switch (pos)
+  if ((options_&GO_HAVERIGHT1A)==GO_HAVERIGHT1A)
   {
-    case 0: { ir[1]=true; ir[2]=false; ir[3]=true; ir[4]=true; } break;
-    case 1: { ir[1]=true; ir[2]=true;  ir[3]=false; ir[4]=true; } break;
-    case 2: { ir[1]=true; ir[2]=true;  ir[3]=false; ir[4]=true; } break;
-    case 3: { ir[1]=true; ir[2]=false; ir[3]=true;  ir[4]=false; } break;
-    case 4: { ir[1]=true; ir[2]=false; ir[3]=true;  ir[4]=false; } break;
-    case 5: { ir[1]=true; ir[2]=false; ir[3]=true;  ir[4]=false; } break;
-    case 6: { ir[1]=true; ir[2]=true;  ir[3]=false; ir[4]=false; } break;
+      // pancake
+      min=0; max=6;
+
+      switch (pos)
+      {
+        case 0: { ir[0]=true; ir[1]=true;  ir[2]=false; ir[3]=true;  ir[4]=true;  ir[5]=false; ir[6]=false; } break;
+        case 1: { ir[0]=true; ir[1]=true;  ir[2]=true;  ir[3]=false; ir[4]=true;  ir[5]=false; ir[6]=false; } break;
+        case 2: { ir[0]=true; ir[1]=true;  ir[2]=true;  ir[3]=false; ir[4]=true;  ir[5]=false; ir[6]=false; } break;
+        case 3: { ir[0]=true; ir[1]=true;  ir[2]=false; ir[3]=true;  ir[4]=false; ir[5]=true;  ir[6]=false; } break;
+        case 4: { ir[0]=true; ir[1]=true;  ir[2]=false; ir[3]=true;  ir[4]=false; ir[5]=false; ir[6]=true;  } break;
+        case 5: { ir[0]=true; ir[1]=true;  ir[2]=false; ir[3]=true;  ir[4]=false; ir[5]=false; ir[6]=true;  } break;
+        case 6: { ir[0]=true; ir[1]=true;  ir[2]=true;  ir[3]=false; ir[4]=false; ir[5]=true;  ir[6]=false; } break;
+      }
   }
-    int min=1, max=4;
-    for (int i=min; i<=max; i++)
-        data().position_get(PS_ITEMRIGHT, i)->visible_set(ir[i]);
+  else if ((options_&GO_HAVERIGHT6)==GO_HAVERIGHT6)
+  {
+      // rollerc
+      max=6;
+
+      switch (pos)
+      {
+        case 0: { ir[1]=true;  ir[2]=false; ir[3]=true;  ir[4]=true;  ir[5]=false; ir[6]=false; } break;
+        case 1: { ir[1]=true;  ir[2]=true;  ir[3]=false; ir[4]=true;  ir[5]=false; ir[6]=false; } break;
+        case 2: { ir[1]=true;  ir[2]=true;  ir[3]=false; ir[4]=true;  ir[5]=false; ir[6]=false; } break;
+        case 3: { ir[1]=true;  ir[2]=false; ir[3]=true;  ir[4]=false; ir[5]=true;  ir[6]=false; } break;
+        case 4: { ir[1]=true;  ir[2]=false; ir[3]=true;  ir[4]=false; ir[5]=false; ir[6]=true;  } break;
+        case 5: { ir[1]=true;  ir[2]=false; ir[3]=true;  ir[4]=false; ir[5]=false; ir[6]=true;  } break;
+        case 6: { ir[1]=true;  ir[2]=true;  ir[3]=false; ir[4]=false; ir[5]=true;  ir[6]=false; } break;
+      }
+  }
+  else
+  {
+      // condor
+      switch (pos)
+      {
+        case 0: { ir[1]=true; ir[2]=false; ir[3]=true; ir[4]=true; } break;
+        case 1: { ir[1]=true; ir[2]=true;  ir[3]=false; ir[4]=true; } break;
+        case 2: { ir[1]=true; ir[2]=true;  ir[3]=false; ir[4]=true; } break;
+        case 3: { ir[1]=true; ir[2]=false; ir[3]=true;  ir[4]=false; } break;
+        case 4: { ir[1]=true; ir[2]=false; ir[3]=true;  ir[4]=false; } break;
+        case 5: { ir[1]=true; ir[2]=false; ir[3]=true;  ir[4]=false; } break;
+        case 6: { ir[1]=true; ir[2]=true;  ir[3]=false; ir[4]=false; } break;
+      }
+  }
+  for (int i=min; i<=max; i++)
+    data().position_get(PS_ITEMRIGHT, i)->visible_set(ir[i]);
 }
 
 void GW_GameEngine_VTech_Condor::showall_miss(bool b)

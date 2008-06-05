@@ -35,17 +35,10 @@ public:
 
     enum
     {
-        IDX_RIGTH_1B = 10,
-
         IDX_MAX = 27,
         IDX_MISS_1,
         IDX_MISS_2,
         IDX_MISS_3,
-
-        IDX_MISS,
-        IDX_GOT,
-        IDX_TARGET,
-        IDX_HIT,
     };
 
     GW_GameEngine_VTech_Condor(int engineoptions, int options);
@@ -66,7 +59,7 @@ private:
     void showall_miss(bool b);
 
     int options_;
-    int char_position_, items_left_;
+    int char_position_, items_left_, item_first_, item_new_loop_, loop_start_;
     unsigned short tick_;
     unsigned short maxonscreen_;
 };

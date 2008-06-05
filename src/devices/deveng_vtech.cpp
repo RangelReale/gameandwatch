@@ -231,6 +231,11 @@ bool GW_GameEngine_VTech::do_setmode(int mode)
     case MODE_IDLE:
         data_stopalltimers();
         data_showall();
+        // reset numbers
+        display_number(1, 8, false);
+        display_number(2, 8, false);
+        display_number(3, 8, false);
+        display_number(4, 8, false);
         gameover_=true;
         break;
     case MODE_GAMEA:
