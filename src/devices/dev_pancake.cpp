@@ -6,7 +6,7 @@ GW_Game *GW_Game_Pancake_Info::create()
 }
 
 GW_Game_Pancake::GW_Game_Pancake() :
-    GW_GameEngine_VTech_Condor(GO_HAVEITEM0|GO_HAVELEFT0|GO_HAVERIGHT1A|GO_HAVERIGHT6)
+    GW_GameEngine_VTech_Condor(EO_NONE, GO_HAVEITEM0|GO_HAVELEFT0|GO_HAVERIGHT1A|GO_HAVERIGHT6)
 {
     gamepath_set("pancake");
     size_set(560, 372);

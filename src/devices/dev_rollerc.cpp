@@ -6,7 +6,7 @@ GW_Game *GW_Game_RollerC_Info::create()
 }
 
 GW_Game_RollerC::GW_Game_RollerC() :
-    GW_GameEngine_VTech_Condor(GO_HAVERIGHT6)
+    GW_GameEngine_VTech_Condor(EO_NONE, GO_HAVERIGHT6)
 {
     gamepath_set("rollerc");
     size_set(609, 377);
