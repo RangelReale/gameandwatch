@@ -2,6 +2,9 @@
 #include "plat/plat_sdl.h"
 #include "gwdefs.h"
 #include <boost/filesystem.hpp>
+#ifdef GW_USE_ZDATA
+#include <plat/SDL_rwops_zzip.h>
+#endif
 
 namespace bf = boost::filesystem;
 
@@ -12,7 +15,14 @@ namespace bf = boost::filesystem;
 //////////////////////////////////////////
 GW_PlatformSDL_Image::GW_PlatformSDL_Image(const string &filename, GW_Platform_RGB *tcolor)
 {
+#ifndef GW_USE_ZDATA
     surface_ = SDL_LoadBMP( filename.c_str() );
+#else
+    SDL_RWops *l = SDL_RWFromZZIP( filename.c_str(), "rb" );
+    surface_ = SDL_LoadBMP_RW( l, 1 );
+    //SDL_FreeRW(l);
+#endif
+
     if (!surface_)
         throw GW_Exception(string("Unable to load image: "+string(SDL_GetError())));
     if (tcolor)
@@ -48,7 +58,14 @@ bool GW_PlatformSDL_Image::resize_fit(int w, int h)
 //////////////////////////////////////////
 GW_PlatformSDL_Sound::GW_PlatformSDL_Sound(const string &filename)
 {
+#ifndef GW_USE_ZDATA
     sample_ = Mix_LoadWAV( filename.c_str() );
+#else
+    SDL_RWops *l = SDL_RWFromZZIP( filename.c_str(), "rb" );
+    sample_ = Mix_LoadWAV_RW( l, 1 );
+    //SDL_FreeRW(l);
+#endif
+
     if (!sample_)
         throw GW_Exception(string("Unable to load sound sample: "+string(Mix_GetError())));
 }

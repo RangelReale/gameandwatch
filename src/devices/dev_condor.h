@@ -7,7 +7,7 @@ class GW_Game_Condor_Info : public GW_Game_Info
 {
 public:
     GW_Game_Condor_Info() :
-        GW_Game_Info("condor", "Polisol - El Condor Pasa", "condor",
+        GW_Game_Info("condor", "Time & Fun - Condor", "condor",
             "bg.bmp", true, GW_Platform_RGB_create(255, 0, 255)) {}
 
     virtual GW_Game *create();

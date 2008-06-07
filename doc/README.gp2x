@@ -1,4 +1,4 @@
-Game & Watch Simulators 0.2 - GP2X port
+Game & Watch Simulators 0.3 - GP2X port
 =======================================
 http://sourceforge.net/projects/gameandwatch/
 
@@ -16,7 +16,7 @@ In-game keys:
 	R			- Game B
 	A			- Time
 	LEFT ARROW		- Move left
-	RIGHT ARROW/B		- Move right
+	RIGHT ARROW or B	- Move right
 	Vol +			- Volume up
 	Vol -			- Volume down
 

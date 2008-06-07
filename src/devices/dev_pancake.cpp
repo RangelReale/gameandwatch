@@ -68,7 +68,7 @@ GW_Game_Pancake::GW_Game_Pancake() :
         position_change(PS_ITEMRIGHT, 3, 375, 146)->
         position_change(PS_ITEMRIGHT, 4, 360, 110)->
         position_change(PS_ITEMRIGHT, 5, 366, 129)->
-        position_change(PS_ITEMRIGHT, 6, 166, 122);
+        position_change(PS_ITEMRIGHT, 6, 366, 122);
 
 
     // numbers

@@ -1,10 +1,10 @@
 [Setup]
 AppName=Game & Watch Simulator
-AppVerName=Game & Watch Simulator 0.2
+AppVerName=Game & Watch Simulator 0.3
 DefaultDirName={pf}\Game & Watch Simulator
 DefaultGroupName=Game & Watch Simulator
 SourceDir=..\..
-OutputBaseFilename=gameandwatch_0.2_win32_install
+OutputBaseFilename=gameandwatch_0.3_win32_install
 OutputDir=release\win32
 
 [Dirs]

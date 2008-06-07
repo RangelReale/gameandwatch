@@ -76,14 +76,7 @@ typedef struct GW_Platform_Time
     short h, n, s;
 };
 
-
-const string GW_Platform_DataPath =
-#ifdef HAVE_CONFIG_H
-"/usr/share/gameandwatch/data";
-#else
-"data";
-#endif
-
+extern const char* GW_Platform_DataPath;
 
 // constants
 const GW_Platform_RGB GW_RGB_BLACK = {0, 0, 0};
