@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-DGP2X" />
+			<Add option="-DNO_GW_USE_ZDATA" />
 			<Add directory="$(#gp2x_sdl.include)" />
 			<Add directory="$(#gp2x_sdl_image.include)" />
 			<Add directory="src" />

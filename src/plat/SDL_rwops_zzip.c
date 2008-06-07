@@ -48,7 +48,11 @@ SDL_RWops *SDL_RWFromZZIP(const char* file, const char* mode)
 	return SDL_RWFromFile(file, mode);
 
     zzip_file = zzip_fopen (file, mode);
-    if (! zzip_file) return 0;
+    if (! zzip_file)
+    {
+        printf("ZZIP: %d - %s\n", errno, zzip_strerror(errno));
+        return 0;
+    }
 
     rwops = SDL_AllocRW ();
     if (! rwops) { errno=ENOMEM; zzip_close (zzip_file); return 0; }

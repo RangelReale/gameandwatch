@@ -30,6 +30,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-DGW_USE_ZDATA" />
 			<Add directory="$(#sdl.include)" />
 			<Add directory="$(#sdl_image.include)" />
 			<Add directory="src" />
@@ -44,6 +45,8 @@
 			<Add library="SDL_gfx" />
 			<Add library="SDL_ttf" />
 			<Add library="boost_filesystem-$(#boost.suffix)" />
+			<Add library="zzip" />
+			<Add library="z" />
 			<Add directory="$(#sdl.lib)" />
 			<Add directory="$(#sdl_image.lib)" />
 			<Add directory="$(#boost.lib)" />
@@ -75,6 +78,10 @@
 		<Unit filename="src/gwdefs.h" />
 		<Unit filename="src/menu.cpp" />
 		<Unit filename="src/menu.h" />
+		<Unit filename="src/plat/SDL_rwops_zzip.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/plat/SDL_rwops_zzip.h" />
 		<Unit filename="src/plat/plat_sdl.cpp" />
 		<Unit filename="src/plat/plat_sdl.h" />
 		<Unit filename="src/platform.cpp" />

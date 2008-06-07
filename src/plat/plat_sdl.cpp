@@ -19,12 +19,15 @@ GW_PlatformSDL_Image::GW_PlatformSDL_Image(const string &filename, GW_Platform_R
     surface_ = SDL_LoadBMP( filename.c_str() );
 #else
     SDL_RWops *l = SDL_RWFromZZIP( filename.c_str(), "rb" );
-    surface_ = SDL_LoadBMP_RW( l, 1 );
+    if (l)
+        surface_ = SDL_LoadBMP_RW( l, 1 );
+    else
+        surface_=NULL;
     //SDL_FreeRW(l);
 #endif
 
     if (!surface_)
-        throw GW_Exception(string("Unable to load image: "+string(SDL_GetError())));
+        throw GW_Exception(string("Unable to load image "+filename+": "+string(SDL_GetError())));
     if (tcolor)
         SDL_SetColorKey(surface_, SDL_SRCCOLORKEY, SDL_MapRGB(surface_->format, tcolor->r, tcolor->g, tcolor->b));
     SDL_DisplayFormat(surface_);
@@ -62,12 +65,15 @@ GW_PlatformSDL_Sound::GW_PlatformSDL_Sound(const string &filename)
     sample_ = Mix_LoadWAV( filename.c_str() );
 #else
     SDL_RWops *l = SDL_RWFromZZIP( filename.c_str(), "rb" );
-    sample_ = Mix_LoadWAV_RW( l, 1 );
+    if (l)
+        sample_ = Mix_LoadWAV_RW( l, 1 );
+    else
+        sample_=NULL;
     //SDL_FreeRW(l);
 #endif
 
     if (!sample_)
-        throw GW_Exception(string("Unable to load sound sample: "+string(Mix_GetError())));
+        throw GW_Exception(string("Unable to load sound sample "+filename+": "+string(Mix_GetError())));
 }
 
 GW_PlatformSDL_Sound::~GW_PlatformSDL_Sound()
