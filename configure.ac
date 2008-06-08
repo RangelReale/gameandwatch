@@ -11,6 +11,10 @@ AC_CONFIG_HEADER([config.h])
 AC_PROG_CXX
 AC_PROG_CC
 
+# initialize
+CXXFLAGS="-DGW_USE_ZDATA"
+LIBS="-lzzip"
+
 # Checks for libraries.
 
 # Use the macro SDL provides to check the installed version of the SDL
@@ -22,6 +26,7 @@ AM_PATH_SDL($SDL_VERSION,
 	    AC_MSG_ERROR([*** SDL version $SDL_VERSION not found!])
 )
 # Add the SDL preprocessor flags and libraries to the build process
+CFLAGS="$CFLAGS $SDL_CFLAGS"
 CXXFLAGS="$CXXFLAGS $SDL_CFLAGS"
 LIBS="$LIBS $SDL_LIBS"
 

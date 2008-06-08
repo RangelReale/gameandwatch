@@ -1,6 +1,4 @@
 gamedatadir = $(datadir)/@PACKAGE@/data
 nobase_gamedata_DATA = gamewatch/* \
-	defendo/image/* defendo/sound/* \
-	monkey/image/* monkey/sound/* \
-	pirate/image/* pirate/sound/*
+	defendo.zip monkey.zip pirate.zip condor.zip pancake.zip rollerc.zip
 
