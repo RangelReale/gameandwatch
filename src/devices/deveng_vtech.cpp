@@ -40,19 +40,30 @@ GW_GameEngine_VTech::GW_GameEngine_VTech(int engineoptions) :
     display_number(4, 8, false);
 
     // miss
-    data().image_add(IM_MISS, 0, "im_miss.bmp", &tcolor_img);
-
     data().
-        position_add(PS_MISS, 1, 330, 62, IM_MISS)->
-        position_add(PS_MISS, 2, 343, 62, IM_MISS)->
-        position_add(PS_MISS, 3, 356, 62, IM_MISS)->
-        position_add(PS_MISS, 4, 371, 62, IM_MISS)->
-        position_add(PS_MISS, 5, 385, 62, IM_MISS)->
-        position_add(PS_MISS, 6, 329, 80, IM_MISS)->
-        position_add(PS_MISS, 7, 344, 80, IM_MISS)->
-        position_add(PS_MISS, 8, 356, 80, IM_MISS)->
-        position_add(PS_MISS, 9, 371, 80, IM_MISS)->
-        position_add(PS_MISS, 10, 383, 80, IM_MISS);
+        position_add(PS_MISS, 1, 330, 62)->
+        position_add(PS_MISS, 2, 343, 62)->
+        position_add(PS_MISS, 3, 356, 62)->
+        position_add(PS_MISS, 4, 371, 62)->
+        position_add(PS_MISS, 5, 385, 62)->
+        position_add(PS_MISS, 6, 329, 80)->
+        position_add(PS_MISS, 7, 344, 80)->
+        position_add(PS_MISS, 8, 356, 80)->
+        position_add(PS_MISS, 9, 371, 80)->
+        position_add(PS_MISS, 10, 383, 80);
+
+    if ((engineoptions_&EO_MISSSEPARATED)!=EO_MISSSEPARATED)
+        data().image_add(IM_MISS, GW_INDEX_DEFAULT, "im_miss.bmp", &tcolor_img);
+
+    for (int i=1; i<=10; i++)
+    {
+        if ((engineoptions_&EO_MISSSEPARATED)==EO_MISSSEPARATED)
+        {
+            sprintf(sname, "im_miss_%02d.bmp", i);
+            data().image_add(IM_MISS, i, sname, &tcolor_img);
+        }
+        data().position_get(PS_MISS, i)->image_set(IM_MISS, ((engineoptions_&EO_MISSSEPARATED)==EO_MISSSEPARATED?i:GW_INDEX_DEFAULT));
+    }
 
     // options
     data().

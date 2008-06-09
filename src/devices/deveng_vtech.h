@@ -12,6 +12,7 @@ public:
     {
         EO_NONE                     = 0,
         EO_NUMBERSEPARATED          = 1,
+        EO_MISSSEPARATED            = 2,
     };
 
     enum
