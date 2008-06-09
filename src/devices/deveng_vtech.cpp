@@ -67,14 +67,6 @@ GW_GameEngine_VTech::GW_GameEngine_VTech(int engineoptions) :
         position_add(PS_AM, 0, 315, 61, IM_AM, GW_INDEX_DEFAULT, "im_time_am.bmp", &tcolor_img)->
         position_add(PS_PM, 0, 314, 76, IM_PM, GW_INDEX_DEFAULT, "im_time_pm.bmp", &tcolor_img);
 
-    // sounds
-    data().
-        sound_add(SND_GAMEOVER, "Gameover.wav")->
-        sound_add(SND_GOT, "Got.wav")->
-        sound_add(SND_MISS, "Miss.wav")->
-        sound_add(SND_MOVE, "Move.wav")->
-        sound_add(SND_START, "Start.wav");
-
     // timers
     data().
         timer_add(TMR_GAME, 250, true)->
@@ -137,7 +129,9 @@ void GW_GameEngine_VTech::do_timer(int timerid)
     case TMR_GAMEOVER:
         // game is over: play "Game Over" tune, then freeze for 30 seconds, and finally
         // change mode to "Time 1", if no button is pressed
-        data_playsound(SND_GAMEOVER);
+        game_over();
+
+
         data_starttimer(TMR_GAMEOVERSOUND);
         data_starttimer(TMR_GAMEOVERWAIT);
         break;
@@ -186,7 +180,6 @@ void GW_GameEngine_VTech::do_game_start(int mode)
 
     game_start(mode);
 
-    data_playsound(SND_START);
     data_starttimer(TMR_GAMESTART);
 }
 

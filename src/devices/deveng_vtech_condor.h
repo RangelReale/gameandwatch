@@ -41,6 +41,15 @@ public:
         IDX_MISS_3,
     };
 
+    enum
+    {
+        SND_GAMEOVER,
+        SND_GOT,
+        SND_MISS,
+        SND_MOVE,
+        SND_START
+    };
+
     GW_GameEngine_VTech_Condor(int engineoptions, int options);
 
     virtual void Event(GW_Platform_Event *event);
@@ -50,6 +59,7 @@ protected:
     virtual void game_start(int mode);
     virtual void game_tick();
     virtual void game_reprise();
+    virtual void game_over() { data_playsound(SND_GAMEOVER); }
     virtual void level_update(int mode = -1);
 private:
     void char_update(int pos);

@@ -46,6 +46,15 @@ public:
 
     enum
     {
+        SND_GAMEOVER,
+        SND_GOT,
+        SND_MISS,
+        SND_MOVE,
+        SND_START
+    };
+
+    enum
+    {
         TMR_HIT = TMR_VTECH_MAX,
     };
 
@@ -59,6 +68,7 @@ protected:
     virtual void game_start(int mode);
     virtual void game_tick();
     virtual void game_reprise();
+    virtual void game_over() { data_playsound(SND_GAMEOVER); }
     virtual void level_update(int mode = -1);
 private:
     void char_update(int pos, bool hit);

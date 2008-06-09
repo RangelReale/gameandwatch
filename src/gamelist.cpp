@@ -8,6 +8,9 @@
 #include "devices/dev_pancake.h"
 #include "devices/dev_rollerc.h"
 
+#include "devices/dev_banana.h"
+#include "devices/dev_sleepwlk.h"
+
 #include "devices/dev_dkong.h"
 
 //////////////////////////////////////////
@@ -24,6 +27,9 @@ GW_GameList::GW_GameList() :
 void GW_GameList::load()
 {
 #ifdef GW_DEVEL_DEVICE
+    add(new GW_Game_Banana_Info); // Banana
+    add(new GW_Game_SleepWlk_Info); // Sleep Walker
+
     add(new GW_Game_DKong_Info); // Donkey Kong
 #endif //GW_DEVEL_DEVICE
 

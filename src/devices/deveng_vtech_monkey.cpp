@@ -68,6 +68,14 @@ GW_GameEngine_VTech_Monkey::GW_GameEngine_VTech_Monkey(int engineoptions, int op
         data().
             position_add(PS_ITEM_3, IDX_TARGET, 351, 130, IM_ITEM_3, IDX_TARGET, "im_item_3_target.bmp", &tcolor_img);
 
+    // sounds
+    data().
+        sound_add(SND_GAMEOVER, "Gameover.wav")->
+        sound_add(SND_GOT, "Got.wav")->
+        sound_add(SND_MISS, "Miss.wav")->
+        sound_add(SND_MOVE, "Move.wav")->
+        sound_add(SND_START, "Start.wav");
+
     // timers
     data().
         timer_add(TMR_HIT, 100, false);
@@ -138,6 +146,8 @@ void GW_GameEngine_VTech_Monkey::game_start(int mode)
     maxonscreen_=1;
 
     char_update(char_position_, false);
+
+    data_playsound(SND_START);
 }
 
 void GW_GameEngine_VTech_Monkey::game_tick()

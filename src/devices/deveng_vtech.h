@@ -53,15 +53,6 @@ public:
 
     enum
     {
-        SND_GAMEOVER,
-        SND_GOT,
-        SND_MISS,
-        SND_MOVE,
-        SND_START
-    };
-
-    enum
-    {
         TMR_GAME,
         TMR_GAMESTART,
         TMR_REPRISE,
@@ -106,6 +97,7 @@ protected:
 
     virtual void game_start(int mode) {}
     virtual void game_reprise() {}
+    virtual void game_over() {}
     virtual void level_update(int mode = -1);
     virtual void game_tick();
 

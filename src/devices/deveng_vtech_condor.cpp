@@ -123,6 +123,13 @@ GW_GameEngine_VTech_Condor::GW_GameEngine_VTech_Condor(int engineoptions, int op
         position_change(PS_AM, 0, 318, 54)->
         position_change(PS_PM, 0, 318, 69);
 
+    // sounds
+    data().
+        sound_add(SND_GAMEOVER, "Gameover.wav")->
+        sound_add(SND_GOT, "Got.wav")->
+        sound_add(SND_MISS, "Miss.wav")->
+        sound_add(SND_MOVE, "Move.wav")->
+        sound_add(SND_START, "Start.wav");
 
     // timers
     data().
@@ -188,6 +195,8 @@ void GW_GameEngine_VTech_Condor::game_start(int mode)
     char_update(char_position_);
     items_left_update(items_left_);
     items_right_update(0);
+
+    data_playsound(SND_START);
 }
 
 void GW_GameEngine_VTech_Condor::game_tick()

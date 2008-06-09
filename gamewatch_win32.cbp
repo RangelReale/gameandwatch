@@ -15,6 +15,7 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DGW_USE_ZDATA" />
+					<Add option="-DGW_DEVEL_DEVICE" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -25,6 +26,7 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-DGW_USE_ZDATA" />
+					<Add option="-DGW_DEVEL_DEVICE" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -66,6 +68,8 @@
 		</Unit>
 		<Unit filename="src\device.cpp" />
 		<Unit filename="src\device.h" />
+		<Unit filename="src\devices\dev_banana.cpp" />
+		<Unit filename="src\devices\dev_banana.h" />
 		<Unit filename="src\devices\dev_condor.cpp" />
 		<Unit filename="src\devices\dev_condor.h" />
 		<Unit filename="src\devices\dev_defendo.cpp" />
@@ -80,8 +84,12 @@
 		<Unit filename="src\devices\dev_pirate.h" />
 		<Unit filename="src\devices\dev_rollerc.cpp" />
 		<Unit filename="src\devices\dev_rollerc.h" />
+		<Unit filename="src\devices\dev_sleepwlk.cpp" />
+		<Unit filename="src\devices\dev_sleepwlk.h" />
 		<Unit filename="src\devices\deveng_vtech.cpp" />
 		<Unit filename="src\devices\deveng_vtech.h" />
+		<Unit filename="src\devices\deveng_vtech_banana.cpp" />
+		<Unit filename="src\devices\deveng_vtech_banana.h" />
 		<Unit filename="src\devices\deveng_vtech_condor.cpp" />
 		<Unit filename="src\devices\deveng_vtech_condor.h" />
 		<Unit filename="src\devices\deveng_vtech_monkey.cpp" />
