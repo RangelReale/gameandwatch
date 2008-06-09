@@ -8,6 +8,8 @@
 #include "devices/dev_pancake.h"
 #include "devices/dev_rollerc.h"
 
+#include "devices/dev_dkong.h"
+
 //////////////////////////////////////////
 ////
 //// GW_GameList
@@ -21,6 +23,8 @@ GW_GameList::GW_GameList() :
 
 void GW_GameList::load()
 {
+    add(new GW_Game_DKong_Info); // Donkey Kong
+
     add(new GW_Game_Condor_Info); // Condor
     add(new GW_Game_Defendo_Info); // Defendo
     add(new GW_Game_Monkey_Info); // Monkey

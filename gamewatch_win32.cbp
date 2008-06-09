@@ -70,6 +70,8 @@
 		<Unit filename="src\devices\dev_condor.h" />
 		<Unit filename="src\devices\dev_defendo.cpp" />
 		<Unit filename="src\devices\dev_defendo.h" />
+		<Unit filename="src\devices\dev_dkong.cpp" />
+		<Unit filename="src\devices\dev_dkong.h" />
 		<Unit filename="src\devices\dev_monkey.cpp" />
 		<Unit filename="src\devices\dev_monkey.h" />
 		<Unit filename="src\devices\dev_pancake.cpp" />

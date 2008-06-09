@@ -68,6 +68,7 @@ enum GW_Platform_GameType
     GPG_LEFTRIGHT,
     GPG_UPDOWN,
     GPG_4DIAG,
+    GPG_LRUDB,   // LEFT RIGHT UP DOWN BUTTONS
 };
 
 typedef struct GW_Platform_Time
