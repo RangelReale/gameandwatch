@@ -23,7 +23,9 @@ GW_GameList::GW_GameList() :
 
 void GW_GameList::load()
 {
+#ifdef GW_DEVEL_DEVICE
     add(new GW_Game_DKong_Info); // Donkey Kong
+#endif //GW_DEVEL_DEVICE
 
     add(new GW_Game_Condor_Info); // Condor
     add(new GW_Game_Defendo_Info); // Defendo

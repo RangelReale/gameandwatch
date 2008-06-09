@@ -1,3 +1,5 @@
+#ifdef GW_DEVEL_DEVICE
+
 #ifndef H__DEV_DKONG__H
 #define H__DEV_DKONG__H
 
@@ -21,7 +23,8 @@ public:
     enum
     {
         PS_BG,
-        PS_BAR,
+        PS_BARREL,
+        PS_BARRELFALL,
         PS_HOOK,
         PS_CRANE,
         PS_HEART,
@@ -47,7 +50,8 @@ public:
     enum
     {
         IM_BG,
-        IM_BAR,
+        IM_BARREL,
+        IM_BARRELFALL,
         IM_HOOK,
         IM_CRANE,
         IM_HEART,
@@ -114,3 +118,5 @@ private:
 };
 
 #endif //H__DEV_DKONG__H
+
+#endif //GW_DEVEL_DEVICE
