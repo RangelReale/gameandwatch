@@ -54,6 +54,10 @@ enum GW_Platform_EventID_Keys
     GPK_GAMEA,
     GPK_GAMEB,
     GPK_TIME,
+    GPK_UPLEFT,
+    GPK_UPRIGHT,
+    GPK_DOWNLEFT,
+    GPK_DOWNRIGHT,
 };
 
 typedef struct GW_Platform_Event

@@ -56,7 +56,16 @@ public:
 
 
     GW_GameEngine_VTech_Banana(int engineoptions, int options);
+
+    virtual GW_Platform_GameType gametype_get() { return GPG_4DIAG; }
+    virtual void Event(GW_Platform_Event *event);
+protected:
+    virtual void game_start(int mode);
+    virtual void game_tick();
 private:
+    void char_update(int pos, bool hit);
+
+    int tick_, char_position_;
     int options_;
 };
 

@@ -60,7 +60,6 @@ public:
 
     GW_GameEngine_VTech_Monkey(int engineoptions, int options);
 
-    //virtual void DefaultKey(defkeys_t key);
     virtual void Event(GW_Platform_Event *event);
 protected:
     virtual void do_timer(int timerid);

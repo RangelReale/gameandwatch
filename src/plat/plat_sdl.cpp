@@ -373,6 +373,18 @@ bool GW_PlatformSDL::process_event(GW_Platform_GameType gametype,
             case SDLK_DOWN:
                 event->data=GPK_DOWN;
                 break;
+            case SDLK_q:
+                event->data=GPK_UPLEFT;
+                break;
+            case SDLK_a:
+                event->data=GPK_DOWNLEFT;
+                break;
+            case SDLK_p:
+                event->data=GPK_UPRIGHT;
+                break;
+            case SDLK_l:
+                event->data=GPK_DOWNRIGHT;
+                break;
             case SDLK_RETURN:
                 event->data=GPK_TURNON;
                 break;

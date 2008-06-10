@@ -129,3 +129,78 @@ GW_GameEngine_VTech_Banana::GW_GameEngine_VTech_Banana(int engineoptions, int op
         sound_add(SND_START, "Start.wav");
 }
 
+void GW_GameEngine_VTech_Banana::Event(GW_Platform_Event *event)
+{
+    GW_GameEngine_VTech::Event(event);
+
+    if (event->id==GPE_KEYDOWN)
+    {
+        switch (event->data)
+        {
+        case GPK_UPLEFT:
+            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
+            {
+                char_position_=0;
+                char_update(char_position_, false);
+            }
+            break;
+        case GPK_DOWNLEFT:
+            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
+            {
+                char_position_=2;
+                char_update(char_position_, false);
+            }
+            break;
+        case GPK_UPRIGHT:
+            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
+            {
+                char_position_=1;
+                char_update(char_position_, false);
+            }
+            break;
+        case GPK_DOWNRIGHT:
+            if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
+            {
+                char_position_=3;
+                char_update(char_position_, false);
+            }
+            break;
+        }
+    }
+}
+
+void GW_GameEngine_VTech_Banana::game_start(int mode)
+{
+    GW_GameEngine_VTech::game_start(mode);
+
+    tick_=0;
+    char_position_=0;
+
+    char_update(char_position_, false);
+
+    data_playsound(SND_START);
+}
+
+void GW_GameEngine_VTech_Banana::game_tick()
+{
+    tick_++;
+    if (tick_>3) tick_=0;
+
+    if (tick_==1)
+        data_playsound(SND_HIGH);
+    else if (tick_==3)
+        data_playsound(SND_LOW);
+}
+
+void GW_GameEngine_VTech_Banana::char_update(int pos, bool hit)
+{
+    for (int i=PS_CHAR_1; i<=PS_CHAR_4; i++)
+    {
+        data().position_get(i, 1)->visible_set(i-PS_CHAR_1==pos);
+        if ((options_&GO_HAVECHARANIM)==GO_HAVECHARANIM)
+        {
+            data().position_get(i, 2)->visible_set(i-PS_CHAR_1==pos && !hit);
+            data().position_get(i, 3)->visible_set(i-PS_CHAR_1==pos && hit);
+        }
+    }
+}
