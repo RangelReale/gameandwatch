@@ -333,7 +333,7 @@ void GW_GameEngine_VTech::setnumber(int n, int ps1, int ps2, bool leadzero)
     // set a number on the display
     if (n>=0 && n<=99)
     {
-        if (n>10)
+        if (n>=10)
         {
             display_number(ps1, n / 10);
             display_number(ps2, n % 10);

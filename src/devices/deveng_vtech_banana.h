@@ -23,7 +23,8 @@ public:
         PS_CHAR_3,
         PS_CHAR_4,
         PS_ITEM_1,
-        PS_ITEM_2
+        PS_ITEM_2,
+        PS_OBSTACLE,
     };
 
     enum
@@ -33,7 +34,8 @@ public:
         IM_CHAR_3,
         IM_CHAR_4,
         IM_ITEM_1,
-        IM_ITEM_2
+        IM_ITEM_2,
+        IM_OBSTACLE,
     };
 
     enum
@@ -55,15 +57,23 @@ public:
     };
 
 
+    enum
+    {
+        TMR_HIT = TMR_VTECH_MAX,
+    };
+
     GW_GameEngine_VTech_Banana(int engineoptions, int options);
 
     virtual GW_Platform_GameType gametype_get() { return GPG_4DIAG; }
     virtual void Event(GW_Platform_Event *event);
 protected:
+    virtual void do_timer(int timerid);
+
     virtual void game_start(int mode);
     virtual void game_tick();
 private:
     void char_update(int pos, bool hit);
+    void obstacle_update(int pos);
 
     int tick_, char_position_;
     int options_;

@@ -48,7 +48,7 @@ GW_Game_SleepWlk::GW_Game_SleepWlk() :
         position_change(PS_ITEM_1, 9, 351, 93)->
         position_change(PS_ITEM_1, 10, 374, 96)->
         position_change(PS_ITEM_1, IDX_MISS_4, 241, 79)->
-        position_change(PS_ITEM_1, IDX_OBSTACLE_4, 226, 132)->
+        //position_change(PS_ITEM_1, IDX_OBSTACLE_4, 226, 132)->
         position_change(PS_ITEM_1, IDX_MISS_7, 307, 131);
         // 300, 130
 
@@ -65,9 +65,16 @@ GW_Game_SleepWlk::GW_Game_SleepWlk() :
         position_change(PS_ITEM_2, 9, 351, 177)->
         position_change(PS_ITEM_2, 10, 372, 176)->
         position_change(PS_ITEM_2, IDX_MISS_4, 216, 171)->
-        position_change(PS_ITEM_2, IDX_OBSTACLE_4, 220, 212)->
-        position_change(PS_ITEM_2, IDX_MISS_7, 283, 139)->
-        position_change(PS_ITEM_2, IDX_OBSTACLE_7, 290, 208);
+        //position_change(PS_ITEM_2, IDX_OBSTACLE_4, 220, 212)->
+        position_change(PS_ITEM_2, IDX_MISS_7, 283, 139);
+        //position_change(PS_ITEM_2, IDX_OBSTACLE_7, 290, 208);
+
+    // obstacle
+    data().
+        position_change(PS_OBSTACLE, 1, 226, 132)->
+        position_change(PS_OBSTACLE, 3, 220, 212)->
+        position_change(PS_OBSTACLE, 4, 290, 208);
+
 
     // numbers
     data().

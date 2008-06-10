@@ -61,11 +61,13 @@ GW_GameEngine_VTech_Banana::GW_GameEngine_VTech_Banana(int engineoptions, int op
         position_add(PS_ITEM_1, 9, 359, 100, IM_ITEM_1, 9, "im_item_1_09.bmp", &tcolor_img)->
         position_add(PS_ITEM_1, 10, 380, 101, IM_ITEM_1, 10, "im_item_1_10.bmp", &tcolor_img)->
         position_add(PS_ITEM_1, IDX_MISS_4, 244, 94, IM_ITEM_1, IDX_MISS_4, "im_item_1_04miss.bmp", &tcolor_img)->
-        position_add(PS_ITEM_1, IDX_OBSTACLE_4, 236, 130, IM_ITEM_1, IDX_OBSTACLE_4, "im_item_1_04obstacle.bmp", &tcolor_img)->
+        //position_add(PS_ITEM_1, IDX_OBSTACLE_4, 236, 130, IM_ITEM_1, IDX_OBSTACLE_4, "im_item_1_04obstacle.bmp", &tcolor_img)->
         position_add(PS_ITEM_1, IDX_MISS_7, 320, 93, IM_ITEM_1, IDX_MISS_7, "im_item_1_07miss.bmp", &tcolor_img);
+/*
     if ((options_&GO_HAVEOBSTACLE17)==GO_HAVEOBSTACLE17)
         data().
         position_add(PS_ITEM_1, IDX_OBSTACLE_7, 321, 132, IM_ITEM_1, IDX_OBSTACLE_7, "im_item_1_07obstacle.bmp", &tcolor_img);
+*/
 
     // item 2
     data().
@@ -80,9 +82,18 @@ GW_GameEngine_VTech_Banana::GW_GameEngine_VTech_Banana(int engineoptions, int op
         position_add(PS_ITEM_2, 9, 367, 169, IM_ITEM_2, 9, "im_item_2_09.bmp", &tcolor_img)->
         position_add(PS_ITEM_2, 10, 386, 166, IM_ITEM_2, 10, "im_item_2_10.bmp", &tcolor_img)->
         position_add(PS_ITEM_2, IDX_MISS_4, 207, 159, IM_ITEM_2, IDX_MISS_4, "im_item_2_04miss.bmp", &tcolor_img)->
-        position_add(PS_ITEM_2, IDX_OBSTACLE_4, 239, 202, IM_ITEM_2, IDX_OBSTACLE_4, "im_item_2_04obstacle.bmp", &tcolor_img)->
-        position_add(PS_ITEM_2, IDX_MISS_7, 304, 167, IM_ITEM_2, IDX_MISS_7, "im_item_2_07miss.bmp", &tcolor_img)->
-        position_add(PS_ITEM_2, IDX_OBSTACLE_7, 234, 201, IM_ITEM_2, IDX_OBSTACLE_7, "im_item_2_07obstacle.bmp", &tcolor_img);
+        //position_add(PS_ITEM_2, IDX_OBSTACLE_4, 239, 202, IM_ITEM_2, IDX_OBSTACLE_4, "im_item_2_04obstacle.bmp", &tcolor_img)->
+        position_add(PS_ITEM_2, IDX_MISS_7, 304, 167, IM_ITEM_2, IDX_MISS_7, "im_item_2_07miss.bmp", &tcolor_img);
+        //position_add(PS_ITEM_2, IDX_OBSTACLE_7, 324, 201, IM_ITEM_2, IDX_OBSTACLE_7, "im_item_2_07obstacle.bmp", &tcolor_img);
+
+    // obstacle
+    data().
+        position_add(PS_OBSTACLE, 1, 236, 130, IM_OBSTACLE, 1, "im_item_1_04obstacle.bmp", &tcolor_img)->
+        position_add(PS_OBSTACLE, 3, 239, 202, IM_OBSTACLE, 3, "im_item_2_04obstacle.bmp", &tcolor_img)->
+        position_add(PS_OBSTACLE, 4, 324, 201, IM_OBSTACLE, 4, "im_item_2_07obstacle.bmp", &tcolor_img);
+    if ((options_&GO_HAVEOBSTACLE17)==GO_HAVEOBSTACLE17)
+        data().
+        position_add(PS_OBSTACLE, 2, 321, 132, IM_OBSTACLE, 2, "im_item_1_07obstacle.bmp", &tcolor_img);
 
 
     // numbers
@@ -127,6 +138,23 @@ GW_GameEngine_VTech_Banana::GW_GameEngine_VTech_Banana(int engineoptions, int op
         sound_add(SND_OVER, "Over.wav")->
         sound_add(SND_SAFE, "Safe.wav")->
         sound_add(SND_START, "Start.wav");
+
+    // timers
+    data().
+        timer_add(TMR_HIT, 75, false);
+
+}
+
+void GW_GameEngine_VTech_Banana::do_timer(int timerid)
+{
+    GW_GameEngine_VTech::do_timer(timerid);
+
+    switch (timerid)
+    {
+    case TMR_HIT:
+        char_update(char_position_, false);
+        break;
+    }
 }
 
 void GW_GameEngine_VTech_Banana::Event(GW_Platform_Event *event)
@@ -140,29 +168,29 @@ void GW_GameEngine_VTech_Banana::Event(GW_Platform_Event *event)
         case GPK_UPLEFT:
             if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
             {
-                char_position_=0;
-                char_update(char_position_, false);
+                char_update(0, true);
+                data_starttimer(TMR_HIT);
             }
             break;
         case GPK_DOWNLEFT:
             if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
             {
-                char_position_=2;
-                char_update(char_position_, false);
+                char_update(2, true);
+                data_starttimer(TMR_HIT);
             }
             break;
         case GPK_UPRIGHT:
             if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
             {
-                char_position_=1;
-                char_update(char_position_, false);
+                char_update(1, true);
+                data_starttimer(TMR_HIT);
             }
             break;
         case GPK_DOWNRIGHT:
             if ((GetMode()==MODE_GAMEA || GetMode()==MODE_GAMEB) && canmove_get())
             {
-                char_position_=3;
-                char_update(char_position_, false);
+                char_update(3, true);
+                data_starttimer(TMR_HIT);
             }
             break;
         }
@@ -174,9 +202,11 @@ void GW_GameEngine_VTech_Banana::game_start(int mode)
     GW_GameEngine_VTech::game_start(mode);
 
     tick_=0;
-    char_position_=0;
 
-    char_update(char_position_, false);
+    char_update(0, false);
+
+    data().position_get(PS_ITEM_1, 1)->show();
+    data().position_get(PS_ITEM_2, 10)->show();
 
     data_playsound(SND_START);
 }
@@ -186,6 +216,19 @@ void GW_GameEngine_VTech_Banana::game_tick()
     tick_++;
     if (tick_>3) tick_=0;
 
+    for (int i=10; i>=2; i--)
+    {
+        if (tick_==1)
+            data().position_get(PS_ITEM_1, i)->visible_set(data().position_get(PS_ITEM_1, i-1)->visible_get());
+        else if (tick_==3)
+            data().position_get(PS_ITEM_2, 10-i+1)->visible_set(data().position_get(PS_ITEM_2, 10-i+2)->visible_get());
+    }
+    if (tick_==1)
+        data().position_get(PS_ITEM_1, 1)->visible_set(false);
+    else if (tick_==3)
+        data().position_get(PS_ITEM_2, 10)->visible_set(false);
+
+
     if (tick_==1)
         data_playsound(SND_HIGH);
     else if (tick_==3)
@@ -194,6 +237,7 @@ void GW_GameEngine_VTech_Banana::game_tick()
 
 void GW_GameEngine_VTech_Banana::char_update(int pos, bool hit)
 {
+    char_position_=pos;
     for (int i=PS_CHAR_1; i<=PS_CHAR_4; i++)
     {
         data().position_get(i, 1)->visible_set(i-PS_CHAR_1==pos);
@@ -202,5 +246,17 @@ void GW_GameEngine_VTech_Banana::char_update(int pos, bool hit)
             data().position_get(i, 2)->visible_set(i-PS_CHAR_1==pos && !hit);
             data().position_get(i, 3)->visible_set(i-PS_CHAR_1==pos && hit);
         }
+    }
+    obstacle_update(pos+1);
+}
+
+void GW_GameEngine_VTech_Banana::obstacle_update(int pos)
+{
+    for (int i=1; i<=4; i++)
+    {
+        if (i==2 && (options_&GO_HAVEOBSTACLE17)!=GO_HAVEOBSTACLE17)
+            continue;
+
+        data().position_get(PS_OBSTACLE, i)->visible_set(i!=pos);
     }
 }
