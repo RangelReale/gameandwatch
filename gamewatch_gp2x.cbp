@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 			<Add option="-DGP2X" />
 			<Add option="-DNO_GW_USE_ZDATA" />
+			<Add option="-DGW_DEVEL_DEVICE" />
 			<Add directory="$(#gp2x_sdl.include)" />
 			<Add directory="$(#gp2x_sdl_image.include)" />
 			<Add directory="src" />
@@ -60,10 +61,14 @@
 		</Linker>
 		<Unit filename="src/device.cpp" />
 		<Unit filename="src/device.h" />
+		<Unit filename="src/devices/dev_banana.cpp" />
+		<Unit filename="src/devices/dev_banana.h" />
 		<Unit filename="src/devices/dev_condor.cpp" />
 		<Unit filename="src/devices/dev_condor.h" />
 		<Unit filename="src/devices/dev_defendo.cpp" />
 		<Unit filename="src/devices/dev_defendo.h" />
+		<Unit filename="src/devices/dev_dkong.cpp" />
+		<Unit filename="src/devices/dev_dkong.h" />
 		<Unit filename="src/devices/dev_monkey.cpp" />
 		<Unit filename="src/devices/dev_monkey.h" />
 		<Unit filename="src/devices/dev_pancake.cpp" />
@@ -72,8 +77,12 @@
 		<Unit filename="src/devices/dev_pirate.h" />
 		<Unit filename="src/devices/dev_rollerc.cpp" />
 		<Unit filename="src/devices/dev_rollerc.h" />
+		<Unit filename="src/devices/dev_sleepwlk.cpp" />
+		<Unit filename="src/devices/dev_sleepwlk.h" />
 		<Unit filename="src/devices/deveng_vtech.cpp" />
 		<Unit filename="src/devices/deveng_vtech.h" />
+		<Unit filename="src/devices/deveng_vtech_banana.cpp" />
+		<Unit filename="src/devices/deveng_vtech_banana.h" />
 		<Unit filename="src/devices/deveng_vtech_condor.cpp" />
 		<Unit filename="src/devices/deveng_vtech_condor.h" />
 		<Unit filename="src/devices/deveng_vtech_monkey.cpp" />

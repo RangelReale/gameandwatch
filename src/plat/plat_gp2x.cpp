@@ -35,16 +35,24 @@ bool GW_PlatformGP2X::process_event(GW_Platform_GameType gametype,
                 event->data=GPK_TURNONTOGGLE;
                 break;
             case GP2X_VK_LEFT:
-                event->data=GPK_LEFT;
+                if (gametype!=GPG_4DIAG)
+                    event->data=GPK_LEFT;
                 break;
             case GP2X_VK_RIGHT:
-                event->data=GPK_RIGHT;
+                if (gametype!=GPG_4DIAG)
+                    event->data=GPK_RIGHT;
                 break;
             case GP2X_VK_UP:
-                event->data=GPK_UP;
+                if (gametype!=GPG_4DIAG)
+                    event->data=GPK_UP;
+                else
+                    event->data=GPK_UPLEFT;
                 break;
             case GP2X_VK_DOWN:
-                event->data=GPK_DOWN;
+                if (gametype!=GPG_4DIAG)
+                    event->data=GPK_DOWN;
+                else
+                    event->data=GPK_DOWNLEFT;
                 break;
             case GP2X_VK_SELECT:
                 event->data=GPK_QUIT;
@@ -67,6 +75,18 @@ bool GW_PlatformGP2X::process_event(GW_Platform_GameType gametype,
             case GP2X_VK_FB:
                 if (gametype==GPG_LEFTRIGHT)
                     event->data=GPK_RIGHT;
+                else
+                    proc=false;
+                break;
+            case GP2X_VK_FX:
+                if (gametype==GPG_4DIAG)
+                    event->data=GPK_DOWNRIGHT;
+                else
+                    proc=false;
+                break;
+            case GP2X_VK_FY:
+                if (gametype==GPG_4DIAG)
+                    event->data=GPK_UPRIGHT;
                 else
                     proc=false;
                 break;
