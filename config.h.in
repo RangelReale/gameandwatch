@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Enable in-development devices */
+#undef GW_DEVEL_DEVICE
+
 /* Define to 1 if you have the `atexit' function. */
 #undef HAVE_ATEXIT
 

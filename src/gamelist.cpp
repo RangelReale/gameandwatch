@@ -8,10 +8,12 @@
 #include "devices/dev_pancake.h"
 #include "devices/dev_rollerc.h"
 
+#ifdef GW_DEVEL_DEVICE
 #include "devices/dev_banana.h"
 #include "devices/dev_sleepwlk.h"
 
 #include "devices/dev_dkong.h"
+#endif
 
 //////////////////////////////////////////
 ////

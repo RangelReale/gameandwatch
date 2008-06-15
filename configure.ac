@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(gameandwatch, 0.1, rreale@bol.com.br)
-AM_INIT_AUTOMAKE(gameandwatch, 0.1)
+AC_INIT(gameandwatch, 0.3, rreale@bol.com.br)
+AM_INIT_AUTOMAKE(gameandwatch, 0.3)
 AC_CONFIG_SRCDIR([src/gamewatch.cpp])
 AC_CONFIG_HEADER([config.h])
 
@@ -14,6 +14,21 @@ AC_PROG_CC
 # initialize
 CXXFLAGS="${CXXFLAGS} -DGW_USE_ZDATA"
 LIBS="-lzzip"
+
+# parameters
+AC_ARG_WITH(develdevices, [  --with-develdevices            enable in-development devices])
+
+AC_MSG_CHECKING([if in-development devices should be included])
+if test "$with_develdevices" == "yes"
+then
+	AC_DEFINE([GW_DEVEL_DEVICE], [], [Enable in-development devices])
+	GW_DEVEL_DEVICE=true
+	AC_SUBST(GW_DEVEL_DEVICE)
+	AC_MSG_RESULT([yes])
+else
+	AC_MSG_RESULT([no])
+fi
+AM_CONDITIONAL(DEVEL_DEVICE, test x$GW_DEVEL_DEVICE = xtrue)
 
 # Checks for libraries.
 
