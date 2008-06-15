@@ -12,7 +12,7 @@ AC_PROG_CXX
 AC_PROG_CC
 
 # initialize
-CXXFLAGS="-DGW_USE_ZDATA"
+CXXFLAGS="${CXXFLAGS} -DGW_USE_ZDATA"
 LIBS="-lzzip"
 
 # Checks for libraries.

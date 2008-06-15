@@ -2,8 +2,10 @@
 
 
 const char* GW_Platform_DataPath =
-#ifdef HAVE_CONFIG_H
-"/usr/share/gameandwatch/data";
+#ifdef DATADIR
+#define QMAKESTR(x) #x
+#define MAKESTR(x) QMAKESTR(x)
+MAKESTR(DATADIR) "/gameandwatch/data";
 #else
 "data";
 #endif
