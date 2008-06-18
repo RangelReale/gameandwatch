@@ -102,9 +102,9 @@ public:
 
     virtual void Event(GW_Platform_Event *event);
 
-    virtual GW_Platform_GameType gametype_get() { return GPG_LEFTRIGHT; }
     virtual int bgimage_get() { return IM_BG; }
 protected:
+    virtual GW_Platform_GameType do_gametype_get() { return GPG_LEFTRIGHT; }
     virtual void do_turnon();
     virtual void do_turnoff();
     virtual int do_modecount() { return MODE_MAX; }

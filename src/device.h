@@ -210,7 +210,7 @@ public:
 
     GW_GameData &data() { return data_; }
 
-    virtual GW_Platform_GameType gametype_get() { return GPG_MENU; }
+    GW_Platform_GameType gametype_get() { if (!IsOn()) return GPG_MENU; return do_gametype_get(); }
     const string &gamepath_get() { return gamepath_; }
     //const string &bgimage_get() { return bgimage_; }
     const GW_Platform_Rect &gamerect_get() { return gamerect_; }
@@ -219,6 +219,7 @@ public:
     void Load(GW_Device *device, const string &datapath);
     void Unload();
 protected:
+    virtual GW_Platform_GameType do_gametype_get() { return GPG_MENU; }
     virtual void do_turnon() {}
     virtual void do_turnoff() {}
     virtual int do_modecount() { return 0; }
