@@ -53,6 +53,7 @@
 			<Add library="SDL_ttf" />
 			<Add library="SDL_gfx" />
 			<Add library="boost_filesystem-$(#boost.suffix)" />
+			<Add library="boost_system-$(#boost.suffix)" />
 			<Add library="zzip" />
 			<Add library="z" />
 			<Add directory="$(#sdl.lib)" />
