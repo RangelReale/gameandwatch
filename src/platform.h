@@ -17,17 +17,17 @@ using namespace std;
 
 
 
-typedef struct GW_Platform_RGB
+struct GW_Platform_RGB
 {
     unsigned char r, g, b;
 };
 
-typedef struct GW_Platform_Point
+struct GW_Platform_Point
 {
     int x, y;
 };
 
-typedef struct GW_Platform_Rect
+struct GW_Platform_Rect
 {
     int x, y, w, h;
 };
@@ -60,7 +60,7 @@ enum GW_Platform_EventID_Keys
     GPK_DOWNRIGHT,
 };
 
-typedef struct GW_Platform_Event
+struct GW_Platform_Event
 {
     GW_Platform_EventID id;
     int data;
@@ -75,7 +75,7 @@ enum GW_Platform_GameType
     GPG_LRUDB,   // LEFT RIGHT UP DOWN BUTTONS
 };
 
-typedef struct GW_Platform_Time
+struct GW_Platform_Time
 {
     short d, m, y;
     short h, n, s;
