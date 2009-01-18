@@ -1,3 +1,4 @@
+#include "gwdbg.h"
 #include "devices/deveng_vtech_banana.h"
 
 GW_GameEngine_VTech_Banana::GW_GameEngine_VTech_Banana(int engineoptions, int options) :
@@ -141,7 +142,8 @@ GW_GameEngine_VTech_Banana::GW_GameEngine_VTech_Banana(int engineoptions, int op
 
     // timers
     data().
-        timer_add(TMR_HIT, 75, false);
+		timer_add(TMR_HIT, 75, false)->
+		timer_get(TMR_GAME)->time_set(500);
 
 }
 
@@ -201,7 +203,7 @@ void GW_GameEngine_VTech_Banana::game_start(int mode)
 {
     GW_GameEngine_VTech::game_start(mode);
 
-    tick_=0;
+    tick_=1;
 
     char_update(0, false);
 
@@ -213,25 +215,32 @@ void GW_GameEngine_VTech_Banana::game_start(int mode)
 
 void GW_GameEngine_VTech_Banana::game_tick()
 {
-    tick_++;
-    if (tick_>3) tick_=0;
+	static int curitem, posmod;
+
+	tick_++;
+    if (tick_>1) tick_=0;
+
+	GWDBG_FOUTPUT("game_tick: %d\n", tick_)
+
+	curitem=PS_ITEM_1+tick_;
+	if (curitem==PS_ITEM_1) posmod=0; else posmod=10+1;
 
     for (int i=10; i>=2; i--)
     {
-        if (tick_==1)
+        if (curitem==PS_ITEM_1)
             data().position_get(PS_ITEM_1, i)->visible_set(data().position_get(PS_ITEM_1, i-1)->visible_get());
-        else if (tick_==3)
+        else if (curitem==PS_ITEM_2)
             data().position_get(PS_ITEM_2, 10-i+1)->visible_set(data().position_get(PS_ITEM_2, 10-i+2)->visible_get());
     }
-    if (tick_==1)
+    if (curitem==PS_ITEM_1)
         data().position_get(PS_ITEM_1, 1)->visible_set(false);
-    else if (tick_==3)
+    else if (curitem==PS_ITEM_2)
         data().position_get(PS_ITEM_2, 10)->visible_set(false);
 
 
-    if (tick_==1)
+    if (tick_==0)
         data_playsound(SND_HIGH);
-    else if (tick_==3)
+    else if (tick_==1)
         data_playsound(SND_LOW);
 }
 
@@ -260,3 +269,4 @@ void GW_GameEngine_VTech_Banana::obstacle_update(int pos)
         data().position_get(PS_OBSTACLE, i)->visible_set(i!=pos);
     }
 }
+

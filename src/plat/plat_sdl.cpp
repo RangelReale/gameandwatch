@@ -1,6 +1,7 @@
 #include <ctime>
 #include "plat/plat_sdl.h"
 #include "gwdefs.h"
+#include "gwdbg.h"
 #include <boost/filesystem.hpp>
 #ifdef GW_USE_ZDATA
 #include <plat/SDL_rwops_zzip.h>
@@ -103,7 +104,9 @@ void GW_PlatformSDL::initialize()
 {
     if (!initialized_)
     {
-        // initialize SDL video
+		GWDBG_OUTPUT("SDL: Initialize")
+
+		// initialize SDL video
         if ( SDL_Init( sdlinit(SDL_INIT_VIDEO|SDL_INIT_AUDIO) ) < 0 )
             throw GW_Exception(string("Unable to init SDL: "+string(SDL_GetError())));
 
@@ -159,7 +162,9 @@ void GW_PlatformSDL::finalize()
 
         SDL_Quit();
 
-        initialized_=false;
+		GWDBG_OUTPUT("SDL: Finalize")
+
+		initialized_=false;
     }
 }
 

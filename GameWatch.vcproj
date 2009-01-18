@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\src\plat&quot;;&quot;$(SDL)\include&quot;;&quot;$(ZZIP)&quot;;&quot;$(BOOST)&quot;;&quot;$(SDL_MIXER)\include&quot;;&quot;$(SDL_IMAGE)\include&quot;;&quot;$(SDL_TTF)\include&quot;;&quot;$(SDL_GFX)&quot;"
-				PreprocessorDefinitions="GW_USE_ZDATA;GW_DEVEL_DEVICE"
+				PreprocessorDefinitions="GW_USE_ZDATA;GW_DEVEL_DEVICE;GW_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -65,7 +65,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(BOOST)\stage\lib&quot;;&quot;$(SDL)\lib&quot;;&quot;$(SDL_IMAGE)\lib&quot;;&quot;$(SDL_MIXER)\lib&quot;;&quot;$(SDL_TTF)\lib&quot;;&quot;$(ZZIP)\msvc8&quot;;&quot;$(SDL_GFX)\VisualC\Debug&quot;"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -320,6 +320,10 @@
 			</File>
 			<File
 				RelativePath=".\src\gamelist.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\gwdbg.h"
 				>
 			</File>
 			<File

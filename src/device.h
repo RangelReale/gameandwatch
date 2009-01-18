@@ -50,7 +50,7 @@ public:
     GW_GameData_Image(GW_GameData *gdata, const string &image,
         GW_Platform_RGB *tcolor = NULL) :
         GW_GameData_Item(gdata), image_(image), imagedata_(NULL),
-        istcolor_(tcolor) { if (tcolor) tcolor_=*tcolor; }
+        istcolor_(tcolor!=NULL) { if (tcolor) tcolor_=*tcolor; }
     ~GW_GameData_Image();
 
     void Load(const string &imagepath);
