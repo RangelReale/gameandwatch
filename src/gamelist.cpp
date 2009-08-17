@@ -50,5 +50,5 @@ GW_Game_Info *GW_GameList::get(int index)
 
 void GW_GameList::add(GW_Game_Info *gameinfo)
 {
-    list_.push_back( shared_ptr<GW_Game_Info>(gameinfo) );
+    list_.push_back( linked_ptr<GW_Game_Info>(gameinfo) );
 }

@@ -3,13 +3,12 @@
 
 #include <map>
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include "linked_ptr.h"
 #include "platform.h"
 
 #define GW_INDEX_DEFAULT 0
 
 using namespace std;
-using namespace boost;
 
 // forward declaration
 class GW_Device;
@@ -127,13 +126,13 @@ private:
 class GW_GameData
 {
 public:
-    typedef map< int, shared_ptr<GW_GameData_Image> > imagesindex_t;
-    typedef map< int, shared_ptr<GW_GameData_Position> > positionsindex_t;
+    typedef map< int, linked_ptr<GW_GameData_Image> > imagesindex_t;
+    typedef map< int, linked_ptr<GW_GameData_Position> > positionsindex_t;
 
     typedef map< int, imagesindex_t > images_t;
     typedef map< int, positionsindex_t > positions_t;
-    typedef map< int, shared_ptr<GW_GameData_Sound> > sounds_t;
-    typedef map< int, shared_ptr<GW_GameData_Timer> > timers_t;
+    typedef map< int, linked_ptr<GW_GameData_Sound> > sounds_t;
+    typedef map< int, linked_ptr<GW_GameData_Timer> > timers_t;
 
     GW_GameData(GW_Game *game) : game_(game), images_(), positions_(), sounds_(), timers_() {}
 

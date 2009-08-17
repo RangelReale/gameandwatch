@@ -2,12 +2,9 @@
 #include "plat/plat_sdl.h"
 #include "gwdefs.h"
 #include "gwdbg.h"
-#include <boost/filesystem.hpp>
 #ifdef GW_USE_ZDATA
 #include <plat/SDL_rwops_zzip.h>
 #endif
-
-namespace bf = boost::filesystem;
 
 //////////////////////////////////////////
 ////
@@ -138,7 +135,9 @@ void GW_PlatformSDL::initialize()
         SDL_WM_SetCaption("Game & Watch simulator - by Hitnrun & Madrigal", NULL);
 
         // load font
-        font_=TTF_OpenFont( bf::path( bf::path(platformdata_get() ) / "andalemo.ttf" ).string().c_str(), fontsize_get() );
+        //font_=TTF_OpenFont( bf::path( bf::path(platformdata_get() ) / "andalemo.ttf" ).string().c_str(), fontsize_get() );
+		string pfont(platformdata_get() + "/" + "andalemo.ttf" );
+		font_=TTF_OpenFont( pfont.c_str(), fontsize_get() );
         if (!font_)
             throw GW_Exception(string("Unable to load font: "+string(TTF_GetError())));
 

@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\src\plat&quot;;&quot;$(SDL)\include&quot;;&quot;$(ZZIP)&quot;;&quot;$(BOOST)&quot;;&quot;$(SDL_MIXER)\include&quot;;&quot;$(SDL_IMAGE)\include&quot;;&quot;$(SDL_TTF)\include&quot;;&quot;$(SDL_GFX)&quot;;.\include"
-				PreprocessorDefinitions="GW_USE_ZDATA;GW_DEVEL_DEVICE;GW_DEBUG"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\src\plat&quot;;&quot;$(SDL)\include&quot;;&quot;$(ZZIP)&quot;;&quot;$(SDL_MIXER)\include&quot;;&quot;$(SDL_IMAGE)\include&quot;;&quot;$(SDL_TTF)\include&quot;;&quot;$(SDL_GFX)&quot;;.\include"
+				PreprocessorDefinitions="GW_USE_ZDATA;GW_DEVEL_DEVICE;GW_DEBUG;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="SDLmain.lib SDL.lib SDL_mixer.lib SDL_image.lib SDL_ttf.lib zziplib-Debug.lib SDL_gfx.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(BOOST)\stage\lib&quot;;&quot;$(SDL)\lib&quot;;&quot;$(SDL_IMAGE)\lib&quot;;&quot;$(SDL_MIXER)\lib&quot;;&quot;$(SDL_TTF)\lib&quot;;&quot;$(ZZIP)\msvc8&quot;;&quot;$(SDL_GFX)\VisualC\Debug&quot;"
+				AdditionalLibraryDirectories="&quot;$(SDL)\lib&quot;;&quot;$(SDL_IMAGE)\lib&quot;;&quot;$(SDL_MIXER)\lib&quot;;&quot;$(SDL_TTF)\lib&quot;;&quot;$(ZZIP)\msvc8&quot;;&quot;$(SDL_GFX)\VisualC\Debug&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -117,8 +117,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\src\plat&quot;;&quot;$(SDL)\include&quot;;&quot;$(ZZIP)&quot;;&quot;$(BOOST)&quot;;&quot;$(SDL_MIXER)\include&quot;;&quot;$(SDL_IMAGE)\include&quot;;&quot;$(SDL_TTF)\include&quot;;&quot;$(SDL_GFX)&quot;;.\include"
-				PreprocessorDefinitions="GW_USE_ZDATA;GW_DEVEL_DEVICE"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\src\plat&quot;;&quot;$(SDL)\include&quot;;&quot;$(ZZIP)&quot;;&quot;$(SDL_MIXER)\include&quot;;&quot;$(SDL_IMAGE)\include&quot;;&quot;$(SDL_TTF)\include&quot;;&quot;$(SDL_GFX)&quot;;.\include"
+				PreprocessorDefinitions="GW_USE_ZDATA;GW_DEVEL_DEVICE;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -138,7 +138,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="SDLmain.lib SDL.lib SDL_mixer.lib SDL_image.lib SDL_ttf.lib zziplib-Release.lib SDL_gfx.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(BOOST)\stage\lib&quot;;&quot;$(SDL)\lib&quot;;&quot;$(SDL_IMAGE)\lib&quot;;&quot;$(SDL_MIXER)\lib&quot;;&quot;$(SDL_TTF)\lib&quot;;&quot;$(ZZIP)\msvc8&quot;;&quot;$(SDL_GFX)\VisualC\Release&quot;"
+				AdditionalLibraryDirectories="&quot;$(SDL)\lib&quot;;&quot;$(SDL_IMAGE)\lib&quot;;&quot;$(SDL_MIXER)\lib&quot;;&quot;$(SDL_TTF)\lib&quot;;&quot;$(ZZIP)\msvc8&quot;;&quot;$(SDL_GFX)\VisualC\Release&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -328,6 +328,10 @@
 			</File>
 			<File
 				RelativePath=".\include\gwdefs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\linked_ptr.h"
 				>
 			</File>
 			<File

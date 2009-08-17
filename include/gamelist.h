@@ -3,11 +3,10 @@
 
 #include <string>
 #include <deque>
-#include <boost/shared_ptr.hpp>
+#include "linked_ptr.h"
 #include "device.h"
 
 using namespace std;
-using namespace boost;
 
 class GW_GameList
 {
@@ -21,7 +20,7 @@ protected:
 private:
     void load();
 
-    typedef deque< shared_ptr<GW_Game_Info> > list_t;
+    typedef deque< linked_ptr<GW_Game_Info> > list_t;
 
     list_t list_;
 };

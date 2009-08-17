@@ -1,10 +1,6 @@
 #include <iostream>
 #include "gwdefs.h"
 #include "device.h"
-#include <boost/filesystem.hpp>
-
-namespace bf = boost::filesystem;
-
 
 //////////////////////////////////////////
 ////
@@ -37,7 +33,8 @@ void GW_GameData_Sound::Load(const string &soundpath)
     if (sounddata_)
         delete sounddata_;
 
-    sounddata_=platform_get()->sound_load( bf::path( bf::path(soundpath) / sound_).string() );
+    //sounddata_=platform_get()->sound_load( bf::path( bf::path(soundpath) / sound_).string() );
+	sounddata_=platform_get()->sound_load( soundpath + "/" + sound_ );
 }
 
 //////////////////////////////////////////
@@ -117,7 +114,8 @@ void GW_GameData_Image::Load(const string &imagepath)
         delete imagedata_;
 
     //GW_PLATFORM_RGB(tcolor, 255, 255, 255);
-    imagedata_=platform_get()->image_load(bf::path( bf::path(imagepath) / image_).string(), (istcolor_?&tcolor_:NULL));
+    //imagedata_=platform_get()->image_load(bf::path( bf::path(imagepath) / image_).string(), (istcolor_?&tcolor_:NULL));
+	imagedata_=platform_get()->image_load(imagepath + "/" + image_, (istcolor_?&tcolor_:NULL));
 
     Changed();
 }
@@ -133,7 +131,7 @@ GW_GameData *GW_GameData::image_add(int id, int index, const string &image, GW_P
     if (image.empty())
         throw GW_Exception("Image cannot be blank");
 
-    images_[id][index]=shared_ptr<GW_GameData_Image>(new GW_GameData_Image(this, image, tcolor));
+    images_[id][index]=linked_ptr<GW_GameData_Image>(new GW_GameData_Image(this, image, tcolor));
     Changed();
     return this;
 }
@@ -141,7 +139,7 @@ GW_GameData *GW_GameData::image_add(int id, int index, const string &image, GW_P
 GW_GameData *GW_GameData::position_add(int id, int index, int x, int y,
     int imageid, int imageindex, const string &image, GW_Platform_RGB *tcolor)
 {
-    positions_[id][index]=shared_ptr<GW_GameData_Position>(new GW_GameData_Position(this, x, y));
+    positions_[id][index]=linked_ptr<GW_GameData_Position>(new GW_GameData_Position(this, x, y));
 
     if (imageid>-1)
     {
@@ -164,14 +162,14 @@ GW_GameData *GW_GameData::sound_add(int id, const string &sound)
     if (sound.empty())
         throw GW_Exception("Sound cannot be blank");
 
-    sounds_[id]=shared_ptr<GW_GameData_Sound>(new GW_GameData_Sound(this, sound));
+    sounds_[id]=linked_ptr<GW_GameData_Sound>(new GW_GameData_Sound(this, sound));
     Changed();
     return this;
 }
 
 GW_GameData *GW_GameData::timer_add(int timerid, unsigned int time, bool autoloop)
 {
-    timers_[timerid]=shared_ptr<GW_GameData_Timer>(new GW_GameData_Timer(this, timerid, time, autoloop));
+    timers_[timerid]=linked_ptr<GW_GameData_Timer>(new GW_GameData_Timer(this, timerid, time, autoloop));
     Changed();
     return this;
 }
@@ -222,14 +220,16 @@ GW_GameData_Timer *GW_GameData::timer_get(int timerid)
 
 void GW_GameData::Load(const string &gamepath)
 {
-    bf::path imagepath( bf::path(gamepath) / "image" );
-    bf::path soundpath( bf::path(gamepath) / "sound" );
+    //bf::path imagepath( bf::path(gamepath) / "image" );
+    //bf::path soundpath( bf::path(gamepath) / "sound" );
+    string imagepath( gamepath + "/" + "image" );
+    string soundpath( gamepath + "/" + "sound" );
 
     for (images_t::iterator i=images_.begin(); i!=images_.end(); i++)
         for (imagesindex_t::iterator j=i->second.begin(); j!=i->second.end(); j++)
-            j->second->Load(imagepath.string());
+            j->second->Load(imagepath);
     for (sounds_t::iterator i=sounds_.begin(); i!=sounds_.end(); i++)
-        i->second->Load(soundpath.string());
+        i->second->Load(soundpath);
     Changed();
 }
 
@@ -329,9 +329,10 @@ void GW_Game::Load(GW_Device *device, const string &datapath)
 {
     device_=device;
 
-    bf::path gamepath=bf::path(datapath) / gamepath_;
+    //bf::path gamepath=bf::path(datapath) / gamepath_;
+	string gamepath=datapath + "/" + gamepath_;
 
-    data_.Load( gamepath.string() );
+    data_.Load( gamepath );
 }
 
 void GW_Game::Unload()
@@ -380,7 +381,8 @@ GW_Platform *GW_Game::platform_get()
 //////////////////////////////////////////
 string GW_Game_Info::bgimg_path()
 {
-    return bf::path( bf::path(GW_Platform_DataPath) / datapath_ / "image" / bgimg_ ).string();
+    //return bf::path( bf::path(GW_Platform_DataPath) / datapath_ / "image" / bgimg_ ).string();
+	return string(GW_Platform_DataPath) + "/" + datapath_ +"/" + "image" + "/" + bgimg_;
 }
 
 //////////////////////////////////////////
@@ -609,22 +611,6 @@ void GW_Device::CalculateBGOffset()
 
 void GW_Device::Load()
 {
-    bf::path rootpath(datapath_);
-    rootpath /= game_->gamepath_get();
-
-    bf::path imagepath=rootpath / bf::path("image");
-    bf::path soundpath=rootpath / bf::path("sound");
-    //rootpath /= game_->bgimage_get();
-
-    // load bg
-/*
-    bg_ = SDL_LoadBMP( bf::path(imagepath / game_->bgimage_get()).string().c_str() );
-    if (!bg_)
-        throw GW_Exception(string("Unable to load background: "+string(SDL_GetError())));
-    SDL_SetColorKey(bg_, SDL_SRCCOLORKEY, SDL_MapRGB(bg_->format, 255, 0, 255));
-    SDL_DisplayFormat(bg_);
-*/
-
     game_->Load(this, datapath_);
 }
 
