@@ -2,7 +2,7 @@
 #define H__DEVENG_VTECH_BANANA__H
 
 #include "device.h"
-#include "deveng_vtech.h"
+#include "devices/deveng_vtech.h"
 
 using namespace std;
 
