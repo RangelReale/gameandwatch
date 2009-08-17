@@ -7,14 +7,15 @@
 #ifdef GP2X
 #include "plat/plat_gp2x.h"
 #endif
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #endif
 #include "gamelist.h"
 #include "menu.h"
 
-#ifndef WIN32
+//#ifndef _WIN32
 int main(int argc, char** argv)
+/*
 #else
 int WinMain(
     HINSTANCE hInstance,
@@ -22,6 +23,7 @@ int WinMain(
     LPSTR lpCmdLine,
     int nCmdShow)
 #endif
+*/
 {
     try
     {

@@ -2,14 +2,20 @@
 #define H__PLAT_SDL__H
 
 #include <SDL.h>
+#ifndef GW_NO_SDL_MIXER
 #include <SDL_mixer.h>
+#endif
+#ifndef GW_NO_SDL_TTF
 #include <SDL_ttf.h>
+#endif
+#ifndef GW_NO_SDL_GFX
 #include <SDL_gfxPrimitives.h>
 #include <SDL_rotozoom.h>
-#ifdef WIN32
+#endif
+#ifdef _WIN32
 #include <SDL_syswm.h>
 #include <windows.h>
-#endif //WIN32
+#endif //_WIN32
 
 #include "platform.h"
 
@@ -35,9 +41,11 @@ public:
     GW_PlatformSDL_Sound(const string &filename);
     virtual ~GW_PlatformSDL_Sound();
 
+#ifndef GW_NO_SDL_MIXER
     Mix_Chunk *sample_get() { return sample_; }
 private:
     Mix_Chunk *sample_;
+#endif
 };
 
 class GW_PlatformSDL : public GW_Platform
@@ -95,9 +103,11 @@ private:
     int width_, height_;
     bool initialized_;
 
+#ifndef GW_NO_SDL_TTF
     TTF_Font *font_;
+#endif
     SDL_Surface *screen_;
-#ifdef WIN32
+#ifdef _WIN32
     HICON icon_;
 #endif
 };

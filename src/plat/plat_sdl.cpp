@@ -38,7 +38,8 @@ GW_PlatformSDL_Image::~GW_PlatformSDL_Image()
 
 bool GW_PlatformSDL_Image::resize_fit(int w, int h)
 {
-    float rw=(float)w/surface_->w, rh=(float)h/surface_->h, r;
+#ifndef GW_NO_SDL_GFX
+	float rw=(float)w/surface_->w, rh=(float)h/surface_->h, r;
 
     if (rw < rh) r=rw; else r=rh;
 
@@ -50,6 +51,9 @@ bool GW_PlatformSDL_Image::resize_fit(int w, int h)
         SDL_DisplayFormat(surface_);
     }
     return news!=NULL;
+#else
+	return false;
+#endif
 }
 
 //////////////////////////////////////////
@@ -59,6 +63,8 @@ bool GW_PlatformSDL_Image::resize_fit(int w, int h)
 //////////////////////////////////////////
 GW_PlatformSDL_Sound::GW_PlatformSDL_Sound(const string &filename)
 {
+#ifndef GW_NO_SDL_MIXER
+
 #ifndef GW_USE_ZDATA
     sample_ = Mix_LoadWAV( filename.c_str() );
 #else
@@ -72,11 +78,14 @@ GW_PlatformSDL_Sound::GW_PlatformSDL_Sound(const string &filename)
 
     if (!sample_)
         throw GW_Exception(string("Unable to load sound sample "+filename+": "+string(Mix_GetError())));
+#endif
 }
 
 GW_PlatformSDL_Sound::~GW_PlatformSDL_Sound()
 {
-    Mix_FreeChunk(sample_);
+#ifndef GW_NO_SDL_MIXER
+	Mix_FreeChunk(sample_);
+#endif
 }
 
 //////////////////////////////////////////
@@ -107,14 +116,20 @@ void GW_PlatformSDL::initialize()
         if ( SDL_Init( sdlinit(SDL_INIT_VIDEO|SDL_INIT_AUDIO) ) < 0 )
             throw GW_Exception(string("Unable to init SDL: "+string(SDL_GetError())));
 
+#ifndef GW_NO_SDL_MIXER
         if ( Mix_OpenAudio(22050, AUDIO_S16SYS, 1, audiobufsize_get()) < 0)
             throw GW_Exception(string("Unable to init SDL_mixer: "+string(Mix_GetError())));
+#endif
 
+#ifndef GW_NO_SDL_TTF
         if ( TTF_Init() < 0 )
             throw GW_Exception(string("Unable to init SDL_ttf: "+string(TTF_GetError())));
+#endif
 
-        Mix_AllocateChannels(6);
+#ifndef GW_NO_SDL_MIXER
+		Mix_AllocateChannels(6);
         sound_volume(75);
+#endif
 
         custom_initialize();
 
@@ -134,12 +149,14 @@ void GW_PlatformSDL::initialize()
 
         SDL_WM_SetCaption("Game & Watch simulator - by Hitnrun & Madrigal", NULL);
 
+#ifndef GW_NO_SDL_TTF
         // load font
         //font_=TTF_OpenFont( bf::path( bf::path(platformdata_get() ) / "andalemo.ttf" ).string().c_str(), fontsize_get() );
 		string pfont(platformdata_get() + "/" + "andalemo.ttf" );
 		font_=TTF_OpenFont( pfont.c_str(), fontsize_get() );
         if (!font_)
             throw GW_Exception(string("Unable to load font: "+string(TTF_GetError())));
+#endif
 
         initialized_=true;
     }
@@ -154,10 +171,14 @@ void GW_PlatformSDL::finalize()
         // set application icon
         plat_finish();
 
+#ifndef GW_NO_SDL_TTF
         TTF_CloseFont(font_);
         TTF_Quit();
+#endif
 
+#ifndef GW_NO_SDL_MIXER
         Mix_CloseAudio();
+#endif
 
         SDL_Quit();
 
@@ -257,15 +278,18 @@ void GW_PlatformSDL::draw_image(GW_Platform_Image *image, int x, int y)
 void GW_PlatformSDL::draw_line(int x1, int y1, int x2, int y2,
     GW_Platform_RGB *color)
 {
-    GW_PLATFORM_RGB(lcolor,255,255,255);
+#ifndef GW_NO_SDL_GFX
+	GW_PLATFORM_RGB(lcolor,255,255,255);
     if (color) lcolor=*color;
     lineRGBA(screen_, x1, y1, x2, y2, lcolor.r, lcolor.g, lcolor.b, 255);
+#endif
 }
 
 void GW_PlatformSDL::draw_rectangle(int x1, int y1, int x2, int y2,
     GW_Platform_RGB *forecolor, GW_Platform_RGB *backcolor, int alpha)
 {
-    if (forecolor || (!forecolor && !backcolor))
+#ifndef GW_NO_SDL_GFX
+	if (forecolor || (!forecolor && !backcolor))
     {
         GW_PLATFORM_RGB(lcolor,255,255,255);
         if (forecolor) lcolor=*forecolor;
@@ -275,6 +299,7 @@ void GW_PlatformSDL::draw_rectangle(int x1, int y1, int x2, int y2,
     {
         boxRGBA(screen_, x1, y1, x2, y2, backcolor->r, backcolor->g, backcolor->b, (alpha>-1?alpha:255));
     }
+#endif
 }
 
 
@@ -286,6 +311,7 @@ void GW_PlatformSDL::draw_flip()
 void GW_PlatformSDL::text_draw(int x, int y, const string &text,
     GW_Platform_RGB *color)
 {
+#ifndef GW_NO_SDL_TTF
     SDL_Surface *tsurf;
     SDL_Color tcolor={255,255,255};
     if (color)
@@ -298,46 +324,65 @@ void GW_PlatformSDL::text_draw(int x, int y, const string &text,
     tsurf=TTF_RenderText_Solid(font_, text.c_str(), tcolor);
     if (tsurf)
         SDL_BlitSurface(tsurf, NULL, screen_, &tpos);
+#endif
 }
 
 int GW_PlatformSDL::text_fontheight()
 {
+#ifndef GW_NO_SDL_TTF
     return TTF_FontLineSkip(font_);
+#else
+	return 1;
+#endif
 }
 
 int GW_PlatformSDL::text_width(const string &text)
 {
+#ifndef GW_NO_SDL_TTF
     int s;
     if (TTF_SizeText(font_, text.c_str(), &s, NULL) == 0)
         return s;
     return -1;
+#else
+	return 1;
+#endif
 }
 
 int GW_PlatformSDL::text_height(const string &text)
 {
+#ifndef GW_NO_SDL_TTF
     int s;
     if (TTF_SizeText(font_, text.c_str(), NULL, &s) == 0)
         return s;
-    return -1;
+#endif
+	return -1;
 }
 
 void GW_PlatformSDL::sound_play(GW_Platform_Sound *sound)
 {
-    Mix_PlayChannel(-1, dynamic_cast<GW_PlatformSDL_Sound*>(sound)->sample_get(), 0);
+#ifndef GW_NO_SDL_MIXER
+	Mix_PlayChannel(-1, dynamic_cast<GW_PlatformSDL_Sound*>(sound)->sample_get(), 0);
+#endif
 }
 
 void GW_PlatformSDL::sound_stop_all()
 {
-    Mix_HaltChannel(-1);
+#ifndef GW_NO_SDL_MIXER
+	Mix_HaltChannel(-1);
+#endif
 }
 
 unsigned short GW_PlatformSDL::sound_volume(unsigned short volume)
 {
-    //if (volume<0) volume=0;
+#ifndef GW_NO_SDL_MIXER
+	//if (volume<0) volume=0;
     if (volume>100) volume=100;
 
     Mix_Volume(-1, (MIX_MAX_VOLUME/100)*volume);
     return volume;
+#else
+	return 0;
+#endif
 }
 
 GW_Platform_Image *GW_PlatformSDL::image_load(const string &filename, GW_Platform_RGB *tcolor)
@@ -347,7 +392,7 @@ GW_Platform_Image *GW_PlatformSDL::image_load(const string &filename, GW_Platfor
 
 GW_Platform_Sound *GW_PlatformSDL::sound_load(const string &filename)
 {
-    return new GW_PlatformSDL_Sound(filename);
+	return new GW_PlatformSDL_Sound(filename);
 }
 
 bool GW_PlatformSDL::process_event(GW_Platform_GameType gametype,
@@ -431,7 +476,7 @@ bool GW_PlatformSDL::process_event(GW_Platform_GameType gametype,
 
 void GW_PlatformSDL::plat_init()
 {
-#ifdef WIN32
+#ifdef _WIN32
     HWND hwnd;
 
     HINSTANCE handle = ::GetModuleHandle(NULL);
@@ -449,12 +494,12 @@ void GW_PlatformSDL::plat_init()
     ::SetClassLong(hwnd, GCL_HICON, (LONG) icon_);
 
     //oldProc = (WNDPROC) ::SetWindowLong(hwnd, GWL_WNDPROC, (LONG) WndProc);
-#endif //WIN32
+#endif //_WIN32
 }
 
 void GW_PlatformSDL::plat_finish()
 {
-#ifdef WIN32
+#ifdef _WIN32
     ::DestroyIcon(icon_);
-#endif //WIN32
+#endif //_WIN32
 }
