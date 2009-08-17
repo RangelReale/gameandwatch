@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\src\plat&quot;;&quot;$(SDL)\include&quot;;&quot;$(ZZIP)&quot;;&quot;$(BOOST)&quot;;&quot;$(SDL_MIXER)\include&quot;;&quot;$(SDL_IMAGE)\include&quot;;&quot;$(SDL_TTF)\include&quot;;&quot;$(SDL_GFX)&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\src\plat&quot;;&quot;$(SDL)\include&quot;;&quot;$(ZZIP)&quot;;&quot;$(BOOST)&quot;;&quot;$(SDL_MIXER)\include&quot;;&quot;$(SDL_IMAGE)\include&quot;;&quot;$(SDL_TTF)\include&quot;;&quot;$(SDL_GFX)&quot;;.\include"
 				PreprocessorDefinitions="GW_USE_ZDATA;GW_DEVEL_DEVICE;GW_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\src\plat&quot;;&quot;$(SDL)\include&quot;;&quot;$(ZZIP)&quot;;&quot;$(BOOST)&quot;;&quot;$(SDL_MIXER)\include&quot;;&quot;$(SDL_IMAGE)\include&quot;;&quot;$(SDL_TTF)\include&quot;;&quot;$(SDL_GFX)&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\src\plat&quot;;&quot;$(SDL)\include&quot;;&quot;$(ZZIP)&quot;;&quot;$(BOOST)&quot;;&quot;$(SDL_MIXER)\include&quot;;&quot;$(SDL_IMAGE)\include&quot;;&quot;$(SDL_TTF)\include&quot;;&quot;$(SDL_GFX)&quot;;.\include"
 				PreprocessorDefinitions="GW_USE_ZDATA;GW_DEVEL_DEVICE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -263,87 +263,87 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\src\devices\dev_banana.h"
+				RelativePath=".\include\devices\dev_banana.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\dev_condor.h"
+				RelativePath=".\include\devices\dev_condor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\dev_defendo.h"
+				RelativePath=".\include\devices\dev_defendo.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\dev_dkong.h"
+				RelativePath=".\include\devices\dev_dkong.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\dev_monkey.h"
+				RelativePath=".\include\devices\dev_monkey.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\dev_pancake.h"
+				RelativePath=".\include\devices\dev_pancake.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\dev_pirate.h"
+				RelativePath=".\include\devices\dev_pirate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\dev_rollerc.h"
+				RelativePath=".\include\devices\dev_rollerc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\dev_sleepwlk.h"
+				RelativePath=".\include\devices\dev_sleepwlk.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\deveng_vtech.h"
+				RelativePath=".\include\devices\deveng_vtech.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\deveng_vtech_banana.h"
+				RelativePath=".\include\devices\deveng_vtech_banana.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\deveng_vtech_condor.h"
+				RelativePath=".\include\devices\deveng_vtech_condor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\devices\deveng_vtech_monkey.h"
+				RelativePath=".\include\devices\deveng_vtech_monkey.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\device.h"
+				RelativePath=".\include\device.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\gamelist.h"
+				RelativePath=".\include\gamelist.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\gwdbg.h"
+				RelativePath=".\include\gwdbg.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\gwdefs.h"
+				RelativePath=".\include\gwdefs.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\menu.h"
+				RelativePath=".\include\menu.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\plat\plat_sdl.h"
+				RelativePath=".\include\plat\plat_sdl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\platform.h"
+				RelativePath=".\include\platform.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\plat\SDL_rwops_zzip.h"
+				RelativePath=".\include\plat\SDL_rwops_zzip.h"
 				>
 			</File>
 		</Filter>
