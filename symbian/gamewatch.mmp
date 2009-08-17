@@ -1,0 +1,22 @@
+TARGET gamewath.exe
+TARGETTYPE exe
+UID 0 0xe00012e5
+CAPABILITY ReadUserData WriteUserData
+EPOCHEAPSIZE 1000000 20000000
+USERINCLUDE ..\src
+SYSTEMINCLUDE \epoc32\include \epoc32\include\libc \epoc32\include\SDL \epoc32\include\stdapis ..\src\plat ..\src\devices \epoc32\include\stdapis\stlport
+SOURCEPATH ..\src
+SOURCE gamewatch.cpp device.cpp gamelist.cpp menu.cpp platform.cpp 
+SOURCEPATH ..\src\plat
+SOURCE plat_sdl.cpp
+SOURCEPATH ..\src\devices
+SOURCE deveng_vtech_banana.cpp deveng_vtech_condor.cpp deveng_vtech_monkey.cpp dev_banana.cpp dev_condor.cpp dev_defendo.cpp dev_dkong.cpp dev_monkey.cpp dev_pancake.cpp dev_pirate.cpp dev_rollerc.cpp dev_sleepwlk.cpp
+SOURCEPATH .
+START RESOURCE testbitmap_reg.rss
+TARGETPATH \private\10003a3f\apps
+END
+LIBRARY euser.lib
+LIBRARY estlib.lib
+LIBRARY sdl.lib
+LIBRARY sdlexe.lib
+STATICLIBRARY sdlmain.lib
