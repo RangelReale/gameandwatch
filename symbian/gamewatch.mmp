@@ -1,10 +1,30 @@
+// *** EPOC MMP  FILE FOR GAMEWATCH.EXE
+
+// *** Definitions
+
 TARGET gamewath.exe
 TARGETTYPE exe
 UID 0 0xe00012e5
 CAPABILITY ReadUserData WriteUserData
 EPOCHEAPSIZE 1000000 20000000
+
+// *** defines
+
+//OPTION WINSCW -wchar_t on
+//MACRO _WCHAR_T_DECLARED
+
+MACRO GW_NO_SDL_MIXER
+MACRO GW_NO_SDL_GFX
+MACRO GW_NO_SDL_TTF
+MACRO GW_DEVEL_DEVICE
+
+// *** Include paths
+
 USERINCLUDE ..\src ..\include
-SYSTEMINCLUDE \epoc32\include \epoc32\include\libc \epoc32\include\SDL \epoc32\include\stdapis ..\src\plat ..\src\devices \epoc32\include\stdapis\stlport
+SYSTEMINCLUDE \epoc32\include \epoc32\include\stdapis \epoc32\include\stdapis\stlport \epoc32\include\SDL ..\src\plat ..\src\devices 
+
+// *** sources
+
 SOURCEPATH ..\src
 SOURCE gamewatch.cpp device.cpp gamelist.cpp menu.cpp platform.cpp 
 SOURCEPATH ..\src\plat
@@ -12,11 +32,20 @@ SOURCE plat_sdl.cpp
 SOURCEPATH ..\src\devices
 SOURCE deveng_vtech_banana.cpp deveng_vtech_condor.cpp deveng_vtech_monkey.cpp dev_banana.cpp dev_condor.cpp dev_defendo.cpp dev_dkong.cpp dev_monkey.cpp dev_pancake.cpp dev_pirate.cpp dev_rollerc.cpp dev_sleepwlk.cpp
 SOURCEPATH .
+
+
+// *** resources
+
 START RESOURCE gamewatch_reg.rss
 TARGETPATH \private\10003a3f\apps
 END
+
+
+// *** libraries
+
 LIBRARY euser.lib
 LIBRARY estlib.lib
 LIBRARY sdl.lib
 LIBRARY sdlexe.lib
 STATICLIBRARY sdlmain.lib
+
