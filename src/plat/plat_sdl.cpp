@@ -476,7 +476,7 @@ bool GW_PlatformSDL::process_event(GW_Platform_GameType gametype,
 
 void GW_PlatformSDL::plat_init()
 {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(GW_NO_WIN32)
     HWND hwnd;
 
     HINSTANCE handle = ::GetModuleHandle(NULL);
@@ -499,7 +499,7 @@ void GW_PlatformSDL::plat_init()
 
 void GW_PlatformSDL::plat_finish()
 {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(GW_NO_WIN32)
     ::DestroyIcon(icon_);
 #endif //_WIN32
 }

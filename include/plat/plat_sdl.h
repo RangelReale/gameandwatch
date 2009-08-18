@@ -12,7 +12,7 @@
 #include <SDL_gfxPrimitives.h>
 #include <SDL_rotozoom.h>
 #endif
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(GW_NO_WIN32)
 #include <SDL_syswm.h>
 #include <windows.h>
 #endif //_WIN32
@@ -107,7 +107,7 @@ private:
     TTF_Font *font_;
 #endif
     SDL_Surface *screen_;
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(GW_NO_WIN32)
     HICON icon_;
 #endif
 };

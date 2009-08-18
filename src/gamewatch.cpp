@@ -7,9 +7,11 @@
 #ifdef GP2X
 #include "plat/plat_gp2x.h"
 #endif
+/*
 #ifdef _WIN32
 #include <windows.h>
 #endif
+*/
 #include "gamelist.h"
 #include "menu.h"
 
