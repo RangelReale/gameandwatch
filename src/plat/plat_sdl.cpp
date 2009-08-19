@@ -134,7 +134,7 @@ void GW_PlatformSDL::initialize()
         custom_initialize();
 
         // make sure SDL cleans up before exit
-        atexit(SDL_Quit);
+        //atexit(SDL_Quit);
 
         // set application icon
         plat_init();
