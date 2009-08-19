@@ -96,7 +96,7 @@ protected:
     virtual void do_timer(int timerid);
     virtual void do_update();
 
-    virtual void game_start(int mode) {}
+    virtual void game_start(int) {}
     virtual void game_reprise() {}
     virtual void game_over() {}
     virtual void level_update(int mode = -1);

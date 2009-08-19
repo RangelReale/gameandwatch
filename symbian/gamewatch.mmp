@@ -52,5 +52,5 @@ LIBRARY estlib.lib
 LIBRARY sdl.lib
 LIBRARY sdlexe.lib
 LIBRARY libstdcpp.lib
-STATICLIBRARY sdlmain.lib
 
+STATICLIBRARY sdlmain.lib

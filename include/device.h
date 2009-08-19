@@ -197,7 +197,7 @@ public:
     void SetMode(int mode);
     int GetMode() { return mode_; }
 
-    virtual void Event(GW_Platform_Event *event) {}
+    virtual void Event(GW_Platform_Event *) {}
 
     void Update();
 
@@ -222,8 +222,8 @@ protected:
     virtual void do_turnon() {}
     virtual void do_turnoff() {}
     virtual int do_modecount() { return 0; }
-    virtual bool do_setmode(int mode) { return false; }
-    virtual void do_timer(int timerid) {}
+    virtual bool do_setmode(int) { return false; }
+    virtual void do_timer(int) {}
     virtual void do_update() {}
 
     void data_showall();

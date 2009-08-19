@@ -97,7 +97,7 @@ public:
     virtual int width_get() { return -1; }
     virtual int height_get() { return -1; }
 
-    virtual bool resize_fit(int w, int h) { return false; }
+    virtual bool resize_fit(int, int) { return false; }
 };
 
 class GW_Platform_Sound
