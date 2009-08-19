@@ -54,13 +54,3 @@ int WinMain(
 
     return 0;
 }
-
-/*
-GLREF_C TInt E32Main()
-{
-
-	return SDLEnv::SetMain(main, CSDL::EEnableFocusStop | CSDL::EAllowImageResize,
-     NULL, SDLEnv::EParamQuery | SDLEnv::EVirtualMouse |SDLEnv::EFastZoomBlitter);
-}
-    
-*/

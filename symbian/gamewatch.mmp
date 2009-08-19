@@ -2,7 +2,7 @@
 
 // *** Definitions
 
-TARGET gamewath.exe
+TARGET gamewatch.exe
 TARGETTYPE exe
 UID 0 0xe00012e5
 CAPABILITY ReadUserData WriteUserData
@@ -32,7 +32,7 @@ SYSTEMINCLUDE \epoc32\include \epoc32\include\stdapis \epoc32\include\stdapis\st
 SOURCEPATH ..\src
 SOURCE gamewatch.cpp device.cpp gamelist.cpp menu.cpp platform.cpp 
 SOURCEPATH ..\src\plat
-SOURCE plat_sdl.cpp
+SOURCE plat_sdl.cpp plat_s60.cpp
 SOURCEPATH ..\src\devices
 SOURCE deveng_vtech.cpp deveng_vtech_banana.cpp deveng_vtech_condor.cpp deveng_vtech_monkey.cpp dev_banana.cpp dev_condor.cpp dev_defendo.cpp dev_dkong.cpp dev_monkey.cpp dev_pancake.cpp dev_pirate.cpp dev_rollerc.cpp dev_sleepwlk.cpp
 SOURCEPATH .
@@ -52,5 +52,3 @@ LIBRARY estlib.lib
 LIBRARY sdl.lib
 LIBRARY sdlexe.lib
 LIBRARY libstdcpp.lib
-
-STATICLIBRARY sdlmain.lib
