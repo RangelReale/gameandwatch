@@ -1,70 +1,22 @@
-#include <e32base.h>
-#include <eikapp.h>
-#include <sdlapp.h>
-#include "plat_s60_launcher.hrh"
-#if defined (UIQ3)
-#include <sdldemo.rsg>
-#endif
-#if defined (EPOC_AS_APP) && !defined (UIQ3) && !defined (S60V3)
-#include "ECompXL.h"
-#endif
+#include "gwdefs.h"
+#include "plat/plat_s60.h"
 
-class CSDLDemoApp : public CSDLApp {
-public:
-	CSDLDemoApp();
-	~CSDLDemoApp();
-#if defined (UIQ3)
-	/**
-	 * Returns the resource id to be used to declare the views supported by this UIQ3 app
-	 * @return TInt, resource id
-	 */
-	TInt ViewResourceId()
-		{
-		return R_SDL_VIEW_UI_CONFIGURATIONS;
-		}
-#endif
-	TUid AppDllUid() const;
-#if defined (EPOC_AS_APP) && !defined (UIQ3) && !defined (S60V3)
-	TECompXL    iECompXL;
-#endif
-};
-
-#ifdef EPOC_AS_APP
-
-// this function is called automatically by the SymbianOS to deliver the new CApaApplication object
-#if !defined (UIQ3) && !defined (S60V3)
-EXPORT_C 
-#endif
-CApaApplication* NewApplication() {
-	// Return pointer to newly created CQMApp
-	return new CSDLDemoApp;
-}
-
-#if defined (UIQ3) || defined (S60V3)
-#include <eikstart.h>
-// E32Main() contains the program's start up code, the entry point for an EXE.
-GLDEF_C TInt E32Main() {
- 	return EikStart::RunApplication(NewApplication);
-}
-#endif
-
-#endif // EPOC_AS_APP
-
-#if !defined (UIQ3) && !defined (S60V3)
-GLDEF_C  TInt E32Dll(TDllReason) {
-	return KErrNone;
-}
-#endif
-#include <stdio.h>
-CSDLDemoApp::CSDLDemoApp() {	
-}
-
-CSDLDemoApp::~CSDLDemoApp() {
-}
-
-TUid CSDLDemoApp::AppDllUid() const
+GW_PlatformS60::~GW_PlatformS60()
 {
-	return  TUid::Uid(KSDLAppLauncherUid);
+
+}
+void GW_PlatformS60::custom_initialize()
+{
+
 }
 
+void GW_PlatformS60::custom_finalize()
+{
 
+}
+
+bool GW_PlatformS60::process_event(GW_Platform_GameType gametype,
+    SDL_Event *sdlevent, GW_Platform_Event *event)
+{
+    return GW_PlatformSDL::process_event(gametype, sdlevent, event);
+}
