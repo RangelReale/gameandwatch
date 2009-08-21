@@ -13,8 +13,7 @@ EPOCHEAPSIZE 1000000 20000000
 #ifdef WINSCW
 OPTION CW -wchar_t on
 #endif
-
-//MACRO _WCHAR_T_DECLARED
+MACRO _WCHAR_T_DECLARED
 
 MACRO GW_NO_SDL_MIXER
 MACRO GW_NO_SDL_GFX
@@ -22,10 +21,14 @@ MACRO GW_NO_SDL_TTF
 MACRO GW_DEVEL_DEVICE
 MACRO GW_NO_WIN32
 
+// Change MACRO depending on target S60,S60V3,UIQ3 or UIQ2
+MACRO S60V3
+
+
 // *** Include paths
 
 USERINCLUDE ..\src ..\include
-SYSTEMINCLUDE \epoc32\include \epoc32\include\stdapis \epoc32\include\stdapis\stlport \epoc32\include\SDL ..\src\plat ..\src\devices 
+SYSTEMINCLUDE \epoc32\include \epoc32\include\stdapis \epoc32\include\stdapis\stlport \epoc32\include\ESDL ..\src\plat ..\src\devices 
 
 // *** sources
 
@@ -47,8 +50,15 @@ END
 
 // *** libraries
 
-LIBRARY euser.lib
-LIBRARY estlib.lib
-LIBRARY sdl.lib
-LIBRARY sdlexe.lib
+LIBRARY cone.lib  eikcore.lib 
+LIBRARY euser.lib apparc.lib fbscli.lib  
+LIBRARY estlib.lib 
+LIBRARY gdi.lib hal.lib bitgdi.lib apgrfx.lib 
+LIBRARY mediaclientaudiostream.lib efsrv.lib ws32.lib
+library  bafl.lib
+// FOR S60
+library avkon.lib
 LIBRARY libstdcpp.lib
+
+STATICLIBRARY esdl.lib
+

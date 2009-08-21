@@ -1,0 +1,6 @@
+#ifndef SDLLAUNCHERHRH
+#define SDLLAUNCHERHRH
+#define KSDLAppLauncherUid 0xe00012e5
+#endif // SDLLAUNCHERHRH
+
+
