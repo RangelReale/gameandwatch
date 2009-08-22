@@ -1,0 +1,20 @@
+Game & Watch Simulators 0.3 - Symbian port
+==========================================
+http://sourceforge.net/projects/gameandwatch/
+
+The s60 port should work the same as the desktop version, but as the screen is only 320x240, the screen is scrolled to the game screen area, no resizing is done.
+
+Menu keys:
+	ARROW KEYS		- Move selection
+	LEFT SELECTION KEY	- Start game
+	C (clear)		- Exit
+
+In-game keys:
+	C (clear)		- Exit
+	LEFT SELECTION KEY	- Turn on/off toggle
+	1			- Game A
+	2			- Game B
+	3			- Time
+	LEFT ARROW		- Move left
+	RIGHT ARROW		- Move right
+
