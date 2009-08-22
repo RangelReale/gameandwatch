@@ -503,3 +503,4 @@ void GW_PlatformSDL::plat_finish()
     ::DestroyIcon(icon_);
 #endif //_WIN32
 }
+

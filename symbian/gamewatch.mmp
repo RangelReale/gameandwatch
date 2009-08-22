@@ -16,14 +16,15 @@ OPTION CW -wchar_t on
 #endif
 MACRO _WCHAR_T_DECLARED
 
-MACRO GW_NO_SDL_MIXER
-MACRO GW_NO_SDL_GFX
-MACRO GW_NO_SDL_TTF
+//MACRO GW_NO_SDL_MIXER
+//MACRO GW_NO_SDL_GFX
+//MACRO GW_NO_SDL_TTF
 MACRO GW_DEVEL_DEVICE
 MACRO GW_NO_WIN32
 MACRO GW_PLAT_S60
+MACRO GW_USE_ZDATA
 
-MACRO GW_DATADIR_FULL=z:\\shared\\gamewatch
+MACRO GW_DATADIR_FULL=\\private\\e00012e5\\\gamewatch
 
 
 // Change MACRO depending on target S60,S60V3,UIQ3 or UIQ2
@@ -42,7 +43,7 @@ SOURCE gamewatch.cpp device.cpp gamelist.cpp menu.cpp platform.cpp
 SOURCEPATH ..\src\plat
 SOURCE plat_sdl.cpp plat_s60.cpp plat_s60_launcher.cpp
 SOURCEPATH ..\src\devices
-SOURCE deveng_vtech.cpp deveng_vtech_banana.cpp deveng_vtech_condor.cpp deveng_vtech_monkey.cpp dev_banana.cpp dev_condor.cpp dev_defendo.cpp dev_dkong.cpp dev_monkey.cpp dev_pancake.cpp dev_pirate.cpp dev_rollerc.cpp dev_sleepwlk.cpp
+SOURCE ..\plat\SDL_rwops_zzip.cpp deveng_vtech.cpp deveng_vtech_banana.cpp deveng_vtech_condor.cpp deveng_vtech_monkey.cpp dev_banana.cpp dev_condor.cpp dev_defendo.cpp dev_dkong.cpp dev_monkey.cpp dev_pancake.cpp dev_pirate.cpp dev_rollerc.cpp dev_sleepwlk.cpp
 SOURCEPATH .
 
 
@@ -71,7 +72,7 @@ library  bafl.lib
 //LIBRARY estlib.lib
 LIBRARY   libc.lib
 LIBRARY	  libm.lib
-
+LIBRARY   libz.lib
  
 //LIBRARY gdi.lib hal.lib bitgdi.lib apgrfx.lib 
 //LIBRARY mediaclientaudiostream.lib efsrv.lib ws32.lib
@@ -88,3 +89,7 @@ STATICLIBRARY    eexe.lib
 #endif
 
 STATICLIBRARY esdl.lib
+STATICLIBRARY sdl_ttf.lib
+STATICLIBRARY sdl_mixer.lib
+STATICLIBRARY sdl_gfx.lib
+STATICLIBRARY zziplib.lib
