@@ -28,9 +28,11 @@
 "..\data\rollerc.zip"  -"!:\private\e00012e5\rollerc.zip"
 "..\data\sleepwlk.zip"  -"!:\private\e00012e5\sleepwlk.zip"
 
+"$(EPOCROOT)\epoc32\data\z\private\10003a3f\import\apps\gamewatch_reg.rsc"  -"!:\private\10003a3f\import\apps\gamewatch_reg.rsc"
+
 {
 "$(EPOCROOT)\epoc32\data\z\resource\apps\gamewatch.rsc"
-} -"!:\resource\apps\gamewath.rsc"
+} -"!:\resource\apps\gamewatch.rsc"
 
 ;required for application to be covered by backup/restore facility
 "backup_registration.xml" -"!:\private\e00012e5\backup_registration.xml"

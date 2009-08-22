@@ -1,7 +1,9 @@
 #include <appinfo.rh>
+
 UID2 KUidAppRegistrationResourceFile
 UID3 0xe00012e5
+
 RESOURCE APP_REGISTRATION_INFO
 {
-app_file = "gamewatch";
+	app_file = "Game & Watch";
 }

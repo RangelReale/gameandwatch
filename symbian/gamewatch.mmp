@@ -4,7 +4,7 @@
 
 TARGET gamewatch.exe
 TARGETTYPE exe
-UID 0 0xe00012e5
+UID 0x100039CE 0xe00012e5
 CAPABILITY ReadUserData WriteUserData
 EPOCHEAPSIZE 1000000 20000000
 EPOCSTACKSIZE 0x10000
@@ -24,7 +24,7 @@ MACRO GW_NO_WIN32
 MACRO GW_PLAT_S60
 MACRO GW_USE_ZDATA
 
-MACRO GW_DATADIR_FULL=\\private\\e00012e5\\\gamewatch
+MACRO GW_DATADIR_FULL=\\private\\e00012e5
 
 
 // Change MACRO depending on target S60,S60V3,UIQ3 or UIQ2
@@ -50,13 +50,16 @@ SOURCEPATH .
 // *** resources
 
 START RESOURCE gamewatch_reg.rss
-TARGETPATH \private\10003a3f\apps
+#ifdef WINSCW
+TARGETPATH 	  \private\10003a3f\apps
+#else
+TARGETPATH 	  \private\10003a3f\import\apps
+#endif
 END
 
 START RESOURCE  gamewatch.rss
 HEADER
-TARGETPATH              \Resource\Apps
-LANG                    SC
+TARGETPATH \resource\apps
 END
 
 
