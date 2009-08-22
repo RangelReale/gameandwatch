@@ -1,0 +1,42 @@
+;gamewatch.pkg
+;
+;Language - standard language definitions
+&EN
+
+; standard SIS file header
+#{"gamewatch"},(0xe00012e5),1,0,0
+
+;Localised Vendor name
+%{"SIB IT"}
+
+;Unique Vendor name
+:"SIB IT"
+
+;Supports Series 60 v 3.0
+[0x101F7961], 0, 0, 0, {"S60ProductID"}
+
+;Files to install
+"$(EPOCROOT)\epoc32\release\$(PLATFORM)\$(TARGET)\gamewatch.exe" -"!:\sys\bin\gamewatch.exe"
+"..\..\res\gameandwatch.mif"  -"!:\resource\apps\gamewatch_reg.mif"
+"..\..\res\gameandwatch.mbm"  -"!:\resource\apps\gamewatch_reg.mbm"
+"..\..\data\gamewatch\andalemo.ttf"  -"!:\private\e00012e5\gamewatch\andalemo.ttf"
+"..\..\data\condor.zip"  -"!:\private\e00012e5\condor.zip"
+"..\..\data\defendo.zip"  -"!:\private\e00012e5\defendo.zip"
+"..\..\data\monkey.zip"  -"!:\private\e00012e5\monkey.zip"
+"..\..\data\pancake.zip"  -"!:\private\e00012e5\pancake.zip"
+"..\..\data\pirate.zip"  -"!:\private\e00012e5\pirate.zip"
+"..\..\data\rollerc.zip"  -"!:\private\e00012e5\rollerc.zip"
+
+; DEVEL
+;"..\..\data\dkong.zip"  -"!:\private\e00012e5\dkong.zip"
+;"..\..\data\sleepwlk.zip"  -"!:\private\e00012e5\sleepwlk.zip"
+;"..\..\data\banana.zip"  -"!:\private\e00012e5\banana.zip"
+
+"$(EPOCROOT)\epoc32\data\z\private\10003a3f\import\apps\gamewatch_reg.rsc"  -"!:\private\10003a3f\import\apps\gamewatch_reg.rsc"
+
+{
+"$(EPOCROOT)\epoc32\data\z\resource\apps\gamewatch.rsc"
+} -"!:\resource\apps\gamewatch.rsc"
+
+;required for application to be covered by backup/restore facility
+"backup_registration.xml" -"!:\private\e00012e5\backup_registration.xml"

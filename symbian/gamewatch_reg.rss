@@ -1,9 +1,14 @@
 #include <appinfo.rh>
+#include  <gamewatch.rsg>
 
 UID2 KUidAppRegistrationResourceFile
 UID3 0xe00012e5
 
 RESOURCE APP_REGISTRATION_INFO
 {
-	app_file = "Game & Watch";
+	app_file = "gamewatch";
+	localisable_resource_file = "\\resource\\apps\\gamewatch";
+	localisable_resource_id =R_LOCALISABLE_APP_INFO;
+	embeddability=KAppNotEmbeddable;
+	newfile=KAppDoesNotSupportNewFile;
 }

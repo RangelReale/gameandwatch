@@ -1,4 +1,4 @@
-// SDLAppLauncher.RSS
+// gamewatch.RSS
 
 NAME GMWT
 
@@ -6,8 +6,12 @@ NAME GMWT
 // resource script 
 #include <eikon.rh>
 // Include the standard Eikon resource ids 
-#include <uikon.rh>
-#include <eikon.rsg>
+#include <avkon.rh>
+#include <avkon.rsg>
+#include <avkon.mbg>
+#include <eikon.hrh>
+
+#include <appinfo.rh>
 
 
 RESOURCE RSS_SIGNATURE
@@ -37,3 +41,19 @@ RESOURCE MENU_PANE r_gamewatch_app_menu
 		MENU_ITEM{command = EEikCmdExit;txt = "Exit";}
     };
 }
+
+RESOURCE LOCALISABLE_APP_INFO R_LOCALISABLE_APP_INFO
+{
+        short_caption = "Game & Watch";
+        caption_and_icon =
+        {
+                CAPTION_AND_ICON_INFO
+                {
+                        caption = " Game & Watch Simulators ";
+                        number_of_icons = 1;
+                        icon_file = "\\resource\\apps\\gamewatch_reg.mbm"; 
+ 
+                }
+        }; 
+}
+

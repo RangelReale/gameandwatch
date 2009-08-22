@@ -19,7 +19,7 @@ MACRO _WCHAR_T_DECLARED
 //MACRO GW_NO_SDL_MIXER
 //MACRO GW_NO_SDL_GFX
 //MACRO GW_NO_SDL_TTF
-MACRO GW_DEVEL_DEVICE
+//MACRO GW_DEVEL_DEVICE
 MACRO GW_NO_WIN32
 MACRO GW_PLAT_S60
 MACRO GW_USE_ZDATA
@@ -34,7 +34,7 @@ MACRO S60V3
 // *** Include paths
 
 USERINCLUDE ..\src ..\include
-SYSTEMINCLUDE \epoc32\include \epoc32\include\stdapis \epoc32\include\stdapis\stlport \epoc32\include\ESDL ..\src\plat ..\src\devices 
+SYSTEMINCLUDE \epoc32\include \epoc32\include\stdapis \epoc32\include\stdapis\stlport \epoc32\include\ESDL 
 
 // *** sources
 
@@ -48,6 +48,10 @@ SOURCEPATH .
 
 
 // *** resources
+START RESOURCE  gamewatch.rss
+HEADER
+TARGETPATH \resource\apps
+END
 
 START RESOURCE gamewatch_reg.rss
 #ifdef WINSCW
@@ -55,11 +59,6 @@ TARGETPATH 	  \private\10003a3f\apps
 #else
 TARGETPATH 	  \private\10003a3f\import\apps
 #endif
-END
-
-START RESOURCE  gamewatch.rss
-HEADER
-TARGETPATH \resource\apps
 END
 
 

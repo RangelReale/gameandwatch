@@ -2,8 +2,9 @@
 #include <eikapp.h>
 #include <sdlapp.h>
 #include "plat_s60_launcher.hrh"
+#include <gamewatch.rsg>
 #if defined (UIQ3)
-#include <sdldemo.rsg>
+//#include <sdldemo.rsg>
 #endif
 #if defined (EPOC_AS_APP) && !defined (UIQ3) && !defined (S60V3)
 #include "ECompXL.h"
