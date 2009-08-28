@@ -1,0 +1,100 @@
+// *** EPOC MMP  FILE FOR GAMEWATCH.EXE
+
+// *** Definitions
+
+TARGET gamewatch.exe
+TARGETTYPE exe
+UID 0x100039CE 0xe00012e5
+CAPABILITY ReadUserData WriteUserData
+EPOCHEAPSIZE 1000000 20000000
+EPOCSTACKSIZE 0x10000
+
+// *** defines
+
+#ifdef WINSCW
+OPTION CW -wchar_t on
+#endif
+MACRO _WCHAR_T_DECLARED
+
+//MACRO GW_NO_SDL_MIXER
+//MACRO GW_NO_SDL_GFX
+//MACRO GW_NO_SDL_TTF
+//MACRO GW_DEVEL_DEVICE
+MACRO GW_NO_WIN32
+MACRO GW_PLAT_S60
+MACRO GW_USE_ZDATA
+
+MACRO GW_DATADIR_FULL=\\private\\e00012e5
+
+
+// Change MACRO depending on target S60,S60V3,UIQ3 or UIQ2
+//MACRO S60V3
+MACRO UIQ3
+
+// *** Include paths
+
+USERINCLUDE ..\..\src ..\..\include
+SYSTEMINCLUDE \epoc32\include \epoc32\include\stdapis \epoc32\include\stdapis\stlport \epoc32\include\ESDL 
+
+// *** sources
+
+SOURCEPATH ..\..\src
+SOURCE gamewatch.cpp device.cpp gamelist.cpp menu.cpp platform.cpp 
+SOURCEPATH ..\..\src\plat
+SOURCE plat_sdl.cpp plat_s60.cpp plat_s60_launcher.cpp SDL_rwops_zzip.cpp
+SOURCEPATH ..\..\src\devices
+SOURCE deveng_vtech.cpp deveng_vtech_banana.cpp deveng_vtech_condor.cpp deveng_vtech_monkey.cpp dev_banana.cpp dev_condor.cpp dev_defendo.cpp dev_dkong.cpp dev_monkey.cpp dev_pancake.cpp dev_pirate.cpp dev_rollerc.cpp dev_sleepwlk.cpp
+SOURCEPATH .
+
+
+// *** resources
+START RESOURCE  gamewatch.rss
+HEADER
+TARGETPATH \resource\apps
+END
+
+START RESOURCE gamewatch_reg.rss
+#ifdef WINSCW
+TARGETPATH 	  \private\10003a3f\apps
+#else
+TARGETPATH 	  \private\10003a3f\import\apps
+#endif
+END
+
+
+// *** libraries
+
+LIBRARY cone.lib eikcore.lib euser.lib apparc.lib fbscli.lib gdi.lib apgrfx.lib ws32.lib efsrv.lib hal.lib bitgdi.lib mediaclientaudiostream.lib 
+//library  avkon.lib bafl.lib
+
+//LIBRARY cone.lib  eikcore.lib 
+LIBRARY qikctl.lib
+library qikcore.lib bafl.lib eikcoctl.lib 
+
+//LIBRARY euser.lib apparc.lib fbscli.lib  
+
+
+//LIBRARY estlib.lib
+LIBRARY   libc.lib
+LIBRARY	  libm.lib
+LIBRARY   libz.lib
+ 
+//LIBRARY gdi.lib hal.lib bitgdi.lib apgrfx.lib 
+//LIBRARY mediaclientaudiostream.lib efsrv.lib ws32.lib
+//library  bafl.lib
+// FOR S60
+//library avkon.lib
+//LIBRARY libstdcpp.lib
+
+#ifdef EPOC32
+LIBRARY  libstdcpp.lib
+#else
+FIRSTLIB ../udeb/libstdcpp.lib
+STATICLIBRARY    eexe.lib 
+#endif
+
+STATICLIBRARY esdl.lib
+STATICLIBRARY sdl_ttf.lib
+STATICLIBRARY sdl_mixer.lib
+STATICLIBRARY sdl_gfx.lib
+STATICLIBRARY zziplib.lib
