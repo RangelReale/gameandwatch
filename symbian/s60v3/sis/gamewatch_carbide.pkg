@@ -17,20 +17,20 @@
 
 ;Files to install
 "$(EPOCROOT)\epoc32\release\$(PLATFORM)\$(TARGET)\gamewatch.exe" -"!:\sys\bin\gamewatch.exe"
-"..\..\res\gameandwatch.mif"  -"!:\resource\apps\gamewatch_reg.mif"
-"..\..\res\gameandwatch.mbm"  -"!:\resource\apps\gamewatch_reg.mbm"
-"..\..\data\gamewatch\andalemo.ttf"  -"!:\private\e00012e5\gamewatch\andalemo.ttf"
-"..\..\data\condor.zip"  -"!:\private\e00012e5\condor.zip"
-"..\..\data\defendo.zip"  -"!:\private\e00012e5\defendo.zip"
-"..\..\data\monkey.zip"  -"!:\private\e00012e5\monkey.zip"
-"..\..\data\pancake.zip"  -"!:\private\e00012e5\pancake.zip"
-"..\..\data\pirate.zip"  -"!:\private\e00012e5\pirate.zip"
-"..\..\data\rollerc.zip"  -"!:\private\e00012e5\rollerc.zip"
+"..\..\..\res\gameandwatch.mif"  -"!:\resource\apps\gamewatch_reg.mif"
+"..\..\..\res\gameandwatch.mbm"  -"!:\resource\apps\gamewatch_reg.mbm"
+"..\..\..\data\gamewatch\andalemo.ttf"  -"!:\private\e00012e5\gamewatch\andalemo.ttf"
+"..\..\..\data\condor.zip"  -"!:\private\e00012e5\condor.zip"
+"..\..\..\data\defendo.zip"  -"!:\private\e00012e5\defendo.zip"
+"..\..\..\data\monkey.zip"  -"!:\private\e00012e5\monkey.zip"
+"..\..\..\data\pancake.zip"  -"!:\private\e00012e5\pancake.zip"
+"..\..\..\data\pirate.zip"  -"!:\private\e00012e5\pirate.zip"
+"..\..\..\data\rollerc.zip"  -"!:\private\e00012e5\rollerc.zip"
 
 ; DEVEL
-;"..\..\data\dkong.zip"  -"!:\private\e00012e5\dkong.zip"
-;"..\..\data\sleepwlk.zip"  -"!:\private\e00012e5\sleepwlk.zip"
-;"..\..\data\banana.zip"  -"!:\private\e00012e5\banana.zip"
+;"..\..\..\data\dkong.zip"  -"!:\private\e00012e5\dkong.zip"
+;"..\..\..\data\sleepwlk.zip"  -"!:\private\e00012e5\sleepwlk.zip"
+;"..\..\..\data\banana.zip"  -"!:\private\e00012e5\banana.zip"
 
 "$(EPOCROOT)\epoc32\data\z\private\10003a3f\import\apps\gamewatch_reg.rsc"  -"!:\private\10003a3f\import\apps\gamewatch_reg.rsc"
 
