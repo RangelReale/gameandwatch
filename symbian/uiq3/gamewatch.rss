@@ -6,9 +6,6 @@ NAME GMWT
 // resource script 
 #include <eikon.rh>
 // Include the standard Eikon resource ids 
-#include <avkon.rh>
-#include <avkon.rsg>
-#include <avkon.mbg>
 #include <eikon.hrh>
 #include <qikon.rh>
 #include <qikon.hrh>
@@ -58,4 +55,4 @@ RESOURCE LOCALISABLE_APP_INFO R_LOCALISABLE_APP_INFO
         }; 
 }
 
-#include <sdl.ra>
+//#include <sdl.ra>

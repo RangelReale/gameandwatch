@@ -2,10 +2,10 @@
 <?fileVersion 4.0.0?>
 
 <cproject>
-<storageModule buildFromInf="true" buildingTestComps="true" cleanLevel="0" concurrentBuildJobs="4" defaultMMPChangedAction="0" infBuildComponents="" infFileLocation="symbian\s60v3\bld.inf" macrosFile="" makeEngineToUse="make" manageDependencies="true" moduleId="com.nokia.carbide.cdt.builder.carbideCPPBuilder" overrideMakeEngine="false" overrideWorkspaceSettings="false" promptForMMPChangedAction="true" useConcurrentBuilding="true" useDebugMode="false" useIncrementalBuilder="false" useKeepGoing="false" useMMPMacros="true"/>
+<storageModule buildFromInf="true" buildingTestComps="true" cleanLevel="0" concurrentBuildJobs="4" defaultMMPChangedAction="0" infBuildComponents="" infFileLocation="symbian\uiq3\bld.inf" macrosFile="" makeEngineToUse="make" manageDependencies="true" moduleId="com.nokia.carbide.cdt.builder.carbideCPPBuilder" overrideMakeEngine="false" overrideWorkspaceSettings="false" promptForMMPChangedAction="true" useConcurrentBuilding="true" useDebugMode="false" useIncrementalBuilder="false" useKeepGoing="false" useMMPMacros="true"/>
 <storageModule moduleId="org.eclipse.cdt.core.settings">
-<cconfiguration id="Emulator Debug (WINSCW) [S60_3rd_FP2_SDK_v1.1]">
-<storageModule buildSystemId="com.nokia.carbide.cdt.builder.CarbideConfigurationDataProvider" id="Emulator Debug (WINSCW) [S60_3rd_FP2_SDK_v1.1]" moduleId="org.eclipse.cdt.core.settings" name="Emulator Debug (WINSCW) [S60_3rd_FP2_SDK_v1.1]">
+<cconfiguration id="Emulator Debug (WINSCW) [UIQ3.1]">
+<storageModule buildSystemId="com.nokia.carbide.cdt.builder.CarbideConfigurationDataProvider" id="Emulator Debug (WINSCW) [UIQ3.1]" moduleId="org.eclipse.cdt.core.settings" name="Emulator Debug (WINSCW) [UIQ3.1]">
 <externalSettings/>
 <extensions>
 <extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
@@ -22,18 +22,15 @@
 </extensions>
 </storageModule>
 <storageModule moduleId="CarbideConfigurationDataProvider">
-
 <ENV_VAR_DATA_ID/>
 <ARGUMENTS_DATA_ID ABLDFREEZEARGSSTORAGE="-r"/>
 <ROM_BUILDER_DATA_ID ROMBUILDWORKINGDIRECTORYSTORAGE="C:\"/>
 </storageModule>
-<storageModule filesCache="" includesCache="" macrosCache="__WINSCW__;__SUPPORT_CPP_EXCEPTIONS__;__SYMBIAN32__;__S60_3X__;_UNICODE;__SERIES60_3X__;_DEBUG;__S60_32__;__WINS__;__CW32__;" moduleId="configDataCache" sourcesCache="" timestampCache="1251479576458" useMmpMacrosCache="true"/>
+<storageModule filesCache="C:\prog\personal\gamewatch\symbian\uiq3\gamewatch.mmp;C:\prog\personal\gamewatch\symbian\uiq3\bld.inf;" includesCache="C:/prog/personal/gamewatch/src[LOCAL];C:/prog/personal/gamewatch/include[LOCAL];C:/S60/devices/UIQ3.1SDK/epoc32/include;C:/S60/devices/UIQ3.1SDK/epoc32/include/stdapis;C:/S60/devices/UIQ3.1SDK/epoc32/include/stdapis/stlport;C:/S60/devices/UIQ3.1SDK/epoc32/include/ESDL;" macrosCache="UIQ3;__EXE__;GW_USE_ZDATA;__SYMBIAN32__;__SUPPORT_CPP_EXCEPTIONS__;GW_PLAT_S60;__CW32__;GW_DATADIR_FULL=\\PRIVATE\\E00012E5;__WINSCW__;_UNICODE;GW_NO_WIN32;_WCHAR_T_DECLARED;_DEBUG;__WINS__;" moduleId="configDataCache" sourcesCache="/gamewatch/include;/gamewatch/src;/gamewatch/symbian;" timestampCache="1251481167535" useMmpMacrosCache="true"/>
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cconfiguration>
-<cconfiguration id="Phone Debug (GCCE) [S60_3rd_FP2_SDK_v1.1]">
-<storageModule buildSystemId="com.nokia.carbide.cdt.builder.CarbideConfigurationDataProvider" id="Phone Debug (GCCE) [S60_3rd_FP2_SDK_v1.1]" moduleId="org.eclipse.cdt.core.settings" name="Phone Debug (GCCE) [S60_3rd_FP2_SDK_v1.1]">
+<cconfiguration id="Phone Debug (GCCE) [UIQ3.1]">
+<storageModule buildSystemId="com.nokia.carbide.cdt.builder.CarbideConfigurationDataProvider" id="Phone Debug (GCCE) [UIQ3.1]" moduleId="org.eclipse.cdt.core.settings" name="Phone Debug (GCCE) [UIQ3.1]">
 <externalSettings/>
 <extensions>
 <extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
@@ -49,19 +46,15 @@
 </extensions>
 </storageModule>
 <storageModule moduleId="CarbideConfigurationDataProvider">
-
-<SIS_BUILDER_DATA_ID CREATESTUBSTORAGE="false" ENABLEDSTORAGE="true" OUTPUTFILENAMESTORAGE="gamewatch_s60_udeb.sis" PARTIALUPGRADESTORAGE="true" PKGFILESTORAGE="symbian\s60v3\sis\gamewatch_carbide.pkg" SIGNEDSISFILENAMESTORAGE="gamewatch_s60_udeb.sisx" SIGNINGTYPESTORAGE="1"/>
 <ENV_VAR_DATA_ID/>
 <ARGUMENTS_DATA_ID ABLDFREEZEARGSSTORAGE="-r"/>
 <ROM_BUILDER_DATA_ID ROMBUILDWORKINGDIRECTORYSTORAGE="C:\"/>
 </storageModule>
-<storageModule filesCache="" includesCache="" macrosCache="__GENERIC_MARM__;__SYMBIAN32__;__SUPPORT_CPP_EXCEPTIONS__;__EPOC32__;__EABI__;__GCCE__;__MARM__;_UNICODE;__S60_3X__;_DEBUG;__SERIES60_3X__;__MARM_ARMV5__;__S60_32__;" moduleId="configDataCache" sourcesCache="" timestampCache="1251479576475" useMmpMacrosCache="true"/>
+<storageModule filesCache="C:\prog\personal\gamewatch\symbian\uiq3\gamewatch.mmp;C:\prog\personal\gamewatch\symbian\uiq3\bld.inf;" includesCache="C:/prog/personal/gamewatch/src[LOCAL];C:/prog/personal/gamewatch/include[LOCAL];C:/S60/devices/UIQ3.1SDK/epoc32/include;C:/S60/devices/UIQ3.1SDK/epoc32/include/stdapis;C:/S60/devices/UIQ3.1SDK/epoc32/include/stdapis/stlport;C:/S60/devices/UIQ3.1SDK/epoc32/include/ESDL;" macrosCache="__GENERIC_MARM__;UIQ3;GW_USE_ZDATA;__EXE__;__SYMBIAN32__;__SUPPORT_CPP_EXCEPTIONS__;GW_PLAT_S60;__EPOC32__;__EABI__;__GCCE__;__MARM__;GW_DATADIR_FULL=\\PRIVATE\\E00012E5;_UNICODE;GW_NO_WIN32;_WCHAR_T_DECLARED;_DEBUG;__MARM_ARMV5__;" moduleId="configDataCache" sourcesCache="/gamewatch/include;/gamewatch/src;/gamewatch/symbian;" timestampCache="1251481167551" useMmpMacrosCache="true"/>
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cconfiguration>
-<cconfiguration id="Phone Release (GCCE) [S60_3rd_FP2_SDK_v1.1]">
-<storageModule buildSystemId="com.nokia.carbide.cdt.builder.CarbideConfigurationDataProvider" id="Phone Release (GCCE) [S60_3rd_FP2_SDK_v1.1]" moduleId="org.eclipse.cdt.core.settings" name="Phone Release (GCCE) [S60_3rd_FP2_SDK_v1.1]">
+<cconfiguration id="Phone Release (GCCE) [UIQ3.1]">
+<storageModule buildSystemId="com.nokia.carbide.cdt.builder.CarbideConfigurationDataProvider" id="Phone Release (GCCE) [UIQ3.1]" moduleId="org.eclipse.cdt.core.settings" name="Phone Release (GCCE) [UIQ3.1]">
 <externalSettings/>
 <extensions>
 <extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
@@ -77,16 +70,12 @@
 </extensions>
 </storageModule>
 <storageModule moduleId="CarbideConfigurationDataProvider">
-
-<SIS_BUILDER_DATA_ID CREATESTUBSTORAGE="false" ENABLEDSTORAGE="true" OUTPUTFILENAMESTORAGE="gamewatch_0.3_s60_v1.sis" PARTIALUPGRADESTORAGE="false" PKGFILESTORAGE="symbian\s60v3\sis\gamewatch_carbide.pkg" SIGNEDSISFILENAMESTORAGE="gamewatch_0.3_s60_v1.sisx" SIGNINGTYPESTORAGE="1"/>
 <ENV_VAR_DATA_ID/>
 <ARGUMENTS_DATA_ID ABLDFREEZEARGSSTORAGE="-r"/>
 <ROM_BUILDER_DATA_ID ROMBUILDWORKINGDIRECTORYSTORAGE="C:\"/>
 </storageModule>
-<storageModule filesCache="" includesCache="" macrosCache="__GENERIC_MARM__;__SYMBIAN32__;__SUPPORT_CPP_EXCEPTIONS__;__EPOC32__;__EABI__;__GCCE__;NDEBUG;__MARM__;_UNICODE;__S60_3X__;__SERIES60_3X__;__MARM_ARMV5__;__S60_32__;" moduleId="configDataCache" sourcesCache="" timestampCache="1251479576484" useMmpMacrosCache="true"/>
+<storageModule filesCache="C:\prog\personal\gamewatch\symbian\uiq3\gamewatch.mmp;C:\prog\personal\gamewatch\symbian\uiq3\bld.inf;" includesCache="C:/prog/personal/gamewatch/src[LOCAL];C:/prog/personal/gamewatch/include[LOCAL];C:/S60/devices/UIQ3.1SDK/epoc32/include;C:/S60/devices/UIQ3.1SDK/epoc32/include/stdapis;C:/S60/devices/UIQ3.1SDK/epoc32/include/stdapis/stlport;C:/S60/devices/UIQ3.1SDK/epoc32/include/ESDL;" macrosCache="__GENERIC_MARM__;UIQ3;GW_USE_ZDATA;__EXE__;__SYMBIAN32__;__SUPPORT_CPP_EXCEPTIONS__;GW_PLAT_S60;__EPOC32__;__EABI__;__GCCE__;NDEBUG;__MARM__;GW_DATADIR_FULL=\\PRIVATE\\E00012E5;_UNICODE;GW_NO_WIN32;_WCHAR_T_DECLARED;__MARM_ARMV5__;" moduleId="configDataCache" sourcesCache="/gamewatch/include;/gamewatch/src;/gamewatch/symbian;" timestampCache="1251481167623" useMmpMacrosCache="true"/>
 <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-<storageModule moduleId="org.eclipse.cdt.core.language.mapping"/>
-<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cconfiguration>
 </storageModule>
 </cproject>
