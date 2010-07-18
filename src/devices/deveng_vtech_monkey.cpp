@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "devices/deveng_vtech_monkey.h"
 
 GW_GameEngine_VTech_Monkey::GW_GameEngine_VTech_Monkey(int engineoptions, int options) :

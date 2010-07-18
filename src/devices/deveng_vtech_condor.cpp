@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "devices/deveng_vtech_condor.h"
 
 GW_GameEngine_VTech_Condor::GW_GameEngine_VTech_Condor(int engineoptions, int options) :

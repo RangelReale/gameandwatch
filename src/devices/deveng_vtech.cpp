@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "devices/deveng_vtech.h"
 
 GW_GameEngine_VTech::GW_GameEngine_VTech(int engineoptions) :

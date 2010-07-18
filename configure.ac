@@ -13,7 +13,7 @@ AC_PROG_CC
 
 # initialize
 CXXFLAGS="${CXXFLAGS} -DGW_USE_ZDATA"
-LIBS="-lzzip"
+#LIBS="-lzzip"
 
 # parameters
 AC_ARG_WITH(develdevices, [  --with-develdevices            enable in-development devices])
@@ -64,7 +64,14 @@ LIBS="$LIBS -lSDL_gfx"
 # boost-filesystem
 AX_BOOST_BASE([1.33.1])
 AX_BOOST_FILESYSTEM
-LIBS="$LIBS $BOOST_LDFLAGS -lboost_filesystem"
+LIBS="$LIBS $BOOST_LDFLAGS"
+
+# check for zzip
+PKG_CHECK_MODULES([ZZIP],[zziplib >= 0.10.75])
+
+CFLAGS="$CFLAGS $ZZIP_CFLAGS"
+CXXFLAGS="$CXXFLAGS $ZZIP_CFLAGS"
+LIBS="$LIBS $ZZIP_LIBS"
 
 # Checks for header files.
 
