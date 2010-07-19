@@ -6,8 +6,9 @@
 class GW_Game_SleepWlk_Info : public GW_Game_Info
 {
 public:
-    GW_Game_SleepWlk_Info() :
+    GW_Game_SleepWlk_Info(const string &platformdatapath) :
         GW_Game_Info("sleepwlk", "Time & Fun - Sleep Walker", "sleepwlk",
+			platformdatapath,
             "bg.bmp", true, GW_Platform_RGB_create(255, 255, 255)) {}
 
     virtual GW_Game *create();

@@ -20,8 +20,8 @@
 //// GW_GameList
 ////
 //////////////////////////////////////////
-GW_GameList::GW_GameList() :
-    list_()
+GW_GameList::GW_GameList(GW_Platform *platform) :
+    list_(), platform_(platform)
 {
     load();
 }
@@ -29,18 +29,18 @@ GW_GameList::GW_GameList() :
 void GW_GameList::load()
 {
 #ifdef GW_DEVEL_DEVICE
-    add(new GW_Game_Banana_Info); // Banana
-    add(new GW_Game_SleepWlk_Info); // Sleep Walker
+	add(new GW_Game_Banana_Info(platform_->datapath_get())); // Banana
+    add(new GW_Game_SleepWlk_Info(platform_->datapath_get())); // Sleep Walker
 
-    add(new GW_Game_DKong_Info); // Donkey Kong
+    add(new GW_Game_DKong_Info(platform_->datapath_get())); // Donkey Kong
 #endif //GW_DEVEL_DEVICE
 
-    add(new GW_Game_Condor_Info); // Condor
-    add(new GW_Game_Defendo_Info); // Defendo
-    add(new GW_Game_Monkey_Info); // Monkey
-    add(new GW_Game_Pancake_Info); // Pancake
-    add(new GW_Game_Pirate_Info); // Pirate
-    add(new GW_Game_RollerC_Info); // Roller Coaster
+    add(new GW_Game_Condor_Info(platform_->datapath_get())); // Condor
+    add(new GW_Game_Defendo_Info(platform_->datapath_get())); // Defendo
+    add(new GW_Game_Monkey_Info(platform_->datapath_get())); // Monkey
+    add(new GW_Game_Pancake_Info(platform_->datapath_get())); // Pancake
+    add(new GW_Game_Pirate_Info(platform_->datapath_get())); // Pirate
+    add(new GW_Game_RollerC_Info(platform_->datapath_get())); // Roller Coaster
 }
 
 GW_Game_Info *GW_GameList::get(int index)

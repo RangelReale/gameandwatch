@@ -5,13 +5,14 @@
 #include <deque>
 #include "linked_ptr.h"
 #include "device.h"
+#include "platform.h"
 
 using namespace std;
 
 class GW_GameList
 {
 public:
-    GW_GameList();
+    GW_GameList(GW_Platform *platform);
 
     int count() { return list_.size(); }
     GW_Game_Info *get(int index);
@@ -22,6 +23,7 @@ private:
 
     typedef deque< linked_ptr<GW_Game_Info> > list_t;
 
+	GW_Platform *platform_;
     list_t list_;
 };
 

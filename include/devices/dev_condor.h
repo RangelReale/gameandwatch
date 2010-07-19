@@ -6,8 +6,9 @@
 class GW_Game_Condor_Info : public GW_Game_Info
 {
 public:
-    GW_Game_Condor_Info() :
+    GW_Game_Condor_Info(const string &platformdatapath) :
         GW_Game_Info("condor", "Time & Fun - Condor", "condor",
+			platformdatapath,
             "bg.bmp", true, GW_Platform_RGB_create(255, 0, 255)) {}
 
     virtual GW_Game *create();

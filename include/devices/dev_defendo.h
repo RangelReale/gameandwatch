@@ -6,8 +6,9 @@
 class GW_Game_Defendo_Info : public GW_Game_Info
 {
 public:
-    GW_Game_Defendo_Info() :
+    GW_Game_Defendo_Info(const string &platformdatapath) :
         GW_Game_Info("defendo", "Time & Fun - Defendo", "defendo",
+			platformdatapath,
             "bg.bmp", true, GW_Platform_RGB_create(255, 0, 255)) {}
 
     virtual GW_Game *create();

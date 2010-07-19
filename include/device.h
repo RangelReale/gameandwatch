@@ -255,9 +255,11 @@ class GW_Game_Info
 {
 public:
     GW_Game_Info(const string &id, const string &description,
-        const string &datapath, const string &bgimg, bool istcolor = false,
+		const string &datapath, const string &platformdatapath,
+        const string &bgimg, bool istcolor = false,
         const GW_Platform_RGB &tcolor = GW_RGB_BLACK) :
-        id_(id), description_(description), datapath_(datapath), bgimg_(bgimg),
+        id_(id), description_(description), platformdatapath_(platformdatapath),
+		datapath_(datapath), bgimg_(bgimg),
         istcolor_(istcolor), tcolor_(tcolor) {}
     virtual ~GW_Game_Info() {}
 
@@ -271,7 +273,7 @@ public:
     string bgimg_path();
     virtual GW_Game *create() = 0;
 private:
-    string id_, description_, datapath_, bgimg_;
+    string id_, description_, datapath_, bgimg_, platformdatapath_;
     bool istcolor_;
     GW_Platform_RGB tcolor_;
 };

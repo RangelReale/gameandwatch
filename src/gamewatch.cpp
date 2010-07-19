@@ -78,7 +78,7 @@ int WinMain(
 
         platform.initialize();
 
-        GW_GameList gamelist;
+        GW_GameList gamelist(&platform);
 
         GW_Menu menu(&platform, &gamelist);
         menu.Run();

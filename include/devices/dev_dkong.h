@@ -10,8 +10,9 @@ using namespace std;
 class GW_Game_DKong_Info : public GW_Game_Info
 {
 public:
-    GW_Game_DKong_Info() :
+    GW_Game_DKong_Info(const string &platformdatapath) :
         GW_Game_Info("dkong", "Nintendo - Donkey Kong", "dkong",
+			platformdatapath,
             "bg.bmp", true, GW_Platform_RGB_create(255, 0, 255)) {}
 
     virtual GW_Game *create();

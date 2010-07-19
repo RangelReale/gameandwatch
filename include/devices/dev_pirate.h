@@ -7,8 +7,9 @@
 class GW_Game_Pirate_Info : public GW_Game_Info
 {
 public:
-    GW_Game_Pirate_Info() :
+    GW_Game_Pirate_Info(const string &platformdatapath) :
         GW_Game_Info("pirate", "Time & Fun - Pirate", "pirate",
+			platformdatapath,
             "bg.bmp", true, GW_Platform_RGB_create(255, 0, 255)) {}
 
     virtual GW_Game *create();
