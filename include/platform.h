@@ -110,7 +110,7 @@ public:
 class GW_Platform
 {
 public:
-    GW_Platform() {}
+	GW_Platform() : datapath_() {}
     virtual ~GW_Platform() {}
 
     virtual void initialize() = 0;
@@ -118,7 +118,12 @@ public:
 
     virtual int width_get() = 0;
     virtual int height_get() = 0;
-    virtual string platformdata_get() { return GW_Platform_DataPath + string("/gamewatch"); }
+
+	virtual string datapath_get() { if (!datapath_.empty()) return datapath_; return GW_Platform_DataPath; }
+	virtual void datapath_set(const string &datapath) { datapath_ = datapath; }
+
+    virtual string platformdata_get() { return datapath_get() + string("/gamewatch"); }
+	
 
     virtual unsigned int ticks_get() = 0;
     virtual unsigned int time_ms_get() = 0;
@@ -148,6 +153,8 @@ public:
 
     virtual GW_Platform_Image *image_load(const string &filename, GW_Platform_RGB *tcolor = NULL) = 0;
     virtual GW_Platform_Sound *sound_load(const string &filename) = 0;
+private:
+	string datapath_;
 };
 
 #endif //H__PLATFORM__H

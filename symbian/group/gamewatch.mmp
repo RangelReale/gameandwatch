@@ -1,0 +1,24 @@
+/*
+============================================================================
+ Name		: gamewatch.mmp
+ Author	  : Hitnrun
+ Copyright   : Hitnrun
+ Description : This is the project specification file for gamewatch.
+============================================================================
+*/
+
+TARGET		  gamewatch.exe
+TARGETTYPE	  exe
+UID			 0 0xE19DE0E4
+
+USERINCLUDE	 ..\symbian\inc
+SYSTEMINCLUDE   \epoc32\include
+
+SOURCEPATH	  ..\src
+SOURCE		  gamewatch.cpp
+
+LIBRARY		 euser.lib
+
+#ifdef ENABLE_ABIV2_MODE
+  DEBUGGABLE_UDEBONLY
+#endif

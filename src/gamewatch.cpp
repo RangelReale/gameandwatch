@@ -22,9 +22,11 @@
 #include <sdlepocapi.h>
 */
 
+#include "util/anyoption.h"
+
 //#ifndef _WIN32
 //int main(int argc, char** argv)
-int main(int, char**)
+int main(int argc, char** argv)
 /*
 #else
 int WinMain(
@@ -35,6 +37,33 @@ int WinMain(
 #endif
 */
 {
+	string datapath;
+
+	AnyOption *opt = new AnyOption();
+	
+    opt->addUsage( "" );
+    opt->addUsage( "Usage: " );
+    opt->addUsage( "" );
+    opt->addUsage( " -h  --help  				Prints this help " );
+    opt->addUsage( " -d  --data-path /dir		Data files path " );
+    opt->addUsage( "" );
+
+	opt->setFlag(  "help", 'h' );
+	opt->setOption(  "data-path", 'd' );
+
+	opt->processCommandArgs( argc, argv );
+
+    if( opt->getFlag( "help" ) || opt->getFlag( 'h' ) ) 
+	{
+        opt->printUsage();
+		delete opt;
+		return 0;
+	}
+	if( opt->getValue( 'd' ) != NULL  || opt->getValue( "data-size" ) != NULL  )
+		datapath = opt->getValue('d');
+
+	delete opt;
+
     try
     {
 #ifdef GP2X
@@ -44,6 +73,9 @@ int WinMain(
 #else
         GW_PlatformSDL platform(640, 480);
 #endif
+		if (!datapath.empty())
+			platform.datapath_set(datapath);
+
         platform.initialize();
 
         GW_GameList gamelist;

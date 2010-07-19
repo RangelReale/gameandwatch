@@ -1,0 +1,15 @@
+/*
+============================================================================
+ Name		: bld.inf
+ Author	  : Hitnrun
+ Copyright   : Hitnrun
+ Description : This file provides the information required for building the
+				whole of a gamewatch.
+============================================================================
+*/
+
+PRJ_PLATFORMS
+DEFAULT
+
+PRJ_MMPFILES
+gamewatch.mmp
