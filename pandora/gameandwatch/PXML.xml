@@ -1,0 +1,30 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<PXML xmlns="http://openpandora.org/namespaces/PXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PXML_schema.xsd">
+
+  <application id="gameandwatch">
+
+    <title lang="en_US">Game &amp; Watch Simulators 0.3</title>
+ 
+    <exec command="./bin/gameandwatch_run.sh"/>
+ 
+    <description lang="en_US">Game &amp; Watch Simulators 0.3</description>
+
+    <icon src="./data/gameandwatch.png"/>
+ 
+    <previewpics>
+    </previewpics>
+ 
+    <author name="Rangel Reale" website="http://www.rangelreale.com" email="rangelspam@gmail.com"/><!--Optional email and website, name required-->
+ 
+    <version major="0" minor="3" release="0" build="0"/><!--This programs version-->
+    <osversion major="1" minor="0" release="0" build="0"/><!--The minimum OS version required-->
+ 
+    <categories>
+      <category name="Game"></category>
+    </categories>
+ 
+  </application>
+
+</PXML>
+
