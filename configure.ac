@@ -61,11 +61,6 @@ LIBS="$LIBS -lSDL_image"
 AC_CHECK_LIB(SDL_gfx, zoomSurface, [], [AC_MSG_ERROR(SDL_gfx required)])
 LIBS="$LIBS -lSDL_gfx"
 
-# boost-filesystem
-AX_BOOST_BASE([1.33.1])
-AX_BOOST_FILESYSTEM
-LIBS="$LIBS $BOOST_LDFLAGS"
-
 # check for zzip
 PKG_CHECK_MODULES([ZZIP],[zziplib >= 0.10.75])
 
