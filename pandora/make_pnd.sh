@@ -1,6 +1,20 @@
 #!/bin/sh
 
-#cp ../src/gameandwatch gameandwatch/bin
-#cp ../res/gameandwatch.png gameandwatch/data
+rm -Rf build
 
-pnd_make.sh -p gameandwatch_0.3.pnd -d gameandwatch -x gameandwatch/PXML.xml -i gameandwatch/data/gameandwatch.png
+mkdir -p build/gameandwatch
+mkdir -p build/gameandwatch/bin
+mkdir -p build/gameandwatch/data
+mkdir -p build/gameandwatch/data/gamewatch
+mkdir -p build/gameandwatch/lib
+
+cp ../src/gameandwatch build/gameandwatch/bin
+cp ../res/gameandwatch.png build/gameandwatch/data
+cp gameandwatch/PXML.xml build/gameandwatch
+cp gameandwatch/bin/gameandwatch_run.sh build/gameandwatch/bin
+chmod +x build/gameandwatch/bin/gameandwatch_run.sh
+cp ../data/gamewatch/*.ttf build/gameandwatch/data/gamewatch
+cp ../data/pancake.zip ../data/condor.zip ../data/pirate.zip ../data/defendo.zip ../data/monkey.zip ../data/rollerc.zip build/gameandwatch/data
+cp $SDK_PATH_TARGET/usr/lib/libzzip-0.so.13 build/gameandwatch/lib
+
+pnd_make.sh -p gameandwatch_0.3.pnd -d build/gameandwatch -x build/gameandwatch/PXML.xml -i build/gameandwatch/data/gameandwatch.png

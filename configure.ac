@@ -30,6 +30,20 @@ else
 fi
 AM_CONDITIONAL(DEVEL_DEVICE, test x$GW_DEVEL_DEVICE = xtrue)
 
+AC_ARG_ENABLE(plat-pandora, AS_HELP_STRING([--enable-plat-pandora], [enable the Pandora platform]))
+
+AC_MSG_CHECKING([if the Pandora platform should be included])
+
+AS_IF([test "x$enable_plat_pandora" = "xyes"], [
+	AC_DEFINE([GW_PLAT_PANDORA], [], [Enable the Pandora platform])
+	GW_PLAT_PANDORA=true
+	AC_SUBST(GW_PLAT_PANDORA)
+	AC_MSG_RESULT([yes])
+],[
+	AC_MSG_RESULT([no])
+])
+AM_CONDITIONAL(PLAT_PANDORA, test x$GW_PLAT_PANDORA = xtrue)
+
 # Checks for libraries.
 
 # Use the macro SDL provides to check the installed version of the SDL

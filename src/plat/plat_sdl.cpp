@@ -141,7 +141,7 @@ void GW_PlatformSDL::initialize()
 
         // create a new window
         screen_ = SDL_SetVideoMode(width_get(), height_get(), 16,
-                                               SDL_HWSURFACE|SDL_DOUBLEBUF);
+                                               sdlvideomode(SDL_HWSURFACE|SDL_DOUBLEBUF) );
         if ( !screen_ )
             throw GW_Exception(string("Unable to set resolution: "+string(SDL_GetError())));
 

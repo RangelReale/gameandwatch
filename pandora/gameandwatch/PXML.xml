@@ -4,7 +4,7 @@
 
   <application id="gameandwatch">
 
-    <title lang="en_US">Game &amp; Watch Simulators 0.3</title>
+    <title lang="en_US">Game &amp; Watch Simulators</title>
  
     <exec command="./bin/gameandwatch_run.sh"/>
  
@@ -12,16 +12,15 @@
 
     <icon src="./data/gameandwatch.png"/>
  
-    <previewpics>
-    </previewpics>
- 
     <author name="Rangel Reale" website="http://www.rangelreale.com" email="rangelspam@gmail.com"/><!--Optional email and website, name required-->
  
     <version major="0" minor="3" release="0" build="0"/><!--This programs version-->
     <osversion major="1" minor="0" release="0" build="0"/><!--The minimum OS version required-->
  
     <categories>
-      <category name="Game"></category>
+      <category name="Game">
+	<subcategory name="Simulation"/>
+      </category>
     </categories>
  
   </application>

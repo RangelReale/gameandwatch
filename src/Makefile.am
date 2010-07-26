@@ -16,6 +16,12 @@ else
 DEVSRC =
 endif
 
+if PLAT_PANDORA
+PLAT = plat/plat_pandora.cpp plat/plat_pandora.h
+else
+PLAT = 
+endif
+
 gameandwatch_SOURCES = device.cpp device.h gamelist.cpp gamelist.h gamewatch.cpp gwdefs.h menu.cpp menu.h platform.cpp platform.h \
 	plat/plat_sdl.cpp plat/plat_sdl.h plat/SDL_rwops_zzip.cpp plat/SDL_rwops_zzip.h \
 	devices/dev_defendo.cpp devices/dev_defendo.h devices/deveng_vtech_monkey.cpp devices/deveng_vtech_monkey.h devices/dev_monkey.cpp \
@@ -23,6 +29,6 @@ gameandwatch_SOURCES = device.cpp device.h gamelist.cpp gamelist.h gamewatch.cpp
 	devices/deveng_vtech_condor.cpp devices/deveng_vtech_condor.h devices/dev_condor.cpp devices/dev_condor.h \
 	devices/dev_pancake.cpp devices/dev_pancake.h devices/dev_rollerc.cpp devices/dev_rollerc.h \
 	util/anyoption.cpp util/anyoption.h \
-	$(DEVSRC)
+	$(DEVSRC) $(PLAT)
 
 

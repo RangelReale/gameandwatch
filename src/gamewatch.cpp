@@ -1,11 +1,18 @@
 #include <SDL.h>
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include "gwdefs.h"
 #include "device.h"
 #include "devices/dev_monkey.h"
 #include "plat/plat_sdl.h"
 #ifdef GP2X
 #include "plat/plat_gp2x.h"
+#endif
+#ifdef GW_PLAT_PANDORA
+#include "plat/plat_pandora.h"
 #endif
 #ifdef GW_PLAT_S60
 #include "plat/plat_s60.h"
@@ -68,6 +75,8 @@ int WinMain(
     {
 #ifdef GP2X
         GW_PlatformGP2X platform;
+#elif defined(GW_PLAT_PANDORA)
+        GW_PlatformPandora platform;
 #elif defined(GW_PLAT_S60)
         GW_PlatformS60 platform;
 #else

@@ -91,6 +91,7 @@ protected:
     virtual void custom_finalize() {}
 
     virtual int sdlinit(int flags) { return flags|SDL_INIT_JOYSTICK; }
+    virtual int sdlvideomode(int flags) { return flags; }
     virtual int audiobufsize_get() { return 2048; }
     virtual int fontsize_get() { return 16; }
 

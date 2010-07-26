@@ -3,6 +3,9 @@
 /* Enable in-development devices */
 #undef GW_DEVEL_DEVICE
 
+/* Enable the Pandora platform */
+#undef GW_PLAT_PANDORA
+
 /* Define to 1 if you have the `atexit' function. */
 #undef HAVE_ATEXIT
 
