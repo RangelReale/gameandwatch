@@ -11,6 +11,7 @@
     <description lang="en_US">Game &amp; Watch Simulators 0.3</description>
 
     <icon src="./data/gameandwatch.png"/>
+    <info name="Game &amp; Watch Simulators" type="text/plain" src="doc/README.pandora.txt"/>
  
     <author name="Rangel Reale" website="http://www.rangelreale.com" email="rangelspam@gmail.com"/><!--Optional email and website, name required-->
  

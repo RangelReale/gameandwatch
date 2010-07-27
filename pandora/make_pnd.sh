@@ -4,12 +4,14 @@ rm -Rf build
 
 mkdir -p build/gameandwatch
 mkdir -p build/gameandwatch/bin
+mkdir -p build/gameandwatch/doc
 mkdir -p build/gameandwatch/data
 mkdir -p build/gameandwatch/data/gamewatch
 mkdir -p build/gameandwatch/lib
 
 cp ../src/gameandwatch build/gameandwatch/bin
 cp ../res/gameandwatch.png build/gameandwatch/data
+cp ../doc/README.pandora build/gameandwatch/doc/README.pandora.txt
 cp gameandwatch/PXML.xml build/gameandwatch
 cp gameandwatch/bin/gameandwatch_run.sh build/gameandwatch/bin
 chmod +x build/gameandwatch/bin/gameandwatch_run.sh
