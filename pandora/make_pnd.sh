@@ -15,6 +15,6 @@ cp gameandwatch/bin/gameandwatch_run.sh build/gameandwatch/bin
 chmod +x build/gameandwatch/bin/gameandwatch_run.sh
 cp ../data/gamewatch/*.ttf build/gameandwatch/data/gamewatch
 cp ../data/pancake.zip ../data/condor.zip ../data/pirate.zip ../data/defendo.zip ../data/monkey.zip ../data/rollerc.zip build/gameandwatch/data
-cp $SDK_PATH_TARGET/usr/lib/libzzip-0.so.13 build/gameandwatch/lib
+cp $SDK_PATH_TARGET/lib/libzzip-0.so.13 build/gameandwatch/lib
 
-pnd_make.sh -p gameandwatch_0.3.pnd -d build/gameandwatch -x build/gameandwatch/PXML.xml -i build/gameandwatch/data/gameandwatch.png
+pnd_make.sh -p gameandwatch_0.3-0.pnd -d build/gameandwatch -x build/gameandwatch/PXML.xml -i build/gameandwatch/data/gameandwatch.png
