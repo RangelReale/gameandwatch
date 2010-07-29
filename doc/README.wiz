@@ -1,0 +1,24 @@
+Game & Watch Simulators 0.3 - Wiz port
+=======================================
+http://sourceforge.net/projects/gameandwatch/
+
+The Wiz port should work the same as the desktop version, but as the screen 
+is only 320x240, the screen is scrolled to the game screen area,
+no resizing is done.
+
+Menu keys:
+	ARROW KEYS	 - Move selection
+	SELECT       - Start game
+	MENU 			   - Exit
+
+In-game keys:
+	MENU   - Exit
+	SELECT - Turn on/off toggle
+	LEFT TRIGGER	- Game A
+	RIGHT TRIGGER - Game B
+	A	 - Time
+	LEFT ARROW		  - Move left
+	RIGHT ARROW or B	- Move right
+	Vol +			- Volume up
+	Vol -			- Volume down
+

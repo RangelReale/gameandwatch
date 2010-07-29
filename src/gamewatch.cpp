@@ -17,6 +17,9 @@
 #ifdef GW_PLAT_S60
 #include "plat/plat_s60.h"
 #endif
+#ifdef GW_PLAT_WIZ
+#include "plat/plat_wiz.h"
+#endif
 /*
 #ifdef _WIN32
 #include <windows.h>
@@ -79,6 +82,8 @@ int WinMain(
         GW_PlatformPandora platform;
 #elif defined(GW_PLAT_S60)
         GW_PlatformS60 platform;
+#elif defined(GW_PLAT_WIZ)
+        GW_PlatformWIZ platform;
 #else
         GW_PlatformSDL platform(640, 400);
 #endif
