@@ -1,0 +1,20 @@
+Game & Watch Simulators 0.3 - Pandora port
+==========================================
+http://sourceforge.net/projects/gameandwatch/
+
+The Pandora port should work the same as the desktop version, with the following additional key mappings:
+
+Menu keys:
+	ARROW KEYS		- Move selection
+	START			- Start game
+	SELECT			- Exit
+
+In-game keys:
+	SELECT 			- Exit
+	START/HOME		- Turn on/off toggle
+	1			- Game A
+	2			- Game B
+	3			- Time
+	LEFT ARROW or L		- Move left
+	RIGHT ARROW or B or R	- Move right
+
