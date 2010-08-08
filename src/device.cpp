@@ -394,7 +394,8 @@ string GW_Game_Info::bgimg_path()
 GW_Device::GW_Device(GW_Platform *platform) :
     platform_(platform), game_(NULL),
     datapath_(), quit_(false),
-    volume_(75)
+	volume_(75), zoom_(DZ_NORMAL),
+	z_output_width_(0), z_output_height_(0)
 {
 	datapath_ = platform->datapath_get();
 }
@@ -459,7 +460,7 @@ void GW_Device::Run(GW_Game *game)
 
             draw_game();
 
-            platform_->draw_flip();
+			platform_->draw_flip(z_output_width_, z_output_height_);
         }
     } // end main loop
 
@@ -495,6 +496,18 @@ bool GW_Device::process_event(GW_Platform_Event *event)
         case GPK_VOLDOWN:
             Volume(volume_-5);
             return true;
+		case GPK_ZOOM_NORMAL:
+			zoom_ = DZ_NORMAL;
+			ZoomChanged();
+			break;
+		case GPK_ZOOM_GAME:
+			zoom_ = DZ_GAME;
+			ZoomChanged();
+			break;
+		case GPK_ZOOM_DEVICE:
+			zoom_ = DZ_DEVICE;
+			ZoomChanged();
+			break;
         }
     default:
         break;
@@ -573,6 +586,24 @@ void GW_Device::MoveBGCenter()
     offsety_=((platform_->height_get()-game_->gamerect_get().h)/2)-game_->gamerect_get().y;
     CalculateBGOffset();
     game_->Changed();
+}
+
+void GW_Device::ZoomChanged()
+{
+	switch (zoom_)
+	{
+	case DZ_GAME:
+		z_output_width_ = (int)(game_->gamewidth_get() * 1.1);
+		z_output_height_ = (int)(game_->gameheight_get() * 1.1);
+		break;
+	case DZ_DEVICE:
+		z_output_width_ = game_->width_get();
+		z_output_height_ = game_->height_get();
+		break;
+	default:
+		z_output_width_ = z_output_height_ = 0;
+		break;
+	}
 }
 
 void GW_Device::GetTime(devtime_t *time)

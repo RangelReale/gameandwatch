@@ -85,7 +85,7 @@ int WinMain(
 #elif defined(GW_PLAT_WIZ)
         GW_PlatformWIZ platform;
 #else
-        GW_PlatformSDL platform(640, 400);
+        GW_PlatformSDL platform(640, 480);
 #endif
 		if (!datapath.empty())
 			platform.datapath_set(datapath);

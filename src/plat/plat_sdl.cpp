@@ -93,9 +93,11 @@ GW_PlatformSDL_Sound::~GW_PlatformSDL_Sound()
 //// GW_PlatformSDL
 ////
 //////////////////////////////////////////
-GW_PlatformSDL::GW_PlatformSDL(int width, int height) :
-    GW_Platform(), width_(width), height_(height),
-    initialized_(false), screen_(NULL)
+GW_PlatformSDL::GW_PlatformSDL(int width, int height, 
+	bool fullscreen, bool allowscale) :
+    GW_Platform(), width_(width), height_(height), 
+	fullscreen_(fullscreen), allowscale_(allowscale),
+    initialized_(false), screen_(NULL), realscreen_(NULL)
 {
 
 }
@@ -140,10 +142,23 @@ void GW_PlatformSDL::initialize()
         plat_init();
 
         // create a new window
-        screen_ = SDL_SetVideoMode(width_get(), height_get(), 16,
-                                               sdlvideomode(SDL_HWSURFACE|SDL_DOUBLEBUF) );
-        if ( !screen_ )
+        realscreen_ = SDL_SetVideoMode(width_get(), height_get(), 16,
+			sdlvideomode(SDL_SWSURFACE|SDL_DOUBLEBUF|(fullscreen_?SDL_FULLSCREEN:0)) );
+        if ( !realscreen_ )
             throw GW_Exception(string("Unable to set resolution: "+string(SDL_GetError())));
+
+		if (allowscale_)
+		{
+			screen_ = SDL_CreateRGBSurface(SDL_SWSURFACE, width_get(), height_get(),
+				realscreen_->format->BitsPerPixel,
+				realscreen_->format->Rmask,
+				realscreen_->format->Gmask,
+				realscreen_->format->Bmask, 0);
+			if ( !screen_ )
+				throw GW_Exception(string("Unable to create blit surface: "+string(SDL_GetError())));
+		}
+		else
+			screen_ = realscreen_;
 
         SDL_ShowCursor(SDL_DISABLE);
 
@@ -179,6 +194,9 @@ void GW_PlatformSDL::finalize()
 #ifndef GW_NO_SDL_MIXER
         Mix_CloseAudio();
 #endif
+
+		if (allowscale_)
+			SDL_FreeSurface(screen_);
 
         SDL_Quit();
 
@@ -303,9 +321,24 @@ void GW_PlatformSDL::draw_rectangle(int x1, int y1, int x2, int y2,
 }
 
 
-void GW_PlatformSDL::draw_flip()
+void GW_PlatformSDL::draw_flip(int output_width, int output_height)
 {
-    SDL_Flip(screen_);
+	if (allowscale_)
+	{
+		if (output_width > 0 && output_height > 0)
+		{
+			float rw=(float)output_width/screen_->w, rh=(float)output_height/screen_->h, r;
+			if (rw > rh) r=rw; else r=rh;
+			int ow = (int)(screen_->w * r), oh = (int)(screen_->h * r);
+
+			SDL_Rect src = {(screen_->w / 2) - (ow / 2), (screen_->h / 2) - (oh / 2), ow, oh};
+
+			SDL_SoftStretch( screen_, &src, realscreen_, NULL );
+		} else {
+			SDL_BlitSurface(screen_, NULL, realscreen_, NULL);
+		}
+	}
+    SDL_Flip(realscreen_);
 }
 
 void GW_PlatformSDL::text_draw(int x, int y, const string &text,
@@ -463,6 +496,15 @@ bool GW_PlatformSDL::process_event(GW_Platform_GameType gametype,
             case SDLK_MINUS:
                 event->data=GPK_VOLDOWN;
                 break;
+			case SDLK_7:
+				event->data=GPK_ZOOM_NORMAL;
+				break;
+			case SDLK_8:
+				event->data=GPK_ZOOM_DEVICE;
+				break;
+			case SDLK_9:
+				event->data=GPK_ZOOM_GAME;
+				break;
             default:
                 return false;
             }

@@ -58,6 +58,9 @@ enum GW_Platform_EventID_Keys
     GPK_UPRIGHT,
     GPK_DOWNLEFT,
     GPK_DOWNRIGHT,
+	GPK_ZOOM_NORMAL,
+	GPK_ZOOM_GAME,
+	GPK_ZOOM_DEVICE,
 };
 
 struct GW_Platform_Event
@@ -139,7 +142,7 @@ public:
     virtual void draw_rectangle(int x1, int y1, int x2, int y2,
         GW_Platform_RGB *forecolor = NULL, GW_Platform_RGB *backcolor = NULL,
         int alpha = -1) = 0;
-    virtual void draw_flip() = 0;
+    virtual void draw_flip(int output_width = 0, int output_height = 0) = 0;
 
     virtual void text_draw(int x, int y, const string &text,
         GW_Platform_RGB *color = NULL) = 0;

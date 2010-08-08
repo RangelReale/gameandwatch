@@ -217,6 +217,12 @@ public:
 
     void Load(GW_Device *device, const string &datapath);
     void Unload();
+
+	int width_get() { return width_; }
+	int height_get() { return height_; }
+
+	int gamewidth_get() { return gamerect_.w; }
+	int gameheight_get() { return gamerect_.h; }
 protected:
     virtual GW_Platform_GameType do_gametype_get() { return GPG_MENU; }
     virtual void do_turnon() {}
@@ -287,6 +293,14 @@ public:
         short h, n, s;
     };
 
+	enum zoom_t
+	{
+		DZ_NORMAL,
+		DZ_GAME,
+		DZ_DEVICE,
+	};
+
+
     GW_Device(GW_Platform *platform);
     ~GW_Device();
 
@@ -318,6 +332,7 @@ private:
     bool process_event(GW_Platform_Event *event);
 
     void CalculateBGOffset();
+	void ZoomChanged();
 
     GW_Platform *platform_;
     GW_Game *game_;
@@ -328,6 +343,8 @@ private:
     int offsetx_, offsety_;
     GW_Platform_Rect bgsrc_, bgdst_;
     int volume_;
+	zoom_t zoom_;
+	int z_output_width_, z_output_height_;
 
     unsigned int curtime_;
 };

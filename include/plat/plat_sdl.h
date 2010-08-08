@@ -51,7 +51,8 @@ private:
 class GW_PlatformSDL : public GW_Platform
 {
 public:
-    GW_PlatformSDL(int width, int height);
+    GW_PlatformSDL(int width, int height, 
+		bool fullscreen = false, bool allowscale = true);
     virtual ~GW_PlatformSDL();
 
     virtual void initialize();
@@ -73,7 +74,7 @@ public:
     virtual void draw_rectangle(int x1, int y1, int x2, int y2,
         GW_Platform_RGB *forecolor = NULL, GW_Platform_RGB *backcolor = NULL,
         int alpha = -1);
-    virtual void draw_flip();
+    virtual void draw_flip(int output_width = 0, int output_height = 0);
 
     virtual void text_draw(int x, int y, const string &text, GW_Platform_RGB *color = NULL);
     virtual int text_fontheight();
@@ -102,12 +103,12 @@ private:
     void plat_finish();
 
     int width_, height_;
-    bool initialized_;
+    bool fullscreen_, allowscale_, initialized_;
 
 #ifndef GW_NO_SDL_TTF
     TTF_Font *font_;
 #endif
-    SDL_Surface *screen_;
+    SDL_Surface *screen_, *realscreen_;
 #if defined(_WIN32) && !defined(GW_NO_WIN32)
     HICON icon_;
 #endif
