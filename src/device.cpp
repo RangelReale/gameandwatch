@@ -604,6 +604,7 @@ void GW_Device::ZoomChanged()
 		z_output_width_ = z_output_height_ = 0;
 		break;
 	}
+    game_->Changed();
 }
 
 void GW_Device::GetTime(devtime_t *time)
