@@ -60,27 +60,32 @@ CXXFLAGS="$CXXFLAGS $SDL_CFLAGS"
 LIBS="$LIBS $SDL_LIBS"
 
 # Check for SDL_mixer
-AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, [], [AC_MSG_ERROR(SDL_mixer required)])
-LIBS="$LIBS -lSDL_mixer"
+#AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, [], [AC_MSG_ERROR(SDL_mixer required)])
+LIBS="$LIBS -lsdl_mixer"
 
 # Check for SDL_ttf
-AC_CHECK_LIB(SDL_ttf, TTF_Init, [], [AC_MSG_ERROR(SDL_ttf required)])
-LIBS="$LIBS -lSDL_ttf"
+#AC_CHECK_LIB(SDL_ttf, TTF_Init, [], [AC_MSG_ERROR(SDL_ttf required)])
+LIBS="$LIBS -lsdl_ttf"
 
 # Check for SDL_image
-AC_CHECK_LIB(SDL_image, IMG_Load, [], [AC_MSG_ERROR(SDL_image required)])
-LIBS="$LIBS -lSDL_image"
+#AC_CHECK_LIB(SDL_image, IMG_Load, [], [AC_MSG_ERROR(SDL_image required)])
+LIBS="$LIBS -lsdl_image"
 
 # Check for SDL_gfx
-AC_CHECK_LIB(SDL_gfx, zoomSurface, [], [AC_MSG_ERROR(SDL_gfx required)])
-LIBS="$LIBS -lSDL_gfx"
+#AC_CHECK_LIB(SDL_gfx, zoomSurface, [], [AC_MSG_ERROR(SDL_gfx required)])
+LIBS="$LIBS -lsdl_gfx"
 
 # check for zzip
-PKG_CHECK_MODULES([ZZIP],[zziplib >= 0.10.75])
+#PKG_CHECK_MODULES([ZZIP],[zziplib >= 0.10.75])
+LIBS="$LIBS -lzzip"
 
 CFLAGS="$CFLAGS $ZZIP_CFLAGS"
 CXXFLAGS="$CXXFLAGS $ZZIP_CFLAGS"
 LIBS="$LIBS $ZZIP_LIBS"
+
+LIBS="$LIBS -lgcc"
+
+LIBS="$LIBS /home/rreale/prog/sdk/android-ndk-r4-crystax/build/prebuilt/linux-x86/arm-eabi-4.4.0/arm-eabi/lib/libstdc++.a"
 
 # Checks for header files.
 
