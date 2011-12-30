@@ -1,0 +1,68 @@
+Game & Watch Simulators 0.3 - Android port (BETA)
+=================================================
+http://sourceforge.net/projects/gameandwatch/
+
+This is a generic engine for simulation of Game & Watch-like games, created by Hitnrun, starting with ports of the Madrigal Game & Watch Simulators (http://www.madrigaldesign.it/sim/), with permission. It is designed to run anywhere SDL is available, with emphasis in handheld machines.
+
+As for the Madrigal simulators, the simulation is aimed to be as close as possible to the real machine, simulating on-off, ACL mode, time modes, etc. Alarm and chrono modes only display default data, as there is not enough motivation for its simulation. Currently missing but in the TODO list is hiscore keeping.
+
+Currently there are simulators for 6 VTech games.
+
+
+The simulator uses various keys to simulate all device functions, for devices without hardware keyboards, currently some functions are not available.
+Touching the up/down/left/right borders of your screen will simulate a cursor key press on the direction.
+
+** All devices **
+
+Menu keys:
+	<TOUCH SCREEN BORDERS>	- Move selection
+	MENU			- Start game
+
+In-game keys:
+	MENU		        - Turn on/off toggle
+	HOME                    - Exit game
+	BACK			- Game A
+	<TOUCH SCREEN BORDERS>	- Move character (left / right)
+
+** Hardware keybord devices **
+
+Menu keys:
+	ARROW KEYS		- Move selection
+	ENTER			- Select game
+
+In-game keys:
+	ENTER 			- Turn on
+	BACKSPACE		- Turn off
+	x			- Exit
+	1/q			- Game A
+	2/w			- Game B
+	3/e			- Time
+	LEFT ARROW		- Move left
+	RIGHT ARROW		- Move right
+	7			- Zoom full
+	8			- Zoom device
+	9                       - Zoom screen
+
+
+Rangel Reale (Hitnrun)
+
+Credits
+=======
+- Rangel Reale [SIB IT] (rangelreale@gmail.com) - Engine implementation, game ports, GP2X platform port
+- Madrigal (http://www.madrigaldesign.it/sim/) - Original simulators and images scanning, this simulator is based on his Delphi source code and images.
+
+Changelog
+=========
+
+0.1 (2008-05-12)
+----------------
+- Initial release, "Time & Watch - Monkey" implementation
+
+0.2 (2008-05-17)
+----------------
+- Implemented 2 more games - DEFENDO and PIRATE
+- Cursor keys move the view when device is off
+
+0.3 (2008-06-07)
+----------------
+- 3 more games - CONDOR, PANCAKE and ROLLER COASTER
