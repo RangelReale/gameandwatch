@@ -53,6 +53,7 @@ bool GW_PlatformAndroid::process_event(GW_Platform_GameType gametype,
     	    if(inTouch != NULL)
     	    {
     	    	proc = true;
+                event->id=GPE_KEYDOWN;
     	    	GWDBG_FVOUTPUT("FINGER DOWN: x=%d - y=%d - xmax=%d - ymax=%d", sdlevent->tfinger.x, sdlevent->tfinger.y, inTouch->xres, inTouch->yres)
     	    	//GWDBG_FVOUTPUT("FINGER POS: %f", ceil(((float)inTouch->xres) * 0.2f))
 
