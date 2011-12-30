@@ -2,6 +2,8 @@ Game & Watch Simulators 0.3 - Android port (BETA)
 =================================================
 http://sourceforge.net/projects/gameandwatch/
 
+BETA version, still many bugs to fix. May crash randomly.
+
 This is a generic engine for simulation of Game & Watch-like games, created by Hitnrun, starting with ports of the Madrigal Game & Watch Simulators (http://www.madrigaldesign.it/sim/), with permission. It is designed to run anywhere SDL is available, with emphasis in handheld machines.
 
 As for the Madrigal simulators, the simulation is aimed to be as close as possible to the real machine, simulating on-off, ACL mode, time modes, etc. Alarm and chrono modes only display default data, as there is not enough motivation for its simulation. Currently missing but in the TODO list is hiscore keeping.
