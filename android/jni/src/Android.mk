@@ -13,7 +13,7 @@ SDLMIXER_PATH := ../sdl_mixer
 LOCAL_CFLAGS += -DGW_PLAT_ANDROID -DGW_DEBUG
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include $(LOCAL_PATH)/$(SDLGFX_PATH)/include \
 	$(LOCAL_PATH)/$(FREETYPE_PATH)/include $(LOCAL_PATH)/$(SDLTTF_PATH)/include \
-	$(LOCAL_PATH)/$(SDLMIXER_PATH)/include $(LOCAL_PATH)/include
+	$(LOCAL_PATH)/$(SDLMIXER_PATH)/include $(LOCAL_PATH)/gamewatch/include
 
 # Add your application source files here...
 LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.cpp \

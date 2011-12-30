@@ -1,0 +1,1 @@
+put SDL 1.3 files into the SDL dir (file SDL/Android.mk must exist)

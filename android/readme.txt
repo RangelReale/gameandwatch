@@ -1,0 +1,1 @@
+run "ndk-build.cmd" on this folder

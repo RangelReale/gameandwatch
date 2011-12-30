@@ -1,0 +1,1 @@
+checkout TRUNK into a "gamewatch" dir
