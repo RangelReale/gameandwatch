@@ -41,6 +41,7 @@ public class SDLActivity extends Activity {
         System.loadLibrary("sdl_mixer");
         System.loadLibrary("sdl_ttf");
         System.loadLibrary("sdl_gfx");
+        System.loadLibrary("zzip");
         System.loadLibrary("main");
     }
 

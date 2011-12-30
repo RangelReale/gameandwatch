@@ -1,1 +1,1 @@
-create a "data" path, and extract all zip files in ../data
+create a "data" path, copy "gamewatch" folder, and extract all zip files in ../data
