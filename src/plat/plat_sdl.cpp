@@ -441,6 +441,7 @@ bool GW_PlatformSDL::process_event(GW_Platform_GameType gametype,
     case SDL_KEYDOWN:
         {
             event->id=GPE_KEYDOWN;
+            GWDBG_FOUTPUT("KEY: %d\n", sdlevent->key.keysym.sym)
             switch (sdlevent->key.keysym.sym)
             {
             case SDLK_LEFT:

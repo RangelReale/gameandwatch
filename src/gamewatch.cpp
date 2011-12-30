@@ -5,6 +5,7 @@
 #endif // HAVE_CONFIG_H
 
 #include "gwdefs.h"
+#include "gwdbg.h"
 #include "device.h"
 #include "devices/dev_monkey.h"
 #include "plat/plat_sdl.h"
@@ -19,6 +20,9 @@
 #endif
 #ifdef GW_PLAT_WIZ
 #include "plat/plat_wiz.h"
+#endif
+#ifdef GW_PLAT_ANDROID
+#include "plat/plat_android.h"
 #endif
 /*
 #ifdef _WIN32
@@ -36,7 +40,11 @@
 
 //#ifndef _WIN32
 //int main(int argc, char** argv)
+#ifdef GW_PLAT_ANDROID
+int SDL_main(int argc, char** argv)
+#else
 int main(int argc, char** argv)
+#endif
 /*
 #else
 int WinMain(
@@ -65,6 +73,7 @@ int WinMain(
 
     if( opt->getFlag( "help" ) || opt->getFlag( 'h' ) ) 
 	{
+    	GWDBG_OUTPUT("Usage")
         opt->printUsage();
 		delete opt;
 		return 0;
@@ -84,6 +93,8 @@ int WinMain(
         GW_PlatformS60 platform;
 #elif defined(GW_PLAT_WIZ)
         GW_PlatformWIZ platform;
+#elif defined(GW_PLAT_ANDROID)
+        GW_PlatformAndroid platform;
 #else
         GW_PlatformSDL platform(640, 480);
 #endif
@@ -99,6 +110,7 @@ int WinMain(
 
         platform.finalize();
     } catch (GW_Exception &e) {
+    	GWDBG_OUTPUT(e.what().c_str())
         fprintf(stderr, "%s\n", e.what().c_str());
         return 1;
     }
