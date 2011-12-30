@@ -37,8 +37,12 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.cpp \
 	src/devices/dev_rollerc.cpp \
 	src/util/anyoption.cpp
 
-LOCAL_SHARED_LIBRARIES := SDL sdl_gfx sdl_ttf sdl_mixer
+LOCAL_SHARED_LIBRARIES := SDL sdl_mixer sdl_gfx sdl_ttf 
+LOCAL_STATIC_LIBRARIES := freetype jpeg png
 
 LOCAL_LDLIBS := -lGLESv1_CM -llog
+
+APP_LIB_DEPENDS := $(foreach LIB, $(LOCAL_SHARED_LIBRARIES), $(abspath $(LOCAL_PATH)/../../obj/local/armeabi/lib$(LIB).so)) 
+APP_LIB_DEPENDS += $(foreach LIB, $(LOCAL_STATIC_LIBRARIES), $(abspath $(LOCAL_PATH)/../../obj/local/armeabi/lib$(LIB).a))
 
 include $(BUILD_SHARED_LIBRARY)
