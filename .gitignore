@@ -2,8 +2,9 @@
 /android/jni/SDL
 /android/assets/data
 /android/jni/src/gamewatch
-
 /android/obj
 /android/bin
 /android/gen
 /android/libs
+xcuserdata
+/ios/gamewatch/gamewatch/data
