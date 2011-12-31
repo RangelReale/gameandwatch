@@ -147,6 +147,12 @@ void GW_PlatformSDL::initialize()
         if ( !realscreen_ )
             throw GW_Exception(string("Unable to set resolution: "+string(SDL_GetError())));
 
+        if (width_ == 0 || height_ == 0)
+        {
+            width_ = realscreen_->w;
+            height_ = realscreen_->h;
+        }
+        
 		if (allowscale_)
 		{
 			screen_ = SDL_CreateRGBSurface(SDL_SWSURFACE, width_get(), height_get(),

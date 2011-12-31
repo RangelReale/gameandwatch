@@ -6,7 +6,7 @@
 class GW_PlatformIOS : public GW_PlatformSDL
 {
 public:
-    GW_PlatformIOS() : GW_PlatformSDL(480, 320, true, true) {}
+    GW_PlatformIOS() : GW_PlatformSDL(0, 0, true, true) {}
     
     //virtual unsigned int time_ms_get() { return SDL_GetTicks(); } // gp2x doesn't have RTC
 protected:

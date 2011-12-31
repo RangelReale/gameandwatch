@@ -1,10 +1,23 @@
+#ifdef __cplusplus
 #include "gwdefs.h"
 #include "plat/plat_ios.h"
 #include "gwdbg.h"
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#endif
 
 bool GW_PlatformIOS::process_event(GW_Platform_GameType gametype,
                                        SDL_Event *sdlevent, GW_Platform_Event *event)
 {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) 
+    {
+        // Do iPad only stuff here
+    }
+
+    
     bool proc=false;
     switch (sdlevent->type)
     {
