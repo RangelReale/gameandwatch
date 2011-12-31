@@ -40,7 +40,7 @@ bool GW_PlatformAndroid::process_event(GW_Platform_GameType gametype,
                 event->data=GPK_QUIT;
                 break;
             case GWSDLK_MENU:
-                event->data=GPK_TURNON;
+                event->data=GPK_TURNONTOGGLE;
                 break;
             default:
                 proc=false;

@@ -24,6 +24,9 @@
 #ifdef GW_PLAT_ANDROID
 #include "plat/plat_android.h"
 #endif
+#ifdef GW_PLAT_IOS
+#include "plat/plat_ios.h"
+#endif
 /*
 #ifdef _WIN32
 #include <windows.h>
@@ -95,6 +98,8 @@ int WinMain(
         GW_PlatformWIZ platform;
 #elif defined(GW_PLAT_ANDROID)
         GW_PlatformAndroid platform;
+#elif defined(GW_PLAT_IOS)
+        GW_PlatformIOS platform;
 #else
         GW_PlatformSDL platform(640, 480);
 #endif

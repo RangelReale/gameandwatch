@@ -45,6 +45,7 @@
 		7DA2864A14AF9A030004A51A /* libSDL.iphonesim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DA2864514AF9A030004A51A /* libSDL.iphonesim.a */; };
 		7DA2864E14AF9B460004A51A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DA2864D14AF9B460004A51A /* QuartzCore.framework */; };
 		7DA28A4314AFA0810004A51A /* data in Resources */ = {isa = PBXBuildFile; fileRef = 7DA28A4214AFA0810004A51A /* data */; };
+		7DBC0BBE14AFA82400C1AE89 /* plat_ios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DBC0BBD14AFA82400C1AE89 /* plat_ios.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -268,6 +269,8 @@
 		7DA2864B14AF9B0C0004A51A /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		7DA2864D14AF9B460004A51A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7DA28A4214AFA0810004A51A /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
+		7DBC0BBD14AFA82400C1AE89 /* plat_ios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = plat_ios.cpp; sourceTree = "<group>"; };
+		7DBC0BC014AFA83600C1AE89 /* plat_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = plat_ios.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -404,6 +407,7 @@
 				7D149C0F14AF75600014BF2B /* plat_sdl.h */,
 				7D149C1014AF75600014BF2B /* plat_wiz.h */,
 				7D149C1114AF75600014BF2B /* SDL_rwops_zzip.h */,
+				7DBC0BC014AFA83600C1AE89 /* plat_ios.h */,
 			);
 			path = plat;
 			sourceTree = "<group>";
@@ -465,6 +469,7 @@
 				7D149C3014AF75730014BF2B /* plat_sdl.cpp */,
 				7D149C3114AF75730014BF2B /* plat_wiz.cpp */,
 				7D149C3214AF75730014BF2B /* SDL_rwops_zzip.cpp */,
+				7DBC0BBD14AFA82400C1AE89 /* plat_ios.cpp */,
 			);
 			path = plat;
 			sourceTree = "<group>";
@@ -809,6 +814,7 @@
 				7D149C4E14AF75730014BF2B /* plat_sdl.cpp in Sources */,
 				7D149C5114AF75730014BF2B /* platform.cpp in Sources */,
 				7D149C5214AF75730014BF2B /* anyoption.cpp in Sources */,
+				7DBC0BBE14AFA82400C1AE89 /* plat_ios.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -877,6 +883,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					GW_PLAT_IOS,
 					GW_NO_SDL_TTF,
 					GW_NO_SDL_MIXER,
 					"DEBUG=1",
@@ -891,8 +898,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/gamewatch/sdl-static/lib/iPhone\"",
-					"\"$(SRCROOT)/gamewatch/openframeworks/freetype/lib/iphone\"",
 					"\"$(SRCROOT)/gamewatch/lib/freetype/lib/iphone\"",
 					"\"$(SRCROOT)/gamewatch/lib/SDL/lib\"",
 				);
@@ -906,7 +911,12 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				GCC_PREPROCESSOR_DEFINITIONS = GW_NO_SDL_GFX;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					GW_PLAT_IOS,
+					GW_NO_SDL_TTF,
+					GW_NO_SDL_MIXER,
+					GW_NO_SDL_GFX,
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../include",
 					"$(SRCROOT)/gamewatch/lib/SDL/include",
@@ -916,8 +926,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/gamewatch/sdl-static/lib/iPhone\"",
-					"\"$(SRCROOT)/gamewatch/openframeworks/freetype/lib/iphone\"",
 					"\"$(SRCROOT)/gamewatch/lib/freetype/lib/iphone\"",
 					"\"$(SRCROOT)/gamewatch/lib/SDL/lib\"",
 				);
