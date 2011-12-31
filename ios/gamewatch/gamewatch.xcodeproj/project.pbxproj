@@ -365,6 +365,7 @@
 		7DBC0E9414AFAEEF00C1AE89 /* VisualC.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7DBC0E7214AFAEEF00C1AE89 /* VisualC.zip */; };
 		7DBC0E9514AFAEEF00C1AE89 /* Watcom-Win32.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7DBC0E7314AFAEEF00C1AE89 /* Watcom-Win32.zip */; };
 		7DBC0E9614AFAEEF00C1AE89 /* Xcode.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7DBC0E7414AFAEEF00C1AE89 /* Xcode.tar.gz */; };
+		7DC9837214AFB85500BC1FE1 /* gameandwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DC9837114AFB85500BC1FE1 /* gameandwatch.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -965,6 +966,7 @@
 		7DBC0E7214AFAEEF00C1AE89 /* VisualC.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = VisualC.zip; sourceTree = "<group>"; };
 		7DBC0E7314AFAEEF00C1AE89 /* Watcom-Win32.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "Watcom-Win32.zip"; sourceTree = "<group>"; };
 		7DBC0E7414AFAEEF00C1AE89 /* Xcode.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = Xcode.tar.gz; sourceTree = "<group>"; };
+		7DC9837114AFB85500BC1FE1 /* gameandwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gameandwatch.png; path = ../../../res/gameandwatch.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1024,6 +1026,7 @@
 		7D14999B14AF74180014BF2B /* gamewatch */ = {
 			isa = PBXGroup;
 			children = (
+				7DC9837114AFB85500BC1FE1 /* gameandwatch.png */,
 				7DA28A4214AFA0810004A51A /* data */,
 				7D149C1514AF75730014BF2B /* src */,
 				7D149BF514AF75600014BF2B /* include */,
@@ -2271,6 +2274,7 @@
 				7DBC0E9414AFAEEF00C1AE89 /* VisualC.zip in Resources */,
 				7DBC0E9514AFAEEF00C1AE89 /* Watcom-Win32.zip in Resources */,
 				7DBC0E9614AFAEEF00C1AE89 /* Xcode.tar.gz in Resources */,
+				7DC9837214AFB85500BC1FE1 /* gameandwatch.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
