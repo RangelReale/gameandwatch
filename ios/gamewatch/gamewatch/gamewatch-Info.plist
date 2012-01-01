@@ -10,10 +10,11 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>gameandwatch.png</string>
+		<string>icon.png</string>
+		<string>icon_ipad.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>sibit.gamewatch.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>br.com.sibit.mobile.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

@@ -365,7 +365,8 @@
 		7DBC0E9414AFAEEF00C1AE89 /* VisualC.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7DBC0E7214AFAEEF00C1AE89 /* VisualC.zip */; };
 		7DBC0E9514AFAEEF00C1AE89 /* Watcom-Win32.zip in Resources */ = {isa = PBXBuildFile; fileRef = 7DBC0E7314AFAEEF00C1AE89 /* Watcom-Win32.zip */; };
 		7DBC0E9614AFAEEF00C1AE89 /* Xcode.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 7DBC0E7414AFAEEF00C1AE89 /* Xcode.tar.gz */; };
-		7DC9837214AFB85500BC1FE1 /* gameandwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DC9837114AFB85500BC1FE1 /* gameandwatch.png */; };
+		7DC972B514B0D5B0004B67E1 /* icon_ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DC972B314B0D5B0004B67E1 /* icon_ipad.png */; };
+		7DC972B614B0D5B0004B67E1 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7DC972B414B0D5B0004B67E1 /* icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -966,7 +967,8 @@
 		7DBC0E7214AFAEEF00C1AE89 /* VisualC.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = VisualC.zip; sourceTree = "<group>"; };
 		7DBC0E7314AFAEEF00C1AE89 /* Watcom-Win32.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "Watcom-Win32.zip"; sourceTree = "<group>"; };
 		7DBC0E7414AFAEEF00C1AE89 /* Xcode.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = Xcode.tar.gz; sourceTree = "<group>"; };
-		7DC9837114AFB85500BC1FE1 /* gameandwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gameandwatch.png; path = ../../../res/gameandwatch.png; sourceTree = "<group>"; };
+		7DC972B314B0D5B0004B67E1 /* icon_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_ipad.png; sourceTree = "<group>"; };
+		7DC972B414B0D5B0004B67E1 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1026,7 +1028,8 @@
 		7D14999B14AF74180014BF2B /* gamewatch */ = {
 			isa = PBXGroup;
 			children = (
-				7DC9837114AFB85500BC1FE1 /* gameandwatch.png */,
+				7DC972B314B0D5B0004B67E1 /* icon_ipad.png */,
+				7DC972B414B0D5B0004B67E1 /* icon.png */,
 				7DA28A4214AFA0810004A51A /* data */,
 				7D149C1514AF75730014BF2B /* src */,
 				7D149BF514AF75600014BF2B /* include */,
@@ -2274,7 +2277,8 @@
 				7DBC0E9414AFAEEF00C1AE89 /* VisualC.zip in Resources */,
 				7DBC0E9514AFAEEF00C1AE89 /* Watcom-Win32.zip in Resources */,
 				7DBC0E9614AFAEEF00C1AE89 /* Xcode.tar.gz in Resources */,
-				7DC9837214AFB85500BC1FE1 /* gameandwatch.png in Resources */,
+				7DC972B514B0D5B0004B67E1 /* icon_ipad.png in Resources */,
+				7DC972B614B0D5B0004B67E1 /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2478,6 +2482,59 @@
 			};
 			name = Release;
 		};
+		7D29377E14B0D87A0043B6BA /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Rangel Reale";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "17569A46-1098-4165-A4F0-13280508F067";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Deployment;
+		};
+		7D29377F14B0D87A0043B6BA /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					GW_PLAT_IOS,
+					GW_NO_SDL_TTF,
+					GW_NO_SDL_MIXER,
+					GW_NO_SDL_GFX,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../include",
+					"$(SRCROOT)/gamewatch/lib/SDL/include",
+					"$(SRCROOT)/gamewatch/lib/freetype/include/freetype2",
+					"$(SRCROOT)/gamewatch/lib/SDL_mixer",
+					"$(SRCROOT)/gamewatch/lib/SDL_gfx",
+					"$(SRCROOT)/gamewatch/lib/SDL_ttf",
+					"$(SRCROOT)/gamewatch/lib/freetype/include",
+				);
+				INFOPLIST_FILE = "gamewatch/gamewatch-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/gamewatch/lib/freetype/lib/iphone\"",
+					"\"$(SRCROOT)/gamewatch/lib/SDL/lib\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Deployment;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2486,6 +2543,7 @@
 			buildConfigurations = (
 				7D1499A714AF74180014BF2B /* Debug */,
 				7D1499A814AF74180014BF2B /* Release */,
+				7D29377E14B0D87A0043B6BA /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2495,6 +2553,7 @@
 			buildConfigurations = (
 				7D1499AA14AF74180014BF2B /* Debug */,
 				7D1499AB14AF74180014BF2B /* Release */,
+				7D29377F14B0D87A0043B6BA /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
