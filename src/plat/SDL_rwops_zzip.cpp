@@ -15,17 +15,17 @@
 #define SDL_RWOPS_ZZIP_FILE(_context)  (ZZIP_FILE*) \
              ((_context)->hidden.unknown.data1)
 
-static long int _zzip_seek(SDL_RWops *context, long int offset, int whence)
+static int _zzip_seek(SDL_RWops *context, int offset, int whence)
 {
     return zzip_seek(SDL_RWOPS_ZZIP_FILE(context), offset, whence);
 }
 
-static size_t _azzip_read(SDL_RWops *context, void *ptr, size_t size, size_t maxnum)
+static int _azzip_read(SDL_RWops *context, void *ptr, int size, int maxnum)
 {
     return zzip_read(SDL_RWOPS_ZZIP_FILE(context), ptr, size*maxnum) / size;
 }
 
-static size_t SDLCALL _azzip_write(SDL_RWops *context, const void *ptr, size_t size, size_t num)
+static int SDLCALL _azzip_write(SDL_RWops *context, const void *ptr, int size, int num)
 {
     return 0; /* ignored */
 }

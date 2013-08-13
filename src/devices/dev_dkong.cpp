@@ -2,6 +2,8 @@
 
 #include "devices/dev_dkong.h"
 
+#include <cstdio>
+
 GW_Game *GW_Game_DKong_Info::create()
 {
     return new GW_Game_DKong;

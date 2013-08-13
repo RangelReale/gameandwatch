@@ -279,7 +279,7 @@ public:
     string bgimg_path();
     virtual GW_Game *create() = 0;
 private:
-    string id_, description_, datapath_, bgimg_, platformdatapath_;
+    string id_, description_, platformdatapath_, datapath_, bgimg_;
     bool istcolor_;
     GW_Platform_RGB tcolor_;
 };
@@ -287,11 +287,11 @@ private:
 class GW_Device
 {
 public:
-    typedef struct devtime_t
+    typedef struct 
     {
         short d, m, y;
         short h, n, s;
-    };
+    } devtime_t;
 
 	enum zoom_t
 	{

@@ -23,8 +23,8 @@ private:
 
     typedef deque< linked_ptr<GW_Game_Info> > list_t;
 
-	GW_Platform *platform_;
     list_t list_;
+	GW_Platform *platform_;
 };
 
 

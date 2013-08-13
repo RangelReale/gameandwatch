@@ -1,4 +1,7 @@
-
+*~
+*.kdev4
+/build
+/buildrel
 /android/jni/SDL
 /android/assets/data
 /android/jni/src/gamewatch
