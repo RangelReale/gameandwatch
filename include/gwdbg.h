@@ -19,7 +19,7 @@
 
 #define GWDBG_OUTPUT(x)
 #define GWDBG_FOUTPUT(x, y)
-#define GWDBG_FVOUTPUT(x, args...)
+#define GWDBG_FVOUTPUT(x, ...)
 
 #endif
 

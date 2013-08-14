@@ -11,6 +11,7 @@ include_directories(${SDL_IMAGE_INCLUDE_DIRS})
 include_directories(${SDL_TTF_INCLUDE_DIRS})
 include_directories(${SDLGFX_INCLUDE_DIR})
 include_directories(${ZZIPLIB_INCLUDE_DIR})
+include_directories(${ZLIB_INCLUDE_DIRS})
 
 
 IF(ANDROID)
@@ -91,8 +92,13 @@ TARGET_LINK_LIBRARIES ( ${EXE_NAME}
 	${SDL_IMAGE_LIBRARIES}
 	${SDL_TTF_LIBRARIES}
 	${SDLGFX_LIBRARY}
+	${ZLIB_LIBRARIES}
 	${ZZIPLIB_LIBRARIES}
 )
+
+if (WIN32)
+	TARGET_LINK_LIBRARIES ( ${EXE_NAME} ${SDLMAIN_LIBRARY} )
+endif()
 
 if (ANDROID)
 	TARGET_LINK_LIBRARIES ( ${EXE_NAME} log )

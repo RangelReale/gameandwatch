@@ -73,6 +73,7 @@ Find_Package ( SDL_mixer REQUIRED )
 Find_Package ( SDL_ttf REQUIRED )
 Find_Package ( SDL_gfx REQUIRED )
 
+find_package( ZLIB REQUIRED )
 Find_Package ( zziplib REQUIRED )
 
 #-----------------------------------------------------------------------------
